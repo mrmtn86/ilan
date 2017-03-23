@@ -1,3 +1,7 @@
+package model;
+
+import model.ArabaIlan;
+
 import java.util.Comparator;
 
 /**

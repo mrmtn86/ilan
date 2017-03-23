@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Created by mac on 27/02/17.
  */
@@ -24,7 +26,7 @@ public class ArabaIlan {
 
     @Override
     public String toString() {
-        return "ArabaIlan{" +
+        return "model.ArabaIlan{" +
                 "puan=" + ilanPuani +
                 "model=" + model +
                 ", fiyat=" + fiyat +
