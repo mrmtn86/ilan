@@ -54,29 +54,35 @@ public class HtmlParser {
     }
 
     private static ArabaIlan getArabaIlan(Element element) {
-        String baslik = element.select(".searchResultsTitleValue").text();
+
         Elements select = element.select(".searchResultsAttributeValue");
         if (select == null || select.size() == 0) {
             return null;
         }
 
         String ilanNo = element.attributes().iterator().next().getValue();
-        int ilanNoInt = Integer.parseInt(ilanNo);
+
         String yilElement = select.first().text();
         String kmElement = select.get(1).text().replace(".", "");
         String fiyatStr = element.select(".searchResultsPriceValue").text().replace(".", "").replace("TL", "").replace(" ", "");
         String ilanUrl = element.select(".searchResultsSmallThumbnail").first().child(0).attributes().get("href");
 
-        ilanUrl = ilanUrl.substring(1, ilanUrl.length());
 
-        String tarihStr = element.select(".searchResultsDateValue").text();
 
-        int model = Integer.parseInt(yilElement);
+        int yil = Integer.parseInt(yilElement);
         int km = Integer.parseInt(kmElement);
 
         int fiyatTmp = Integer.parseInt(fiyatStr);
         int fiyat = fiyatTmp;
-        return new ArabaIlan(model, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt);
+        ilanUrl = ilanUrl.substring(1, ilanUrl.length());
+
+        String tarihStr = element.select(".searchResultsDateValue").text();
+        String baslik = element.select(".searchResultsTitleValue").text();
+
+        int ilanNoInt = Integer.parseInt(ilanNo);
+
+
+        return new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt);
     }
 
     private static Elements csstenSec(Document doc, String cssQuery) {

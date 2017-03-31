@@ -1,43 +1,25 @@
 import db.Repo;
 import model.ArabaIlan;
-import model.ArabaModel;
-import model.IlanPuanComperator;
+import entity.ArabaModel;
+import model.IlanDurum;
+import model.ModelinIlanlari;
+import model.Url;
+import org.bson.types.ObjectId;
 import parser.html.HtmlParser;
+import parser.html.UrlBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-    public static final int PUAN_LIMIT = 150;
-    public static final int BASLANGIC_YIL = 2007;
-    public static final int BITIS_YIL = 2010;
-    static int MAX_ARAC_FIYATI = 38000;
-    static List<Integer> karaListe = new ArrayList<Integer>() {{
-        add(403080735);
-        add(407785432);
-        add(405735596);
-        add(365975880);
-        add(411877744);
-        add(404634934);
-        add(405275624);
-        add(411703245);
-        add(399692863);
-        add(412580599);
-        add(407296283);
-        add(385306471);
-        add(407977828);
-        add(403794852);
-        add(406594195);
-        add(398934632);
-        add(404522766);
-        add(400769020);
-        add(404840463);
-        add(409044941);
-    }};
+
+    private static final int BASLANGIC_YIL = 2007;
+    static final int BITIS_YIL = 2017;
+
+
     private static Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws IOException {
@@ -48,144 +30,95 @@ public class Main {
 
 
         List<ArabaModel> modeller = repo.modelleriGetir();
+        List<Url> urls = UrlBuilder.getUrls();
 
-        List<ArabaIlan> makulIlanlar = new ArrayList<>();
 
-        HtmlParser parser = new HtmlParser();
         for (ArabaModel arabaModel : modeller) {
 
-            String aracUrl = arabaModel.url;
+
+            for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
 
 
-            String[] yakitSecenek = {"/dizel", "/benzin-lpg,benzin"};
-            String[] vitesSecenek = {"/otomatik,yari-otomatik", "/manuel"};
 
 
-            for (String vites : vitesSecenek) {
-
-                for (String yakit : yakitSecenek) {
+                for (Url urlItr : urls) {
 
 
-                    //benzinli manuel olanlarla ilgilenme
-                    if (vites.equals(vitesSecenek[1]) && yakit.equals(yakitSecenek[1])) {
+                    ModelinIlanlari modelinIlanlari = getModelinIlanlari(arabaModel, urlItr, yilParam);
+
+                    logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} , ort km : {5} , ort fiyat : {6}", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, modelinIlanlari.toplamArac(), modelinIlanlari.ortalamaKm, modelinIlanlari.ortalamaFiyat});
+
+
+
+                    if (modelinIlanlari.toplamArac() == 0) {
                         continue;
                     }
 
-                    for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
+                    List<ArabaIlan> makulIlanlar = modelinIlanlari.makulIlanlariGetir();
+
+                    makulIlanlar.forEach(System.out::println);
+
+                }
+            }
 
 
-                        List<ArabaIlan> ilanlar = new ArrayList<>();
-
-                        String sahibinden = "a706=32474";
-                        String trPlaka = "&a9620=143038";
-                        String yil = "&a5_min=" + yilParam + "&a5_max=" + yilParam;
-                        String ilanSayisi = "&pagingSize=50";
-
-                        int ortalamaKm = 0;
-                        int ortalamaFiyat = 0;
+        }
 
 
-                        for (int i = 0; i <= 200; i = i + 50) {
-
-                            String ofsetValue = "";
-                            if (i > 0) {
-                                ofsetValue = "&pagingOffset=" + i;
-                            }
-                            String url = aracUrl + yakit + vites + "?" + sahibinden + ofsetValue + ilanSayisi + yil + trPlaka;
-
-                            List<ArabaIlan> arabaIlanList = parser.arabaIlanlariGetir(url);
-
-                            if (arabaIlanList.size() == 0) {
-                                break;
-                            }
+    }
 
 
-                            for (ArabaIlan araba : arabaIlanList) {
+    private static ModelinIlanlari getModelinIlanlari(ArabaModel arabaModel, Url url, int yilParam) {
 
-                                if ((araba != null)) {
-                                    ilanlar.add(araba);
+        String yil = "&a5_min=" + yilParam + "&a5_max=" + yilParam;
 
+        String urlResult = arabaModel.url + url.geturlString() + yil;
 
-                                    ortalamaKm += (araba.km - ortalamaKm) / ilanlar.size();
-                                    ortalamaFiyat += (araba.fiyat - ortalamaFiyat) / ilanlar.size();
-                                }
-                            }
+        ModelinIlanlari modelinIlanlari = new ModelinIlanlari();
 
+        HtmlParser parser = new HtmlParser();
 
-                        }
-
-                        //   System.out.println(arabaModel.ad + " - " + yakit + " - " + vites + " toplam : " + ilanlar.size());
+        Repo repo = new Repo();
+        Map<Integer, ArabaIlan> arabaIlanMap = repo.modelinKayitlariniGetir(modelinIlanlari.modelId, modelinIlanlari.yil);
 
 
-                        logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} , ort km : {5} , ort fiyat : {6}", new Object[]{arabaModel.ad, vites, yakit, yilParam, ilanlar.size(), ortalamaKm, ortalamaFiyat});
+        for (int i = 0; i <= 5; i = i + 50) {
 
+            String ofsetValue = "";
+            if (i > 0) {
+                ofsetValue = "&pagingOffset=" + i;
+            }
+            urlResult += url + ofsetValue;
 
-                        if (ilanlar.size() == 0) {
-                            continue;
-                        }
+            List<ArabaIlan> arabaIlanList = parser.arabaIlanlariGetir(urlResult);
 
-                        for (ArabaIlan arabaIlan : ilanlar) {
+            if (arabaIlanList.size() == 0) {
+                break;
+            }
 
-                            if (arabaIlan.fiyat > MAX_ARAC_FIYATI) {
-                                continue;
-                            }
+            for (ArabaIlan arabaIlan : arabaIlanList) {
 
-                            boolean karaListede = karaListedemi(arabaIlan);
-                            if (karaListede) {
-                                continue;
-                            }
+                if ((arabaIlan != null)) {
+                    arabaIlan.modelId = arabaModel.id;
 
+                    ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
 
-                            int ilanPuani = ilanPuaniHesapla(arabaIlan, ortalamaFiyat, ortalamaKm);
-                            arabaIlan.ilanPuani = ilanPuani;
+                    if (ilanDb == null) {
+                        ilanDb = repo.IlaniKaydet(arabaIlan);
+                    }
 
-                            if (ilanPuani > PUAN_LIMIT) {
-                                continue;
-                            }
+                    if (!ilanDb.equals(arabaIlan)) {
+                        repo.ilanGuncelle(ilanDb);
+                    }
 
-                            boolean aciklamalarTemiz = parser.aciklamaTemiz(arabaIlan);
-
-                            if (!aciklamalarTemiz) {
-                                continue;
-                            }
-
-                            //arabada kusur bulamadık ekleyelim
-
-                            makulIlanlar.add(arabaIlan);
-
-                        }
-
+                    if (ilanDb.durum != IlanDurum.Uygun) {
 
                     }
+                    modelinIlanlari.ilanEkle(arabaIlan);
                 }
             }
         }
-        makulIlanlar.sort(new IlanPuanComperator());
-
-        for (ArabaIlan arabaIlan : makulIlanlar) {
-
-            System.out.println(arabaIlan);
-
-        }
-
-    }
-
-
-    private static boolean karaListedemi(ArabaIlan arabaIlan) {
-
-        return karaListe.contains(arabaIlan.ilanNo);
-    }
-
-
-
-
-    private static int ilanPuaniHesapla(ArabaIlan arabaIlan, int ortalamaFiyat, int ortalamaKm) {
-
-        int fiyatPuani = arabaIlan.fiyat * 100 / ortalamaFiyat;
-        int kmPuani = arabaIlan.km * 100 / ortalamaKm;
-
-
-        return kmPuani + fiyatPuani;
+        return modelinIlanlari;
     }
 
 }
