@@ -80,7 +80,6 @@ public class Repo {
     public Map<Integer, ArabaIlan> modelinKayitlariniGetir(ObjectId modelId, int yilParam) {
         MongoCollection<Document> modeller = db.getCollection("ilan");
 
-
         MongoCursor<Document> modelItr = modeller.find(new Document("modelId",modelId)).iterator();
 
         Map<Integer, ArabaIlan> integerArabaIlanMap = new HashMap<>();

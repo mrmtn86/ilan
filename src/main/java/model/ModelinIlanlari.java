@@ -1,10 +1,13 @@
 package model;
 
-import org.bson.types.ObjectId;
+import db.Repo;
+import entity.ArabaModel;
+import error.IlanException;
 import parser.html.HtmlParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mtn on 31.03.2017.
@@ -37,16 +40,36 @@ public class ModelinIlanlari {
         add(404840463);
         add(409044941);
     }};
-
+    private final ArabaModel arabaModel;
+    private final int yil;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
-    public int yil = 0;
-
     public List<ArabaIlan> ilanlar = new ArrayList<>();
-    public ObjectId modelId;
+    private Map<Integer, ArabaIlan> arabaIlanMap;
 
+
+    public ModelinIlanlari(ArabaModel arabaModel, int yil) {
+
+        this.arabaModel = arabaModel;
+        this.yil = yil;
+
+    }
+
+    private static boolean karaListedemi(ArabaIlan arabaIlan) {
+
+        return karaListe.contains(arabaIlan.ilanNo);
+    }
 
     public void ilanEkle(ArabaIlan araba) {
+
+        if(araba.yil != yil){
+            throw new IlanException("yil tutumuyor");
+        }
+
+        if (!arabaModel.id.equals(araba.modelId)){
+            throw new IlanException("model tutmuyor");
+        }
+
         ilanlar.add(araba);
 
         ortalamaKm += (araba.km - ortalamaKm) / ilanlar.size();
@@ -59,51 +82,65 @@ public class ModelinIlanlari {
 
     public int ilanPuaniHesapla(ArabaIlan arabaIlan) {
 
-        int fiyatPuani = arabaIlan.fiyat * 100 / ortalamaFiyat;
-        int kmPuani = arabaIlan.km * 100 / ortalamaKm;
+        arabaIlan.fiyatPuani = arabaIlan.fiyat * 100 / ortalamaFiyat;
+        arabaIlan.kmPuani = arabaIlan.km * 100 / ortalamaKm;
 
-
-        return kmPuani + fiyatPuani;
+        return arabaIlan.ilanPuani = arabaIlan.kmPuani + arabaIlan.fiyatPuani;
     }
 
-    public List<ArabaIlan> makulIlanlariGetir() {
+    public List<ArabaIlan> durumDegerlendir() {
+
+        Repo repo = new Repo();
+        this.arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yil);
+
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
+
         for (ArabaIlan arabaIlan : ilanlar) {
 
-            if (arabaIlan.fiyat > MAX_ARAC_FIYATI) {
-                continue;
-            }
+            ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
 
-            boolean karaListede = karaListedemi(arabaIlan);
-            if (karaListede) {
-                continue;
-            }
+            IlanDurum ilanDurumDb = ilanDb.durum;
 
-            int ilanPuani = ilanPuaniHesapla(arabaIlan);
-            arabaIlan.ilanPuani = ilanPuani;
+            if (ilanDurumDb == IlanDurum.Belirsiz) {
+                ilanDurumDb = ilanDurumBelirle(arabaIlan);
+                ilanDb.durum = ilanDurumDb;
+                ilanDb.fiyatPuani = arabaIlan.fiyatPuani;
+                ilanDb.kmPuani = arabaIlan.kmPuani;
+                ilanDb.ilanPuani = arabaIlan.ilanPuani;
 
-            if (ilanPuani > PUAN_LIMIT) {
-                continue;
-            }
-            HtmlParser parser = new HtmlParser();
-            boolean aciklamalarTemiz = parser.aciklamaTemiz(arabaIlan);
-
-            if (!aciklamalarTemiz) {
-                continue;
+                repo.ilanGuncelle(ilanDb);
             }
 
             //arabada kusur bulamadık ekleyelim
-
             makulIlanlar.add(arabaIlan);
-
         }
 
         makulIlanlar.sort(new IlanPuanComperator());
         return makulIlanlar;
     }
 
-    private static boolean karaListedemi(ArabaIlan arabaIlan) {
+    private IlanDurum ilanDurumBelirle(ArabaIlan arabaIlan) {
 
-        return karaListe.contains(arabaIlan.ilanNo);
+
+        int ilanPuani = ilanPuaniHesapla(arabaIlan);
+
+        if (arabaIlan.fiyat > MAX_ARAC_FIYATI) {
+            return IlanDurum.MaxFiyatiAsiyor;
+        }
+
+        boolean karaListede = karaListedemi(arabaIlan);
+
+        if (karaListede) {
+            return arabaIlan.durum = IlanDurum.KaraLisetede;
+        }
+
+
+        if (ilanPuani > PUAN_LIMIT) {
+            return arabaIlan.durum = IlanDurum.PuanUygunDegil;
+
+        }
+        HtmlParser parser = new HtmlParser();
+        return parser.aciklamaTemiz(arabaIlan);
+
     }
 }

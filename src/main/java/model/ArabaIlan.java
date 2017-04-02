@@ -17,8 +17,10 @@ public class ArabaIlan  {
     public String baslik;
     public String ilanUrl;
     public int ilanNo;
+    public int kmPuani;
+    public int fiyatPuani;
     public Integer ilanPuani;
-    public IlanDurum durum;
+    public IlanDurum durum ;
 
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt) {

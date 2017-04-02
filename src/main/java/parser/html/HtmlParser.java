@@ -1,6 +1,7 @@
 package parser.html;
 
 import model.ArabaIlan;
+import model.IlanDurum;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,16 +30,16 @@ public class HtmlParser {
 
     }
 
-    private static boolean aciklamaTaramasiTemiz(Document doc) {
+    private static IlanDurum aciklamaTaramasiTemiz(Document doc) {
 
         for (String aciklama : kusurluAciklamlar) {
             if (aciklamadaVarmi(doc, aciklama)) {
-                return false;
+                return IlanDurum.AciklamadaUygunsuzlukVar;
             }
         }
 
 
-        return true;
+        return IlanDurum.Uygun;
     }
 
     private static boolean aciklamadaVarmi(Document doc, String aciklama) {
@@ -122,7 +123,7 @@ public class HtmlParser {
         return ilanlar;
     }
 
-    public boolean aciklamaTemiz(ArabaIlan arabaIlan) {
+    public IlanDurum aciklamaTemiz(ArabaIlan arabaIlan) {
 
         Document document = null;
         try {
