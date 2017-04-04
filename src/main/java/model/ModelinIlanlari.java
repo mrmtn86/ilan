@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class ModelinIlanlari {
 
-    public static final int PUAN_LIMIT = 150;
+    public static final int PUAN_LIMIT = 170;
     static int MAX_ARAC_FIYATI = 38000;
 
     static List<Integer> karaListe = new ArrayList<Integer>() {{
@@ -30,7 +30,10 @@ public class ModelinIlanlari {
         add(399692863);
         add(412580599);
         add(407296283);
+        add(418170659);
+        add(417592735);
         add(385306471);
+        add(417448859);
         add(407977828);
         add(403794852);
         add(406594195);
@@ -39,17 +42,22 @@ public class ModelinIlanlari {
         add(400769020);
         add(404840463);
         add(409044941);
+        add(418729819);
     }};
     private final ArabaModel arabaModel;
     private final int yil;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
     public List<ArabaIlan> ilanlar = new ArrayList<>();
-    private Map<Integer, ArabaIlan> arabaIlanMap;
+    public Map<Integer, ArabaIlan> arabaIlanMap;
 
 
     public ModelinIlanlari(ArabaModel arabaModel, int yil) {
 
+
+        Repo repo = new Repo();
+
+        arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yil);
         this.arabaModel = arabaModel;
         this.yil = yil;
 
@@ -62,11 +70,11 @@ public class ModelinIlanlari {
 
     public void ilanEkle(ArabaIlan araba) {
 
-        if(araba.yil != yil){
+        if (araba.yil != yil) {
             throw new IlanException("yil tutumuyor");
         }
 
-        if (!arabaModel.id.equals(araba.modelId)){
+        if (!arabaModel.id.toString().equals(araba.modelId)) {
             throw new IlanException("model tutmuyor");
         }
 
@@ -99,11 +107,11 @@ public class ModelinIlanlari {
 
             ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
 
-            IlanDurum ilanDurumDb = ilanDb.durum;
+            IlanDurum ilanDurumDb = ilanDb.getDurum();
 
-            if (ilanDurumDb == IlanDurum.Belirsiz) {
+            if (ilanDurumDb == null) {
                 ilanDurumDb = ilanDurumBelirle(arabaIlan);
-                ilanDb.durum = ilanDurumDb;
+                ilanDb.setDurum(ilanDurumDb);
                 ilanDb.fiyatPuani = arabaIlan.fiyatPuani;
                 ilanDb.kmPuani = arabaIlan.kmPuani;
                 ilanDb.ilanPuani = arabaIlan.ilanPuani;
@@ -111,8 +119,10 @@ public class ModelinIlanlari {
                 repo.ilanGuncelle(ilanDb);
             }
 
+
             //arabada kusur bulamadık ekleyelim
-            makulIlanlar.add(arabaIlan);
+            if (ilanDb.getDurum() == IlanDurum.Uygun)
+                makulIlanlar.add(ilanDb);
         }
 
         makulIlanlar.sort(new IlanPuanComperator());
@@ -121,22 +131,20 @@ public class ModelinIlanlari {
 
     private IlanDurum ilanDurumBelirle(ArabaIlan arabaIlan) {
 
-
         int ilanPuani = ilanPuaniHesapla(arabaIlan);
+
+        boolean karaListede = karaListedemi(arabaIlan);
+
+        if (karaListede) {
+            return arabaIlan.setDurum(IlanDurum.KaraLisetede);
+        }
 
         if (arabaIlan.fiyat > MAX_ARAC_FIYATI) {
             return IlanDurum.MaxFiyatiAsiyor;
         }
 
-        boolean karaListede = karaListedemi(arabaIlan);
-
-        if (karaListede) {
-            return arabaIlan.durum = IlanDurum.KaraLisetede;
-        }
-
-
         if (ilanPuani > PUAN_LIMIT) {
-            return arabaIlan.durum = IlanDurum.PuanUygunDegil;
+            return arabaIlan.setDurum(IlanDurum.PuanUygunDegil);
 
         }
         HtmlParser parser = new HtmlParser();

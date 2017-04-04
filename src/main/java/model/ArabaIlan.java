@@ -6,7 +6,7 @@ import org.bson.types.ObjectId;
 /**
  * Created by mac on 27/02/17.
  */
-public class ArabaIlan  {
+public class ArabaIlan {
     @JsonIgnore
     public ObjectId dbId;
     public String modelId;
@@ -20,8 +20,34 @@ public class ArabaIlan  {
     public int kmPuani;
     public int fiyatPuani;
     public Integer ilanPuani;
-    public IlanDurum durum ;
+    private int ilandurum;
 
+    @JsonIgnore
+    private IlanDurum durum;
+
+    public int getIlandurum() {
+        return ilandurum;
+    }
+
+    public void setIlandurum(int ilandurum) {
+        if (durum != null && durum.getIndex() != ilandurum) {
+            setDurum(IlanDurum.getEnum(ilandurum));
+        }
+        this.ilandurum = ilandurum;
+    }
+
+    public IlanDurum getDurum() {
+        return durum;
+    }
+
+    public IlanDurum setDurum(IlanDurum durum) {
+
+        if (durum != null && durum.getIndex() != ilandurum) {
+            setIlandurum(durum.getIndex());
+        }
+
+        return this.durum = durum;
+    }
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt) {
         this.yil = yil;

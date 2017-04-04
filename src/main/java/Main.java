@@ -16,10 +16,11 @@ import java.util.logging.Logger;
 public class Main {
 
     static final int BITIS_YIL = 2017;
-    private static final int BASLANGIC_YIL = 2007;
+    private static final int BASLANGIC_YIL = 2010;
     private static Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws IOException {
+
 
         logger.setLevel(Level.FINE);
 
@@ -68,16 +69,15 @@ public class Main {
         HtmlParser parser = new HtmlParser();
 
         Repo repo = new Repo();
-        Map<Integer, ArabaIlan> arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yilParam);
 
         //todo unutma 1000 yap
-        for (int i = 0; i <= 5; i = i + 50) {
+        for (int i = 0; i <= 1000; i = i + 50) {
 
             String ofsetValue = "";
             if (i > 0) {
                 ofsetValue = "&pagingOffset=" + i;
             }
-            urlResult +=  ofsetValue;
+            urlResult += ofsetValue;
 
             List<ArabaIlan> arabaIlanList = parser.arabaIlanlariGetir(urlResult);
 
@@ -90,7 +90,7 @@ public class Main {
                 if ((arabaIlan != null)) {
                     arabaIlan.modelId = arabaModel.id.toString();
 
-                    ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
+                    ArabaIlan ilanDb = modelinIlanlari.arabaIlanMap.get(arabaIlan.ilanNo);
 
                     if (ilanDb == null) {
                         ilanDb = repo.IlaniKaydet(arabaIlan);
@@ -98,7 +98,7 @@ public class Main {
 
                     // ilanin sikintili oldugunu biliyorsak hic eklemeyelim listeye
                     // ortalamay etkilmesin
-                    if (ilanDb.durum == IlanDurum.AciklamadaUygunsuzlukVar || ilanDb.durum == IlanDurum.KaraLisetede) {
+                    if (ilanDb.getDurum() == IlanDurum.AciklamadaUygunsuzlukVar || ilanDb.getDurum() == IlanDurum.KaraLisetede) {
                         continue;
                     }
 

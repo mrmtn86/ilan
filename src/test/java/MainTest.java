@@ -1,11 +1,14 @@
 import com.github.fakemongo.Fongo;
 import com.mongodb.*;
+import com.mongodb.client.*;
 import entity.ArabaModel;
 import model.ArabaIlan;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
 import parser.json.JsonParser;
 
+import javax.print.Doc;
 import java.util.Iterator;
 
 /**
@@ -17,22 +20,20 @@ public class MainTest {
 
 
         Fongo fongo = new Fongo("mongo server 1");
+        MongoDatabase db = fongo.getDatabase("mydb");
 
-        DB db = fongo.getDB("mydb");
-        DBCollection modelCollection = db.getCollection("modelCollection");
-        DBCollection ilanCollection = db.getCollection("ilanCollection");
+        MongoCollection<Document> modelCollection = db.getCollection("modelCollection");
+        MongoCollection<Document> ilanCollection = db.getCollection("ilanCollection");
 
 
         ArabaModel arabaModel = new ArabaModel("arabamodel", "ururll1", new ObjectId());
-        BasicDBObject basicDBObject = new BasicDBObject("ed", arabaModel);
+
+        modelCollection.insertOne(Document.parse(JsonParser.toJson(arabaModel)));
 
 
-        modelCollection.save(basicDBObject);
+        MongoCursor<Document> iterator = modelCollection.find().iterator();
 
-
-        Iterator<DBObject> iterator = modelCollection.find().iterator();
-
-        DBObject dbObject = iterator.next();
+        Document dbObject = iterator.next();
 
         ObjectId modelId = (ObjectId) dbObject.get("_id");
 
@@ -40,13 +41,13 @@ public class MainTest {
 
         arabaIlan.modelId = modelId.toString();
 
-        DBObject asd =  BasicDBObject.parse(JsonParser.toJson(arabaIlan));
-        ilanCollection.save(asd);
+        Document asd =  Document.parse(JsonParser.toJson(arabaIlan));
+        ilanCollection.insertOne(asd);
 
-        DBCursor dbObjects = ilanCollection.find();
+        FindIterable<Document> dbObjects = ilanCollection.find();
 
 
-        DBObject dbObjectilan = dbObjects.iterator().next();
+        Document dbObjectilan = dbObjects.iterator().next();
 
         ObjectId ilanId = (ObjectId) dbObjectilan.get("_id");
         for (String key : dbObjectilan.keySet()) {
@@ -54,27 +55,17 @@ public class MainTest {
         }
 
 
-        DBObject queryModel = new BasicDBObject("modelId" , modelId.toString());
-        DBCursor dbcursor = ilanCollection.find(queryModel);
+        Document queryModel = new Document("modelId", modelId.toString());
+        MongoIterable<Document> dbcursor = ilanCollection.find(queryModel);
 
-        Iterator<DBObject> iteratorModelIden = dbcursor.iterator();
-
-
-
-//        Repo repo = new Repo();
-//        ObjectId id=new ObjectId();
-//        Friend john=new Friend(id,"John");
-//        collection.save(john);
-//        Friend foundFriend=collection.findOne("{_id:{$oid:#}}",id.toString()).as(Friend.class);
+       ObjectId ilanIdResult = (ObjectId) dbcursor.first().get("_id");
 
 
-        Assert.assertTrue(true);
+        Assert.assertTrue(ilanIdResult.equals(ilanId));
 
     }
 
-    public Mongo mongo() throws Exception {
-        return new Fongo("testdb").getMongo();
-    }
+
 
 
 }

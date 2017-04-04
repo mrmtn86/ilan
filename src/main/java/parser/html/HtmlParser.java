@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class HtmlParser {
 
     private static Logger logger = Logger.getLogger(HtmlParser.class.getName());
-    private static  String[] kusurluAciklamlar = {"ağır hasar kaydı var", "agir hasar kaydı mevcut", "ÇEKME BELGELİ", "HASARLI AL"};
+    private static  String[] kusurluAciklamlar = {"ağır hasar kaydı var", "agir hasar kaydı mevcut", "ÇEKME BELGELİ", "HASARLI AL" ,"Ağır Hasar Kayıtlıdır","ağır hasar kayıtlıdır","pert kayıtlı  aldım"};
 
 
     private static Document httpGet(String url) throws IOException {
@@ -132,7 +132,7 @@ public class HtmlParser {
             e.printStackTrace();
         }
 
-        return aciklamaTaramasiTemiz(document);
+        return arabaIlan.setDurum(aciklamaTaramasiTemiz(document));
 
     }
 }
