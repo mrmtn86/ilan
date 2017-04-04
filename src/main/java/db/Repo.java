@@ -14,6 +14,7 @@ import model.ArabaIlan;
 import model.ModelinIlanlari;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import parser.json.JsonParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class Repo {
 
         MongoClient client = new MongoClient(uri);
         db = client.getDatabase(uri.getDatabase());
+
     }
 
 
@@ -57,13 +59,13 @@ public class Repo {
     }
 
     public ArabaIlan IlaniKaydet(ArabaIlan arabaIlan) {
-        ObjectMapper mapper = new ObjectMapper();
-        String json = null;
-        try {
-            json = mapper.writeValueAsString(arabaIlan);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
+
+
+
+
+        String json =  JsonParser.toJson(arabaIlan);
+
 
         MongoCollection<Document> modeller = db.getCollection("ilan");
         modeller.insertOne(Document.parse(json));
@@ -80,7 +82,7 @@ public class Repo {
     public Map<Integer, ArabaIlan> modelinKayitlariniGetir(ObjectId modelId, int yilParam) {
         MongoCollection<Document> modeller = db.getCollection("ilan");
 
-        MongoCursor<Document> modelItr = modeller.find(new Document("modelId",modelId)).iterator();
+        MongoCursor<Document> modelItr = modeller.find(new Document("modelId",modelId.toString())).iterator();
 
         Map<Integer, ArabaIlan> integerArabaIlanMap = new HashMap<>();
 

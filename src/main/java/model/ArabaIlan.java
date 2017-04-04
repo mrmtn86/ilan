@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 public class ArabaIlan  {
     @JsonIgnore
     public ObjectId dbId;
-    public ObjectId modelId;
+    public String modelId;
     public int yil;
     public int fiyat;
     public int km;

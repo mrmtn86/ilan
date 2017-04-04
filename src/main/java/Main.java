@@ -88,7 +88,7 @@ public class Main {
             for (ArabaIlan arabaIlan : arabaIlanList) {
 
                 if ((arabaIlan != null)) {
-                    arabaIlan.modelId = arabaModel.id;
+                    arabaIlan.modelId = arabaModel.id.toString();
 
                     ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
 
