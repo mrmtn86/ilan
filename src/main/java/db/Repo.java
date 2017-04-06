@@ -1,19 +1,14 @@
 package db;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
 import entity.ArabaModel;
 import model.ArabaIlan;
 import model.IlanDurum;
 import model.KullanimDurumu;
-import model.ModelinIlanlari;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -26,6 +21,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static parser.json.JsonParser.toJson;
+
 /**
  * Created by mac on 21/03/17.
  */
@@ -35,7 +32,7 @@ public class Repo {
 
     public Repo() {
 
-        Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
+        Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
 
 
@@ -51,7 +48,7 @@ public class Repo {
     public List<ArabaModel> modelleriGetir() {
         MongoCollection<Document> modeller = db.getCollection("model");
 
-        Bson query = new Document("kullanimDurumu" , KullanimDurumu.Aktif.getIndex());
+        Bson query = new Document("kullanimDurumu", KullanimDurumu.Aktif.getIndex());
         MongoCursor<Document> modelItr = modeller.find(query).iterator();
 
         List<ArabaModel> arabaModels = new ArrayList<>();
@@ -61,7 +58,12 @@ public class Repo {
             String ad = doc.getString("ad");
             String url = doc.getString("url");
             ObjectId id = doc.getObjectId("_id");
-            ArabaModel model = new ArabaModel(ad, url , id);
+            Object paketObj = doc.get("paketler");
+
+            ArabaModel model = new ArabaModel(ad, url, id);
+
+            if (paketObj != null)
+                model.paketler = (List<String>) paketObj;
 
             arabaModels.add(model);
         }
@@ -69,7 +71,7 @@ public class Repo {
     }
 
     public ArabaIlan IlaniKaydet(ArabaIlan arabaIlan) {
-        String json =  JsonParser.toJson(arabaIlan);
+        String json = toJson(arabaIlan);
 
         MongoCollection<Document> modeller = getIlan();
         modeller.insertOne(Document.parse(json));
@@ -83,19 +85,19 @@ public class Repo {
 
 
     public void ilanGuncelle(ArabaIlan arabaIlan) {
-        String json =  JsonParser.toJson(arabaIlan);
+        String json = toJson(arabaIlan);
 
 
         MongoCollection<Document> modeller = getIlan();
-        Bson query = new Document("ilanNo" , arabaIlan.ilanNo);
-        modeller.updateOne(query,  new Document("$set", Document.parse(json)));
+        Bson query = new Document("ilanNo", arabaIlan.ilanNo);
+        modeller.updateOne(query, new Document("$set", Document.parse(json)));
     }
 
 
     public Map<Integer, ArabaIlan> modelinKayitlariniGetir(ObjectId modelId, int yilParam) {
         MongoCollection<Document> modeller = getIlan();
 
-        MongoCursor<Document> modelItr = modeller.find(new Document("modelId",modelId.toString()).append("yil",yilParam)).iterator();
+        MongoCursor<Document> modelItr = modeller.find(new Document("modelId", modelId.toString()).append("yil", yilParam)).iterator();
 
         Map<Integer, ArabaIlan> integerArabaIlanMap = new HashMap<>();
 
@@ -113,7 +115,6 @@ public class Repo {
             int ilanNoInt = doc.getInteger("ilanNo");
             Integer ilandurum = doc.getInteger("ilandurum");
             IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
-
 
 
             ArabaIlan arabaIlan = new ArabaIlan(yilParam, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt);

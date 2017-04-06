@@ -46,14 +46,17 @@ public class ModelinIlanlari {
     }};
     private final ArabaModel arabaModel;
     private final int yil;
+    private final String vites;
+    private final String yakit;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
     public List<ArabaIlan> ilanlar = new ArrayList<>();
     public Map<Integer, ArabaIlan> arabaIlanMap;
 
 
-    public ModelinIlanlari(ArabaModel arabaModel, int yil) {
-
+    public ModelinIlanlari(ArabaModel arabaModel, int yil, String vites, String yakit) {
+        this.vites = vites;
+        this.yakit = yakit;
 
         Repo repo = new Repo();
 
@@ -99,7 +102,6 @@ public class ModelinIlanlari {
     public List<ArabaIlan> durumDegerlendir() {
 
         Repo repo = new Repo();
-        this.arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yil);
 
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
 
@@ -115,10 +117,11 @@ public class ModelinIlanlari {
                 ilanDb.fiyatPuani = arabaIlan.fiyatPuani;
                 ilanDb.kmPuani = arabaIlan.kmPuani;
                 ilanDb.ilanPuani = arabaIlan.ilanPuani;
+                ilanDb.yakit = yakit;
+                ilanDb.vites = vites;
 
                 repo.ilanGuncelle(ilanDb);
             }
-
 
             //arabada kusur bulamadık ekleyelim
             if (ilanDb.getDurum() == IlanDurum.Uygun)

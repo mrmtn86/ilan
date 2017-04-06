@@ -21,6 +21,8 @@ public class ArabaIlan {
     public int fiyatPuani;
     public Integer ilanPuani;
     private int ilandurum;
+    public String yakit;
+    public String vites;
 
     @JsonIgnore
     private IlanDurum durum;

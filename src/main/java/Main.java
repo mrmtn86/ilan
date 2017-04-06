@@ -9,7 +9,6 @@ import parser.html.UrlBuilder;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,18 +20,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-
         logger.setLevel(Level.FINE);
 
         Repo repo = new Repo();
 
-
         List<ArabaModel> modeller = repo.modelleriGetir();
         List<Url> urls = UrlBuilder.getUrls();
 
-
         for (ArabaModel arabaModel : modeller) {
-
 
             for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
 
@@ -41,7 +36,6 @@ public class Main {
                     ModelinIlanlari modelinIlanlari = getModelinIlanlari(arabaModel, urlItr, yilParam);
 
                     logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} , ort km : {5} , ort fiyat : {6}", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, modelinIlanlari.toplamArac(), modelinIlanlari.ortalamaKm, modelinIlanlari.ortalamaFiyat});
-
 
                     if (modelinIlanlari.toplamArac() == 0) {
                         continue;
@@ -54,9 +48,7 @@ public class Main {
                 }
             }
         }
-
     }
-
 
     private static ModelinIlanlari getModelinIlanlari(ArabaModel arabaModel, Url url, int yilParam) {
 
@@ -64,7 +56,7 @@ public class Main {
 
         String urlResult = arabaModel.url + url.geturlString() + yil;
 
-        ModelinIlanlari modelinIlanlari = new ModelinIlanlari(arabaModel, yilParam);
+        ModelinIlanlari modelinIlanlari = new ModelinIlanlari(arabaModel, yilParam, url.vites, url.yakit);
 
         HtmlParser parser = new HtmlParser();
 
@@ -94,6 +86,7 @@ public class Main {
 
                     if (ilanDb == null) {
                         ilanDb = repo.IlaniKaydet(arabaIlan);
+                        modelinIlanlari.arabaIlanMap.put(ilanDb.ilanNo, ilanDb);
                     }
 
                     // ilanin sikintili oldugunu biliyorsak hic eklemeyelim listeye
