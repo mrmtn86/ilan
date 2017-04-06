@@ -1,7 +1,6 @@
 import db.Repo;
 import entity.ArabaModel;
 import model.ArabaIlan;
-import model.IlanDurum;
 import model.ModelinIlanlari;
 import model.Url;
 import parser.html.HtmlParser;
@@ -9,6 +8,7 @@ import parser.html.UrlBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +16,13 @@ public class Main {
 
     static final int BITIS_YIL = 2017;
     private static final int BASLANGIC_YIL = 2010;
+
+    private static final String sahibinden = "a706=32474";
+    private static final String trPlaka = "&a9620=143038";
+    private static final String ilanSayisi = "&pagingSize=50";
+    private static final String sort = "&sorting=date_desc";
+    private static final String gerigidilecekGun = "&date=3days";
+
     private static Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws IOException {
@@ -25,45 +32,44 @@ public class Main {
         Repo repo = new Repo();
 
         List<ArabaModel> modeller = repo.modelleriGetir();
-        List<Url> urls = UrlBuilder.getUrls();
+
 
         for (ArabaModel arabaModel : modeller) {
 
             for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
 
+
+                List<Url> urls = UrlBuilder.getUrls(arabaModel.url, yilParam);
+
                 for (Url urlItr : urls) {
+                    int guncellenenAracSayisi = dbguncelle(arabaModel, urlItr);
 
-                    ModelinIlanlari modelinIlanlari = getModelinIlanlari(arabaModel, urlItr, yilParam);
-
-                    logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} , ort km : {5} , ort fiyat : {6}", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, modelinIlanlari.toplamArac(), modelinIlanlari.ortalamaKm, modelinIlanlari.ortalamaFiyat});
-
-                    if (modelinIlanlari.toplamArac() == 0) {
-                        continue;
-                    }
-
-                    List<ArabaIlan> makulIlanlar = modelinIlanlari.durumDegerlendir();
-
-                    makulIlanlar.forEach(System.out::println);
+                    logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} ", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, guncellenenAracSayisi});
+                    //   logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} , ort km : {5} , ort fiyat : {6}", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, modelinIlanlari.toplamArac(), modelinIlanlari.ortalamaKm, modelinIlanlari.ortalamaFiyat});
 
                 }
             }
         }
     }
 
-    private static ModelinIlanlari getModelinIlanlari(ArabaModel arabaModel, Url url, int yilParam) {
-
-        String yil = "&a5_min=" + yilParam + "&a5_max=" + yilParam;
-
-        String urlResult = arabaModel.url + url.geturlString() + yil;
-
-        ModelinIlanlari modelinIlanlari = new ModelinIlanlari(arabaModel, yilParam, url.vites, url.yakit);
-
-        HtmlParser parser = new HtmlParser();
+    private static int dbguncelle(ArabaModel arabaModel, Url url) {
 
         Repo repo = new Repo();
 
-        //todo unutma 1000 yap
+        int yilParam = url.yil;
+        String urlResult = url.geturlString();
+
+        Map<Integer, ArabaIlan> arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yilParam);
+
+        HtmlParser parser = new HtmlParser();
+
+        int ekleAracSayisi = 0;
+
+        //en fazla 1000 ilan gosteriliyor
         for (int i = 0; i <= 1000; i = i + 50) {
+
+            if (i >= 1000)
+                logger.warning(arabaModel.ad + " icin 1000 ilan gecildi yil " + yilParam);
 
             String ofsetValue = "";
             if (i > 0) {
@@ -81,25 +87,20 @@ public class Main {
 
                 if ((arabaIlan != null)) {
                     arabaIlan.modelId = arabaModel.id.toString();
+                    arabaIlan.vites = url.vites;
+                    arabaIlan.yakit = url.yakit;
 
-                    ArabaIlan ilanDb = modelinIlanlari.arabaIlanMap.get(arabaIlan.ilanNo);
+                    ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
 
                     if (ilanDb == null) {
-                        ilanDb = repo.IlaniKaydet(arabaIlan);
-                        modelinIlanlari.arabaIlanMap.put(ilanDb.ilanNo, ilanDb);
+                        repo.IlaniKaydet(arabaIlan);
+                        ekleAracSayisi++;
                     }
 
-                    // ilanin sikintili oldugunu biliyorsak hic eklemeyelim listeye
-                    // ortalamay etkilmesin
-                    if (ilanDb.getDurum() == IlanDurum.AciklamadaUygunsuzlukVar || ilanDb.getDurum() == IlanDurum.KaraLisetede) {
-                        continue;
-                    }
-
-                    modelinIlanlari.ilanEkle(arabaIlan);
                 }
             }
         }
-        return modelinIlanlari;
+        return ekleAracSayisi;
     }
 
 }

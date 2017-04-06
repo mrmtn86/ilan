@@ -17,6 +17,7 @@ public class ArabaIlan {
     public String baslik;
     public String ilanUrl;
     public int ilanNo;
+    public String paket;
     public int kmPuani;
     public int fiyatPuani;
     public Integer ilanPuani;
@@ -51,14 +52,15 @@ public class ArabaIlan {
         return this.durum = durum;
     }
 
-    public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt) {
+    public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
         this.yil = yil;
         this.fiyat = fiyat;
         this.km = km;
         this.ilanTarhi = ilanTarhi;
         this.baslik = baslik;
         this.ilanUrl = ilanUrl;
-        ilanNo = ilanNoInt;
+        this.ilanNo = ilanNoInt;
+        this.paket = paket;
     }
 
     @Override

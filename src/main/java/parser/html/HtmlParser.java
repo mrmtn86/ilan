@@ -8,7 +8,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -20,12 +24,12 @@ import java.util.logging.Logger;
 public class HtmlParser {
 
     private static Logger logger = Logger.getLogger(HtmlParser.class.getName());
-    private static  String[] kusurluAciklamlar = {"ağır hasar kaydı var", "agir hasar kaydı mevcut", "ÇEKME BELGELİ", "HASARLI AL" ,"Ağır Hasar Kayıtlıdır","ağır hasar kayıtlıdır","pert kayıtlı  aldım"};
+    private static String[] kusurluAciklamlar = {"ağır hasar kaydı var", "agir hasar kaydı mevcut", "ÇEKME BELGELİ", "HASARLI AL", "Ağır Hasar Kayıtlıdır", "ağır hasar kayıtlıdır", "pert kayıtlı  aldım"};
 
 
     private static Document httpGet(String url) throws IOException {
         String urlAll = "https://www.sahibinden.com/" + url;
-        logger.log(Level.FINER, "url get :  {0}", urlAll);
+        logger.log(Level.FINEST, "url get :  {0}", urlAll);
         return Jsoup.connect(urlAll).get();
 
     }
@@ -57,18 +61,20 @@ public class HtmlParser {
     private static ArabaIlan getArabaIlan(Element element) {
 
         Elements select = element.select(".searchResultsAttributeValue");
+
         if (select == null || select.size() == 0) {
             return null;
         }
 
         String ilanNo = element.attributes().iterator().next().getValue();
 
+
+        ;
         String yilElement = select.first().text();
         String kmElement = select.get(1).text().replace(".", "");
         String fiyatStr = element.select(".searchResultsPriceValue").text().replace(".", "").replace("TL", "").replace(" ", "");
-        String ilanUrl = element.select(".searchResultsSmallThumbnail").first().child(0).attributes().get("href");
-
-
+        String ilanUrl = element.select("a").first().attr("href");
+        String paket = element.select(".searchResultsTagAttributeValue").first().text();
 
         int yil = Integer.parseInt(yilElement);
         int km = Integer.parseInt(kmElement);
@@ -78,22 +84,27 @@ public class HtmlParser {
         ilanUrl = ilanUrl.substring(1, ilanUrl.length());
 
         String tarihStr = element.select(".searchResultsDateValue").text();
+        SimpleDateFormat df = new SimpleDateFormat("dd MMMMM yyyy", new Locale("tr"));
+        try {
+            Date date = df.parse(tarihStr);
+            tarihStr = new SimpleDateFormat("yyyy.MM.dd").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         String baslik = element.select(".searchResultsTitleValue").text();
 
         int ilanNoInt = Integer.parseInt(ilanNo);
 
 
-        return new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt);
+        return new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
     }
 
-    private static Elements csstenSec(Document doc, String cssQuery) {
+    public static Elements csstenSec(Document doc, String cssQuery) {
         return doc.select("." + cssQuery);
     }
 
     public List<ArabaIlan> arabaIlanlariGetir(String url) {
         List<ArabaIlan> ilanlar = new ArrayList<>();
-
-
         try {
 
             Document doc = httpGet(url);

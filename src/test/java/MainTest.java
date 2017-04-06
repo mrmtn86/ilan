@@ -1,5 +1,4 @@
 import com.github.fakemongo.Fongo;
-import com.mongodb.*;
 import com.mongodb.client.*;
 import entity.ArabaModel;
 import model.ArabaIlan;
@@ -7,9 +6,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
 import parser.json.JsonParser;
-
-import javax.print.Doc;
-import java.util.Iterator;
 
 /**
  * Created by mac on 04/04/17.
@@ -37,7 +33,7 @@ public class MainTest {
 
         ObjectId modelId = (ObjectId) dbObject.get("_id");
 
-        ArabaIlan arabaIlan = new ArabaIlan(2, 1, 2, "23", "32", "", 2);
+        ArabaIlan arabaIlan = new ArabaIlan(2, 1, 2, "23", "32", "", 2, "pkt");
 
         arabaIlan.modelId = modelId.toString();
 

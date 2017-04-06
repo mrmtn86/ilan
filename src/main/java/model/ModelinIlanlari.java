@@ -50,7 +50,7 @@ public class ModelinIlanlari {
     private final String yakit;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
-    public List<ArabaIlan> ilanlar = new ArrayList<>();
+    //  public List<ArabaIlan> ilanlar = new ArrayList<>();
     public Map<Integer, ArabaIlan> arabaIlanMap;
 
 
@@ -71,25 +71,25 @@ public class ModelinIlanlari {
         return karaListe.contains(arabaIlan.ilanNo);
     }
 
-    public void ilanEkle(ArabaIlan araba) {
+//    public void ilanEkle(ArabaIlan araba) {
+//
+//        if (araba.yil != yil) {
+//            throw new IlanException("yil tutumuyor");
+//        }
+//
+//        if (!arabaModel.id.toString().equals(araba.modelId)) {
+//            throw new IlanException("model tutmuyor");
+//        }
+//
+//        ilanlar.add(araba);
+//
+//        ortalamaKm += (araba.km - ortalamaKm) / ilanlar.size();
+//        ortalamaFiyat += (araba.fiyat - ortalamaFiyat) / ilanlar.size();
+//    }
 
-        if (araba.yil != yil) {
-            throw new IlanException("yil tutumuyor");
-        }
-
-        if (!arabaModel.id.toString().equals(araba.modelId)) {
-            throw new IlanException("model tutmuyor");
-        }
-
-        ilanlar.add(araba);
-
-        ortalamaKm += (araba.km - ortalamaKm) / ilanlar.size();
-        ortalamaFiyat += (araba.fiyat - ortalamaFiyat) / ilanlar.size();
-    }
-
-    public int toplamArac() {
-        return ilanlar.size();
-    }
+//    public int toplamArac() {
+//        return ilanlar.size();
+//    }
 
     public int ilanPuaniHesapla(ArabaIlan arabaIlan) {
 
@@ -101,24 +101,25 @@ public class ModelinIlanlari {
 
     public List<ArabaIlan> durumDegerlendir() {
 
-        Repo repo = new Repo();
 
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
+        if (arabaIlanMap == null || arabaIlanMap.size() == 0) {
+            return makulIlanlar;
+        }
 
-        for (ArabaIlan arabaIlan : ilanlar) {
+        ortalamalrihesapla();
 
-            ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
+        Repo repo = new Repo();
+
+
+        for (ArabaIlan ilanDb : arabaIlanMap.values()) {
+
 
             IlanDurum ilanDurumDb = ilanDb.getDurum();
 
-            if (ilanDurumDb == null) {
-                ilanDurumDb = ilanDurumBelirle(arabaIlan);
+            if (ilanDurumDb == null || 0 == ilanDb.ilanPuani) {
+                ilanDurumDb = ilanDurumBelirle(ilanDb);
                 ilanDb.setDurum(ilanDurumDb);
-                ilanDb.fiyatPuani = arabaIlan.fiyatPuani;
-                ilanDb.kmPuani = arabaIlan.kmPuani;
-                ilanDb.ilanPuani = arabaIlan.ilanPuani;
-                ilanDb.yakit = yakit;
-                ilanDb.vites = vites;
 
                 repo.ilanGuncelle(ilanDb);
             }
@@ -130,6 +131,15 @@ public class ModelinIlanlari {
 
         makulIlanlar.sort(new IlanPuanComperator());
         return makulIlanlar;
+    }
+
+    private void ortalamalrihesapla() {
+        for (ArabaIlan arabaIlan : arabaIlanMap.values()) {
+            ortalamaFiyat += arabaIlan.fiyat;
+            ortalamaKm += arabaIlan.km;
+        }
+        ortalamaFiyat = ortalamaFiyat / arabaIlanMap.size();
+        ortalamaKm = ortalamaKm / arabaIlanMap.size();
     }
 
     private IlanDurum ilanDurumBelirle(ArabaIlan arabaIlan) {

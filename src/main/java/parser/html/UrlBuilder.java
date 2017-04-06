@@ -12,13 +12,15 @@ import java.util.List;
 public class UrlBuilder {
 
     static boolean MANUEL_BENZIN_PAS_GEC = false;
-    private static String[] yakitSecenek = {"/dizel", "/benzin-lpg,benzin"};
-    private static String[] vitesSecenek = {"/otomatik,yari-otomatik", "/manuel"};
+    private static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
+    private static String[] vitesSecenek = {"otomatik,yari-otomatik", "manuel"};
 
 
     private static final List<Url> urls = new ArrayList<>();
 
-    static  {
+
+
+    public static List<Url> getUrls(String modelUrl ,int yil) {
         for (String vites : vitesSecenek) {
 
             for (String yakit : yakitSecenek) {
@@ -28,14 +30,11 @@ public class UrlBuilder {
                     continue;
                 }
 
-                Url url = new Url(vites, yakit);
+                Url url = new Url(vites, yakit , yil , modelUrl);
 
                 urls.add(url);
             }
         }
-    }
-
-    public static List<Url> getUrls() {
         return urls;
     }
 

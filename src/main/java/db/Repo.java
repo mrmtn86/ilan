@@ -1,7 +1,9 @@
 package db;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -12,7 +14,6 @@ import model.KullanimDurumu;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import parser.json.JsonParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,10 +37,15 @@ public class Repo {
         mongoLogger.setLevel(Level.SEVERE);
 
 
+
+        MongoClientOptions asdas = MongoClientOptions.builder().connectTimeout(6000000).socketKeepAlive(true).build();
+
         MongoClientURI uri = new MongoClientURI(
                 "mongodb://rwuser:rwuser@cluster0-shard-00-00-gzsts.mongodb.net:27017,cluster0-shard-00-01-gzsts.mongodb.net:27017,cluster0-shard-00-02-gzsts.mongodb.net:27017/ilanDB?ssl=true&authSource=admin");
 
+
         MongoClient client = new MongoClient(uri);
+
         db = client.getDatabase(uri.getDatabase());
 
     }
@@ -67,6 +73,7 @@ public class Repo {
 
             arabaModels.add(model);
         }
+        modelItr.close();
         return arabaModels;
     }
 
@@ -112,18 +119,24 @@ public class Repo {
             String ilanUrl = doc.getString("ilanUrl");
             String tarihStr = doc.getString("ilanTarhi");
             String baslik = doc.getString("baslik");
+            String paket = doc.getString("paket");
+            String vites = doc.getString("vites");
+            String yakit = doc.getString("yakit");
             int ilanNoInt = doc.getInteger("ilanNo");
             Integer ilandurum = doc.getInteger("ilandurum");
             IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
 
 
-            ArabaIlan arabaIlan = new ArabaIlan(yilParam, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt);
+            ArabaIlan arabaIlan = new ArabaIlan(yilParam, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
+            arabaIlan.vites = vites;
+            arabaIlan.yakit = yakit;
 
             arabaIlan.dbId = id;
             arabaIlan.modelId = modelIdStr;
             arabaIlan.setDurum(ilanDurum);
             integerArabaIlanMap.put(arabaIlan.ilanNo, arabaIlan);
         }
+        modelItr.close();
         return integerArabaIlanMap;
     }
 
