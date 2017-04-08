@@ -19,4 +19,12 @@ public class ArabaModel {
         this.url = url;
         this.id = id;
     }
+
+
+    @Override
+    public String toString() {
+        return "ArabaModel{" +
+                "ad='" + ad + '\'' +
+                '}';
+    }
 }

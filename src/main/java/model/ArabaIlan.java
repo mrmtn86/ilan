@@ -21,12 +21,25 @@ public class ArabaIlan {
     public int kmPuani;
     public int fiyatPuani;
     public Integer ilanPuani;
-    private int ilandurum;
     public String yakit;
     public String vites;
+    public String ilIlce;
+    public int ilandurum;
+    public String kimden;
 
     @JsonIgnore
     private IlanDurum durum;
+
+    public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
+        this.yil = yil;
+        this.fiyat = fiyat;
+        this.km = km;
+        this.ilanTarhi = ilanTarhi;
+        this.baslik = baslik;
+        this.ilanUrl = ilanUrl;
+        this.ilanNo = ilanNoInt;
+        this.paket = paket;
+    }
 
     public int getIlandurum() {
         return ilandurum;
@@ -52,20 +65,10 @@ public class ArabaIlan {
         return this.durum = durum;
     }
 
-    public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
-        this.yil = yil;
-        this.fiyat = fiyat;
-        this.km = km;
-        this.ilanTarhi = ilanTarhi;
-        this.baslik = baslik;
-        this.ilanUrl = ilanUrl;
-        this.ilanNo = ilanNoInt;
-        this.paket = paket;
-    }
-
     @Override
     public String toString() {
         return "yil.ArabaIlan{" +
+                "ilanNo=" + ilanNo +
                 "puan=" + ilanPuani +
                 "yil=" + yil +
                 ", fiyat=" + fiyat +

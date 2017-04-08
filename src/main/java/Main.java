@@ -1,106 +1,124 @@
+import config.LogLevelContainer;
 import db.Repo;
 import entity.ArabaModel;
 import model.ArabaIlan;
-import model.ModelinIlanlari;
-import model.Url;
+import model.AramaParametre;
+import parser.html.AramaParametreBuilder;
 import parser.html.HtmlParser;
-import parser.html.UrlBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static parser.html.AramaParametreBuilder.BASLANGIC_YIL;
+import static parser.html.AramaParametreBuilder.BITIS_YIL;
+
 public class Main {
 
-    static final int BITIS_YIL = 2017;
-    private static final int BASLANGIC_YIL = 2010;
-
-    private static final String sahibinden = "a706=32474";
-    private static final String trPlaka = "&a9620=143038";
-    private static final String ilanSayisi = "&pagingSize=50";
-    private static final String sort = "&sorting=date_desc";
-    private static final String gerigidilecekGun = "&date=3days";
 
     private static Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws IOException {
 
-        logger.setLevel(Level.FINE);
+        logger.setLevel(LogLevelContainer.LogLevel);
 
         Repo repo = new Repo();
 
         List<ArabaModel> modeller = repo.modelleriGetir();
 
-
+        int guncellenenAracSayisi = 0;
         for (ArabaModel arabaModel : modeller) {
 
             for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
 
+                List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
 
-                List<Url> urls = UrlBuilder.getUrls(arabaModel.url, yilParam);
+                for (AramaParametre aramaParametreItr : aramaParametres) {
+                    guncellenenAracSayisi += dbguncelle(aramaParametreItr, repo);
 
-                for (Url urlItr : urls) {
-                    int guncellenenAracSayisi = dbguncelle(arabaModel, urlItr);
-
-                    logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} ", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, guncellenenAracSayisi});
-                    //   logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} ] , toplam : {4} , ort km : {5} , ort fiyat : {6}", new Object[]{arabaModel.ad, urlItr.vites, urlItr.yakit, yilParam, modelinIlanlari.toplamArac(), modelinIlanlari.ortalamaKm, modelinIlanlari.ortalamaFiyat});
 
                 }
             }
         }
+
+        logger.log(Level.INFO, " toplam : {0}", new Object[]{guncellenenAracSayisi});
+
     }
 
-    private static int dbguncelle(ArabaModel arabaModel, Url url) {
+    private static int dbguncelle(AramaParametre aramaParametre, Repo repo) {
 
-        Repo repo = new Repo();
+        ArabaModel arabaModel = aramaParametre.arabaModel;
 
-        int yilParam = url.yil;
-        String urlResult = url.geturlString();
+        int yilParam = aramaParametre.yil;
 
         Map<Integer, ArabaIlan> arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yilParam);
 
+        int ekleAracSayisi = 0;
+        int toplamGelenArac = 0;
+
+        List<ArabaIlan> yeniAraclar = new ArrayList<>();
+
+        List<ArabaIlan> arabaIlanList = sayfadanGetir(aramaParametre);
+
+        for (ArabaIlan arabaIlan : arabaIlanList) {
+
+            toplamGelenArac++;
+            ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
+
+            if (ilanDb != null) {
+                logger.log(Level.INFO, "ilan daha once dbye eklenmis : {0}" + ilanDb);
+                continue;
+            }
+
+            arabaIlan.modelId = arabaModel.id.toString();
+            arabaIlan.vites = aramaParametre.vites;
+            arabaIlan.yakit = aramaParametre.yakit;
+            arabaIlan.kimden = aramaParametre.satan.toString();
+
+            yeniAraclar.add(arabaIlan);
+            ekleAracSayisi++;
+            logger.log(Level.INFO, "yeni ilan dbeklennmek uzere kaydedildi {0}", arabaIlan);
+        }
+
+        logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} {6} ] , gelen :{5}, eklenen : {4} ", new Object[]{arabaModel.ad, aramaParametre.vites, aramaParametre.yakit, yilParam, ekleAracSayisi, toplamGelenArac, aramaParametre.satan});
+
+        if (yeniAraclar.size() > 0)
+            repo.topluKaydet(yeniAraclar);
+        return ekleAracSayisi;
+    }
+
+    private static List<ArabaIlan> sayfadanGetir(AramaParametre aramaParametre) {
+
         HtmlParser parser = new HtmlParser();
 
-        int ekleAracSayisi = 0;
+        String urlResult = aramaParametre.geturlString();
 
-        //en fazla 1000 ilan gosteriliyor
+        List<ArabaIlan> arabaIlanListSonuc = new ArrayList<>();
+
         for (int i = 0; i <= 1000; i = i + 50) {
 
             if (i >= 1000)
-                logger.warning(arabaModel.ad + " icin 1000 ilan gecildi yil " + yilParam);
+                logger.warning(aramaParametre + " icin 1000 ilan gecildi deger  " + i);
 
             String ofsetValue = "";
             if (i > 0) {
                 ofsetValue = "&pagingOffset=" + i;
             }
-            urlResult += ofsetValue;
 
-            List<ArabaIlan> arabaIlanList = parser.arabaIlanlariGetir(urlResult);
 
-            if (arabaIlanList.size() == 0) {
+            List<ArabaIlan> arabaIlanList = parser.arabaIlanlariGetir(urlResult + ofsetValue);
+
+
+            arabaIlanListSonuc.addAll(arabaIlanList);
+
+            if (arabaIlanList.size() == 0 || arabaIlanList.size() < 50) {
                 break;
             }
-
-            for (ArabaIlan arabaIlan : arabaIlanList) {
-
-                if ((arabaIlan != null)) {
-                    arabaIlan.modelId = arabaModel.id.toString();
-                    arabaIlan.vites = url.vites;
-                    arabaIlan.yakit = url.yakit;
-
-                    ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
-
-                    if (ilanDb == null) {
-                        repo.IlaniKaydet(arabaIlan);
-                        ekleAracSayisi++;
-                    }
-
-                }
-            }
         }
-        return ekleAracSayisi;
+        return arabaIlanListSonuc;
     }
 
 }

@@ -1,5 +1,6 @@
 package parser.html;
 
+import config.LogLevelContainer;
 import model.ArabaIlan;
 import model.IlanDurum;
 import org.jsoup.Jsoup;
@@ -24,12 +25,22 @@ import java.util.logging.Logger;
 public class HtmlParser {
 
     private static Logger logger = Logger.getLogger(HtmlParser.class.getName());
-    private static String[] kusurluAciklamlar = {"ağır hasar kaydı var", "agir hasar kaydı mevcut", "ÇEKME BELGELİ", "HASARLI AL", "Ağır Hasar Kayıtlıdır", "ağır hasar kayıtlıdır", "pert kayıtlı  aldım"};
+    private static String[] kusurluAciklamlar = {"ağır hasar kaydı var",
+            "agir hasar kaydı mevcut", "" +
+            "ÇEKME BELGELİ",
+            "HASARLI AL",
+            "Ağır Hasar Kayıtlıdır",
+            "ağır hasar kayıtlıdır",
+            "pert kayıtlı  aldım"};
 
+
+    public HtmlParser() {
+        logger.setLevel(LogLevelContainer.LogLevel);
+    }
 
     private static Document httpGet(String url) throws IOException {
         String urlAll = "https://www.sahibinden.com/" + url;
-        logger.log(Level.FINEST, "url get :  {0}", urlAll);
+        logger.log(Level.INFO, "url get :  {0}", urlAll);
         return Jsoup.connect(urlAll).get();
 
     }
@@ -92,11 +103,15 @@ public class HtmlParser {
             e.printStackTrace();
         }
         String baslik = element.select(".searchResultsTitleValue").text();
+        String ilIlce = element.select(".searchResultsLocationValue").text();
 
         int ilanNoInt = Integer.parseInt(ilanNo);
 
 
-        return new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
+        ArabaIlan arabaIlan = new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
+        arabaIlan.ilIlce = ilIlce;
+
+        return arabaIlan;
     }
 
     public static Elements csstenSec(Document doc, String cssQuery) {

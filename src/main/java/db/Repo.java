@@ -3,10 +3,10 @@ package db;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
-import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import config.LogLevelContainer;
 import entity.ArabaModel;
 import model.ArabaIlan;
 import model.IlanDurum;
@@ -15,6 +15,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,18 +32,32 @@ public class Repo {
 
     private final MongoDatabase db;
 
+    private static Logger logger = Logger.getLogger(Repo.class.getName());
+
+
+
+
+
     public Repo() {
 
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
-        mongoLogger.setLevel(Level.SEVERE);
+        mongoLogger.setLevel(Level.WARNING);
+
+        logger.setLevel(LogLevelContainer.LogLevel);
 
 
-
-        MongoClientOptions asdas = MongoClientOptions.builder().connectTimeout(6000000).socketKeepAlive(true).build();
+        MongoClientOptions.Builder builder = MongoClientOptions.builder();
+        builder = builder
+                .connectTimeout(60000)
+                .maxConnectionIdleTime(60000)
+                .socketKeepAlive(true);
 
         MongoClientURI uri = new MongoClientURI(
-                "mongodb://rwuser:rwuser@cluster0-shard-00-00-gzsts.mongodb.net:27017,cluster0-shard-00-01-gzsts.mongodb.net:27017,cluster0-shard-00-02-gzsts.mongodb.net:27017/ilanDB?ssl=true&authSource=admin");
-
+                "mongodb://rwuser:rwuser@" +
+                        "cluster0-shard-00-00-gzsts.mongodb.net:27017," +
+                        "cluster0-shard-00-01-gzsts.mongodb.net:27017," +
+                        "cluster0-shard-00-02-gzsts.mongodb.net:27017" +
+                        "/ilanDB?ssl=true&authSource=admin", builder);
 
         MongoClient client = new MongoClient(uri);
 
@@ -50,6 +65,13 @@ public class Repo {
 
     }
 
+    public void ilanlariBosalt() {
+
+        logger.log(Level.WARNING , " ilanlar siliniyor");
+        MongoCollection<Document> ilanlar = getIlan();
+        ilanlar.drop();
+
+    }
 
     public List<ArabaModel> modelleriGetir() {
         MongoCollection<Document> modeller = db.getCollection("model");
@@ -86,31 +108,40 @@ public class Repo {
         return arabaIlan;
     }
 
+    public void topluKaydet(List<ArabaIlan> arabaIlanlar) {
+
+        MongoCollection<Document> modeller = getIlan();
+
+        List<Document> documentList = new ArrayList<>();
+        for (ArabaIlan arabaIlan : arabaIlanlar) {
+            String json = toJson(arabaIlan);
+
+            documentList.add(Document.parse(json));
+        }
+
+
+        modeller.insertMany(documentList);
+
+    }
+
     private MongoCollection<Document> getIlan() {
         return db.getCollection("ilan");
     }
 
-
     public void ilanGuncelle(ArabaIlan arabaIlan) {
         String json = toJson(arabaIlan);
-
-
-        MongoCollection<Document> modeller = getIlan();
+        MongoCollection<Document> ilanlar = getIlan();
         Bson query = new Document("ilanNo", arabaIlan.ilanNo);
-        modeller.updateOne(query, new Document("$set", Document.parse(json)));
+        ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
     }
 
-
     public Map<Integer, ArabaIlan> modelinKayitlariniGetir(ObjectId modelId, int yilParam) {
-        MongoCollection<Document> modeller = getIlan();
-
-        MongoCursor<Document> modelItr = modeller.find(new Document("modelId", modelId.toString()).append("yil", yilParam)).iterator();
+        MongoCursor<Document> modelItr = yildakiIlanlariGetir(modelId, yilParam);
 
         Map<Integer, ArabaIlan> integerArabaIlanMap = new HashMap<>();
 
         while (modelItr.hasNext()) {
             Document doc = modelItr.next();
-
 
             ObjectId id = doc.getObjectId("_id");
             String modelIdStr = doc.getString("modelId");
@@ -138,6 +169,13 @@ public class Repo {
         }
         modelItr.close();
         return integerArabaIlanMap;
+    }
+
+    private MongoCursor<Document> yildakiIlanlariGetir(ObjectId modelId, int yilParam) {
+        MongoCollection<Document> ilanlar = getIlan();
+
+        return ilanlar.find(new Document("modelId", modelId.toString()).append("yil", yilParam)).iterator();
+
     }
 
 }
