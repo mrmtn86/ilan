@@ -6,7 +6,6 @@ import io.hummer.util.math.MathUtil;
 import parser.html.HtmlParser;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,7 +17,7 @@ import static java.util.Comparator.naturalOrder;
 public class ModelinIlanlari {
 
     public static final int PUAN_LIMIT = 170;
-    public static final double SIGNIFICANCE_LEVEL = 0.4;
+    public static final double SIGNIFICANCE_LEVEL = 0.9;
     static int MAX_ARAC_FIYATI = 38000;
     static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
@@ -104,19 +103,16 @@ public class ModelinIlanlari {
 
     public List<ArabaIlan> durumDegerlendir() {
 
-
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
         if (arabaIlanList == null || arabaIlanList.size() == 0) {
             return makulIlanlar;
         }
 
-
         for (ArabaIlan ilanDb : arabaIlanList) {
-
 
             IlanDurum ilanDurumDb = IlanDurum.getEnum(ilanDb.getIlandurum());
 
-            if (ilanDurumDb == null || null == ilanDb.ilanPuani) {
+            if (ilanDurumDb == null || 0 == ilanDb.ilanPuani) {
                 ilanDurumDb = ilanDurumBelirle(ilanDb);
                 ilanDb.setDurum(ilanDurumDb);
 
@@ -148,7 +144,6 @@ public class ModelinIlanlari {
 
         if (ilanPuani > PUAN_LIMIT) {
             return arabaIlan.setDurum(IlanDurum.PuanUygunDegil);
-
         }
 
         String aciklamadaYazan = parser.aciklamayiGetir(arabaIlan);
@@ -178,10 +173,14 @@ public class ModelinIlanlari {
         List<Integer> sayilar = new ArrayList<>();
 
         for (ArabaIlan arabaIlan : arabaIlanList) {
+            if (arabaIlan.getDurum().equals(IlanDurum.AciklamadaUygunsuzlukVar))
+                continue;
             sayilar.add(arabaIlan.fiyat);
         }
 
-        return ortalamaHesapla(sayilar);
+        int ort = ortalamaHesapla(sayilar);
+        ortalamaFiyat = ort;
+        return ort;
     }
 
     public int ortalamaKmHespla() {
@@ -191,10 +190,15 @@ public class ModelinIlanlari {
             sayilar.add(arabaIlan.km);
         }
 
-        return ortalamaHesapla(sayilar);
+        int ort = ortalamaHesapla(sayilar);
+
+        ortalamaKm = ort;
+        return ort;
     }
 
     private int ortalamaHesapla(List<Integer> sayilar) {
+
+        sayilar.sort(naturalOrder());
 
         MathUtil mathUtil = new MathUtil();
 
@@ -202,14 +206,17 @@ public class ModelinIlanlari {
             double average = mathUtil.average(sayilar);
             Integer outlier = mathUtil.getOutlier(sayilar, SIGNIFICANCE_LEVEL);
             if (outlier > average) {
-                sayilar = sayilar.subList(0, sayilar.size() - 2);
+                sayilar = sayilar.subList(0, sayilar.size() - 1);
             } else {
-                sayilar = sayilar.subList(1, sayilar.size() - 1);
+                sayilar = sayilar.subList(1, sayilar.size());
             }
         }
 
-        return (int) mathUtil.average(sayilar);
-     }
+        int average = (int) mathUtil.average(sayilar);
+        if (average == 0)
+            average = 1;
+        return average;
+    }
 
 
 }

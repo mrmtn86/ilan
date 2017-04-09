@@ -18,7 +18,6 @@ import static parser.html.AramaParametreBuilder.BITIS_YIL;
 
 public class Main {
 
-
     private static Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws IOException {
@@ -26,7 +25,6 @@ public class Main {
         logger.setLevel(LogLevelContainer.LogLevel);
 
         Repo repo = new Repo();
-//repo.ilanlariBosalt();
         List<ArabaModel> modeller = repo.modelleriGetir();
 
         int guncellenenAracSayisi = 0;

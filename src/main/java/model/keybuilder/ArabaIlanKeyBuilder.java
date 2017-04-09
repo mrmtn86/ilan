@@ -8,4 +8,6 @@ import model.ArabaIlan;
 public interface ArabaIlanKeyBuilder {
 
     String getKey(ArabaIlan arabaIlan);
+
+    void setPuan(ArabaIlan arabaIlan , int puan);
 }

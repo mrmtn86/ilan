@@ -1,5 +1,6 @@
 import db.Repo;
 import entity.ArabaModel;
+import model.ArabaIlan;
 import model.AramaParametre;
 import model.ModelinIlanlari;
 import model.keybuilder.ArabaIlanKeyBuilder;
@@ -22,15 +23,14 @@ public class IstMain {
 
         List<ArabaModel> arabaModels = repo.modelleriGetir();
 
-        satirYaz("YIL", "KEY", "AD", " ORT FİYAT", "ORt KM", "TOP ILAN");
+        satirYaz("KEY", " ORT FİYAT", "ORt KM", "TOP ILAN");
 
 
         for (ArabaModel arabaModel : arabaModels) {
 
-
             for (int yil = AramaParametreBuilder.BASLANGIC_YIL; yil <= AramaParametreBuilder.BITIS_YIL; ++yil) {
 
-
+                System.out.println("");
                 System.out.println(arabaModel.ad + " - " + yil);
 
                 ArabaIlanKeyBuilder keyBuilder = new ArabaIlanPaketKeyBuilder(arabaModel.paketler);
@@ -47,7 +47,7 @@ public class IstMain {
 
     }
 
-    private static AramaParametre istatistikYaz(Repo repo, ArabaModel arabaModel, int yil, ArabaIlanKeyBuilder keyBuilder) {
+    private static void istatistikYaz(Repo repo, ArabaModel arabaModel, int yil, ArabaIlanKeyBuilder keyBuilder) {
         AramaParametre aramaParametre = new AramaParametre();
         aramaParametre.yil = yil;
         aramaParametre.arabaModel = arabaModel;
@@ -55,20 +55,32 @@ public class IstMain {
 
         for (String key : ilanMap.keySet()) {
             ModelinIlanlari modelinIlanlari = ilanMap.get(key);
-            String ad = arabaModel.ad;
-            String ortalamaFiyatHespla = String.valueOf(modelinIlanlari.ortalamaFiyatHespla());
-            String ortalamaKmHespla = String.valueOf(modelinIlanlari.ortalamaKmHespla());
+            int ortalamaFiyat = modelinIlanlari.ortalamaFiyatHespla();
+            int ortalamaKm = modelinIlanlari.ortalamaKmHespla();
             String toplamArac = String.valueOf(modelinIlanlari.arabaIlanList.size());
-            satirYaz(String.valueOf(yil), key, ad, ortalamaFiyatHespla, ortalamaKmHespla, toplamArac);
+            satirYaz(key, String.valueOf(ortalamaFiyat), String.valueOf(ortalamaKm), toplamArac);
+
+            for (ArabaIlan arabaIlan : modelinIlanlari.arabaIlanList) {
+
+                int fiyatPuan = arabaIlan.fiyat * 100 / ortalamaFiyat;
+                int kmPuan = arabaIlan.km * 100 / ortalamaKm;
+
+                // fiyat puani daha kiymetli
+                int puan = (fiyatPuan * 4 + kmPuan * 6) / 10;
+
+                keyBuilder.setPuan(arabaIlan, puan);
+
+                //repo.ilanGuncelle(arabaIlan);
+            }
+
+            repo.ilanlariGuncelle(modelinIlanlari.arabaIlanList);
+
+
         }
-        return aramaParametre;
     }
 
-    private static void satirYaz(String yil, String key, String ad, String ortalamaFiyat, String ortalamaKm, String toplamArac) {
+    private static void satirYaz(String key, String ortalamaFiyat, String ortalamaKm, String toplamArac) {
         System.out.printf("%-30s  %-10s  %-10s  %-10s \n",
                 key, ortalamaFiyat, ortalamaKm, toplamArac);
-
-//        System.out.printf(  "%-10s  %-4s   %-30s  %-10s TL %-10s KM %-10s \n",
-//                ad,yil ,key , ortalamaFiyat, ortalamaKm , toplamArac);
     }
 }

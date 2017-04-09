@@ -14,7 +14,7 @@ public class IlanPuanComperator implements Comparator<ArabaIlan> {
 
         if (o1.yil == o2.yil) {
 
-            return o1.ilanPuani.compareTo(o2.ilanPuani);
+            return new Integer(o1.ilanPuani).compareTo(o2.ilanPuani);
         } else {
             return new Integer(o1.yil).compareTo(o2.yil);
         }

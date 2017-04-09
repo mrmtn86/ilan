@@ -4,20 +4,15 @@ package model;
  * Created by mtn on 31.03.2017.
  */
 public enum IlanDurum {
-    Uygun(1), MaxFiyatiAsiyor(2), KaraLisetede(3), PuanUygunDegil(4), AciklamadaUygunsuzlukVar(5), Hasarli(7);
+    Uygun(1), MaxFiyatiAsiyor(2), KaraLisetede(3), PuanUygunDegil(4),
+    AciklamadaUygunsuzlukVar(5), Hasarli(7), KaraListede(9);
 
     private int index;
-
 
 
     IlanDurum(int index) {
 
         this.index = index;
-    }
-
-
-    public int getIndex() {
-        return index;
     }
 
     public static IlanDurum getEnum(int index) {
@@ -29,6 +24,10 @@ public enum IlanDurum {
         }
 
         return null;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
 }

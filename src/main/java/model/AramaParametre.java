@@ -18,6 +18,7 @@ public class AramaParametre {
     public String yakit;
     public ArabaModel arabaModel;
     public KimdenEnum satan;
+    public int ilanDurum =0;
 
 
     public AramaParametre(String vites, String yakit, int yil, ArabaModel arabaModel, KimdenEnum satan) {

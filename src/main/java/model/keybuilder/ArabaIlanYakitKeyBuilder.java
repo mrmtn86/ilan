@@ -10,4 +10,9 @@ public class ArabaIlanYakitKeyBuilder implements ArabaIlanKeyBuilder {
     public String getKey(ArabaIlan arabaIlan) {
         return arabaIlan.yakit;
     }
+
+    @Override
+    public void setPuan(ArabaIlan arabaIlan, int puan) {
+        arabaIlan.yakitPuani = puan;
+    }
 }

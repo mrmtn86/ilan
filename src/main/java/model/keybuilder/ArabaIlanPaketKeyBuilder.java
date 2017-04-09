@@ -28,4 +28,10 @@ public class ArabaIlanPaketKeyBuilder implements ArabaIlanKeyBuilder {
         }
         return arabaninEklenecegiPaket;
     }
+
+    @Override
+    public void setPuan(ArabaIlan arabaIlan, int puan) {
+        arabaIlan.paketPuani = puan;
+    }
+
 }

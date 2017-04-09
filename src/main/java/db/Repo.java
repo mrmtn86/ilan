@@ -3,10 +3,12 @@ package db;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
+import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.UpdateOneModel;
 import config.LogLevelContainer;
 import entity.ArabaModel;
 import model.*;
@@ -124,12 +126,15 @@ public class Repo {
     }
 
     public void ilanGuncelle(ArabaIlan arabaIlan) {
-        String json = toJson(arabaIlan);
         MongoCollection<Document> ilanlar = getIlan();
+
         Bson query = new Document("ilanNo", arabaIlan.ilanNo);
+        String json = toJson(arabaIlan);
+
         ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
     }
-//    public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
+
+    //    public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
 //
 //        MongoCollection<Document> ilanlar = getIlan();
 //
@@ -146,6 +151,26 @@ public class Repo {
 //
 //        ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
 //    }
+//
+    public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
+
+        MongoCollection<Document> collection = getIlan();
+
+        List<UpdateOneModel<Document>> writes = new ArrayList<>();
+
+
+        for (ArabaIlan arabaIlan : ilanlar) {
+            Bson query = new Document("ilanNo", arabaIlan.ilanNo);
+            String json = toJson(arabaIlan);
+
+            writes.add(
+                    new UpdateOneModel<>(query, new Document("$set", Document.parse(json))));
+        }
+
+        BulkWriteResult bulkWriteResult = collection.bulkWrite(writes);
+        int guncelenenToplam = bulkWriteResult.getModifiedCount();
+        logger.log(Level.FINE, "{0}/{1} guncelenen/toplam", new Object[]{guncelenenToplam, ilanlar.size()});
+    }
 
     public Map<Integer, ArabaIlan> modelinKayitlariniGetirMap(AramaParametre aramaParametre) {
         MongoCursor<Document> modelItr = getDocumentMongoCursor(aramaParametre);
@@ -163,11 +188,11 @@ public class Repo {
     }
 
     private ArabaIlan getArabaIlan(Document doc) {
-        int yil = doc.getInteger("yil");
+        int yil = getInteger(doc, "yil");
         ObjectId id = doc.getObjectId("_id");
         String modelIdStr = doc.getString("modelId");
-        int km = doc.getInteger("km");
-        int fiyat = doc.getInteger("fiyat");
+        int km = getInteger(doc, "km");
+        int fiyat = getInteger(doc, "fiyat");
         String ilanUrl = doc.getString("ilanUrl");
         String tarihStr = doc.getString("ilanTarhi");
         String baslik = doc.getString("baslik");
@@ -177,8 +202,12 @@ public class Repo {
         String ilIlce = doc.getString("ilIlce");
         String yakit = doc.getString("yakit");
         String aciklama = doc.getString("aciklama");
-        int ilanNoInt = doc.getInteger("ilanNo");
-        Integer ilandurum = doc.getInteger("ilandurum");
+        int ilanNoInt = getInteger(doc, "ilanNo");
+
+        int vitesPuani = getInteger(doc, "vitesPuani");
+        int yakitPuani = getInteger(doc, "yakitPuani");
+        int paketPuani = getInteger(doc, "paketPuani");
+        Integer ilandurum = getInteger(doc, "ilandurum");
 
         IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
 
@@ -193,9 +222,18 @@ public class Repo {
         arabaIlan.ilIlce = ilIlce;
         arabaIlan.kimden = kimden;
         arabaIlan.aciklama = aciklama;
+        arabaIlan.paketPuani = paketPuani;
+        arabaIlan.vitesPuani = vitesPuani;
+        arabaIlan.yakitPuani = yakitPuani;
 
         arabaIlan.dbId = id;
         return arabaIlan;
+    }
+
+    private Integer getInteger(Document doc, String key) {
+        if (doc.containsKey(key))
+            return doc.getInteger(key);
+        return 0;
     }
 
     private MongoCursor<Document> yildakiIlanlariGetir(ObjectId modelId, int yilParam) {
@@ -248,6 +286,7 @@ public class Repo {
         int yil = aramaParametre.yil;
         String yakit = aramaParametre.yakit;
         String vites = aramaParametre.vites;
+        int inlanDurum = aramaParametre.ilanDurum;
 
         Document filter = new Document();
         if (modelId != null) {
@@ -261,6 +300,9 @@ public class Repo {
         }
         if (vites != null) {
             filter = filter.append("vites", vites);
+        }
+        if (inlanDurum != 0) {
+            filter = filter.append("ilandurum", inlanDurum);
         }
 
         MongoIterable<Document> ilanDocs = getIlan()

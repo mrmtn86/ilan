@@ -10,4 +10,9 @@ public class ArabaIlanVitesKeyBuilder implements ArabaIlanKeyBuilder {
     public String getKey(ArabaIlan arabaIlan) {
         return arabaIlan.vites;
     }
+
+    @Override
+    public void setPuan(ArabaIlan arabaIlan, int puan) {
+        arabaIlan.vitesPuani =puan;
+    }
 }

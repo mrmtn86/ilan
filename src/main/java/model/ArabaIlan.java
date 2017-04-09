@@ -18,18 +18,22 @@ public class ArabaIlan {
     public String ilanUrl;
     public int ilanNo;
     public String paket;
+    //todo bunlari silelim daha sonra
     public int kmPuani;
     public int fiyatPuani;
-    public Integer ilanPuani;
+
     public String yakit;
     public String vites;
     public String ilIlce;
     public int ilandurum;
     public String kimden;
-
+    public String aciklama;
     @JsonIgnore
     private IlanDurum durum;
-    public String aciklama;
+    public int vitesPuani;
+    public int yakitPuani;
+    public int paketPuani;
+    public int ilanPuani;
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
         this.yil = yil;
@@ -64,7 +68,7 @@ public class ArabaIlan {
             setIlandurum(durum.getIndex());
         }
 
-        return this.durum ;
+        return this.durum;
     }
 
     @Override
