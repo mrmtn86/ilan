@@ -125,6 +125,23 @@ public class Repo {
         Bson query = new Document("ilanNo", arabaIlan.ilanNo);
         ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
     }
+//    public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
+//
+//        MongoCollection<Document> ilanlar = getIlan();
+//
+//        List<Document> documentList = new ArrayList<>();
+//        for (ArabaIlan arabaIlan : ilanlar) {
+//            String json = toJson(arabaIlan);
+//
+//            Bson query = new Document("ilanNo", arabaIlan.ilanNo);
+//            documentList.add(query);
+//
+//            ilanlar.updateMany(query, new Document("$set", Document.parse(json)));
+//        }
+//
+//
+//        ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
+//    }
 
     public Map<Integer, ArabaIlan> modelinKayitlariniGetirMap(AramaParametre aramaParametre) {
         MongoCursor<Document> modelItr = getDocumentMongoCursor(aramaParametre);

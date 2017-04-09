@@ -68,7 +68,7 @@ public class Main {
             ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
 
             if (ilanDb != null) {
-                logger.log(Level.INFO, "ilan daha once dbye eklenmis : {0}" + ilanDb);
+                logger.log(Level.FINER, "ilan daha once dbye eklenmis : {0}" + ilanDb);
                 continue;
             }
 
@@ -79,7 +79,7 @@ public class Main {
 
             yeniAraclar.add(arabaIlan);
             ekleAracSayisi++;
-            logger.log(Level.INFO, "yeni ilan dbeklennmek uzere kaydedildi {0}", arabaIlan);
+            logger.log(Level.FINER, "yeni ilan dbeklennmek uzere kaydedildi {0}", arabaIlan);
         }
 
         logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} {6} ] , gelen :{5}, eklenen : {4} ", new Object[]{arabaModel.ad, aramaParametre.vites, aramaParametre.yakit, yilParam, ekleAracSayisi, toplamGelenArac, aramaParametre.satan});
