@@ -9,7 +9,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,13 +24,7 @@ import java.util.logging.Logger;
 public class HtmlParser {
 
     private static Logger logger = Logger.getLogger(HtmlParser.class.getName());
-    private static String[] kusurluAciklamlar = {"ağır hasar kaydı var",
-            "agir hasar kaydı mevcut", "" +
-            "ÇEKME BELGELİ",
-            "HASARLI AL",
-            "Ağır Hasar Kayıtlıdır",
-            "ağır hasar kayıtlıdır",
-            "pert kayıtlı  aldım"};
+
 
 
     public HtmlParser() {
@@ -40,32 +33,8 @@ public class HtmlParser {
 
     private static Document httpGet(String url) throws IOException {
         String urlAll = "https://www.sahibinden.com/" + url;
-        logger.log(Level.INFO, "url get :  {0}", urlAll);
+        logger.log(Level.CONFIG, "url get :  {0}", urlAll);
         return Jsoup.connect(urlAll).get();
-
-    }
-
-    private static IlanDurum aciklamaTaramasiTemiz(Document doc) {
-
-        for (String aciklama : kusurluAciklamlar) {
-            if (aciklamadaVarmi(doc, aciklama)) {
-                return IlanDurum.AciklamadaUygunsuzlukVar;
-            }
-        }
-
-
-        return IlanDurum.Uygun;
-    }
-
-    private static boolean aciklamadaVarmi(Document doc, String aciklama) {
-        Elements select = doc.select("#classifiedDescription");
-        Elements select1 = select.select(":contains(" + aciklama.toLowerCase(new Locale("tr")) + ")");
-        if (select1.size() > 0) {
-            return true;
-        }
-        select1 = select.select(":contains(" + aciklama.toUpperCase(new Locale("tr")) + ")");
-
-        return select1.size() > 0;
 
     }
 
@@ -149,7 +118,8 @@ public class HtmlParser {
         return ilanlar;
     }
 
-    public IlanDurum aciklamaTemiz(ArabaIlan arabaIlan) {
+
+    public String aciklamayiGetir(ArabaIlan arabaIlan) {
 
         Document document = null;
         try {
@@ -158,7 +128,10 @@ public class HtmlParser {
             e.printStackTrace();
         }
 
-        return arabaIlan.setDurum(aciklamaTaramasiTemiz(document));
+        return document.select("#classifiedDescription").text();
+
+
+
 
     }
 }

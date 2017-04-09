@@ -29,6 +29,7 @@ public class ArabaIlan {
 
     @JsonIgnore
     private IlanDurum durum;
+    public String aciklama;
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
         this.yil = yil;
@@ -46,10 +47,11 @@ public class ArabaIlan {
     }
 
     public void setIlandurum(int ilandurum) {
+        this.ilandurum = ilandurum;
         if (durum != null && durum.getIndex() != ilandurum) {
             setDurum(IlanDurum.getEnum(ilandurum));
         }
-        this.ilandurum = ilandurum;
+        ;
     }
 
     public IlanDurum getDurum() {
@@ -57,12 +59,12 @@ public class ArabaIlan {
     }
 
     public IlanDurum setDurum(IlanDurum durum) {
-
+        this.durum = durum;
         if (durum != null && durum.getIndex() != ilandurum) {
             setIlandurum(durum.getIndex());
         }
 
-        return this.durum = durum;
+        return this.durum ;
     }
 
     @Override

@@ -3,11 +3,12 @@ package model;
 import db.Repo;
 import entity.ArabaModel;
 import error.IlanException;
+import org.jsoup.select.Elements;
 import parser.html.HtmlParser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 /**
  * Created by mtn on 31.03.2017.
@@ -16,7 +17,6 @@ public class ModelinIlanlari {
 
     public static final int PUAN_LIMIT = 170;
     static int MAX_ARAC_FIYATI = 38000;
-
     static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
         add(407785432);
@@ -44,25 +44,36 @@ public class ModelinIlanlari {
         add(409044941);
         add(418729819);
     }};
+    private static String[] kusurluAciklamlar = {"ağır hasar kaydı var",
+            "agir hasar kaydı mevcut", "" +
+            "ÇEKME BELGELİ",
+            "HASARLI AL",
+            "Ağır Hasar Kayıtlıdır",
+            "AGIR HASAR KAYDI",
+            "IR HASAR KAYDI İŞLENMİŞTİR",
+            "pert kayıtlıdır",
+            "ağır hasar kayıtlıdır",
+            "şişirilmiş hasar kaydı var",
+            "pert kayıtlı  aldım"};
     private final ArabaModel arabaModel;
     private final int yil;
     private final String vites;
     private final String yakit;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
-    //  public List<ArabaIlan> ilanlar = new ArrayList<>();
-    public Map<Integer, ArabaIlan> arabaIlanMap;
+    public List<ArabaIlan> arabaIlanMap;
+    HtmlParser parser = new HtmlParser();
+    private Repo repo;
 
 
-    public ModelinIlanlari(ArabaModel arabaModel, int yil, String vites, String yakit) {
-        this.vites = vites;
-        this.yakit = yakit;
+    public ModelinIlanlari(AramaParametre aramaParametre, Repo repo) {
+        this.vites = aramaParametre.vites;
+        this.yakit = aramaParametre.yakit;
+        this.arabaModel = aramaParametre.arabaModel;
+        this.yil = aramaParametre.yil;
+        this.repo = repo;
 
-        Repo repo = new Repo();
-
-        arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yil);
-        this.arabaModel = arabaModel;
-        this.yil = yil;
+        arabaIlanMap = new ArrayList<>();
 
     }
 
@@ -71,25 +82,24 @@ public class ModelinIlanlari {
         return karaListe.contains(arabaIlan.ilanNo);
     }
 
-//    public void ilanEkle(ArabaIlan araba) {
-//
-//        if (araba.yil != yil) {
-//            throw new IlanException("yil tutumuyor");
-//        }
-//
-//        if (!arabaModel.id.toString().equals(araba.modelId)) {
-//            throw new IlanException("model tutmuyor");
-//        }
-//
-//        ilanlar.add(araba);
-//
-//        ortalamaKm += (araba.km - ortalamaKm) / ilanlar.size();
-//        ortalamaFiyat += (araba.fiyat - ortalamaFiyat) / ilanlar.size();
-//    }
 
-//    public int toplamArac() {
-//        return ilanlar.size();
-//    }
+
+    public void ilanEkle(ArabaIlan arabaIlan) {
+
+        if (arabaIlan.yil != yil) {
+            throw new IlanException("yil tutumuyor");
+        }
+
+        if (!arabaModel.id.toString().equals(arabaIlan.modelId)) {
+            throw new IlanException("model tutmuyor");
+        }
+
+
+        arabaIlanMap.add(arabaIlan);
+
+        ortalamaKm += (arabaIlan.km - ortalamaKm) / arabaIlanMap.size();
+        ortalamaFiyat += (arabaIlan.fiyat - ortalamaFiyat) / arabaIlanMap.size();
+    }
 
     public int ilanPuaniHesapla(ArabaIlan arabaIlan) {
 
@@ -107,17 +117,13 @@ public class ModelinIlanlari {
             return makulIlanlar;
         }
 
-        ortalamalrihesapla();
 
-        Repo repo = new Repo();
-
-
-        for (ArabaIlan ilanDb : arabaIlanMap.values()) {
+        for (ArabaIlan ilanDb : arabaIlanMap) {
 
 
-            IlanDurum ilanDurumDb = ilanDb.getDurum();
+            IlanDurum ilanDurumDb = IlanDurum.getEnum(ilanDb.getIlandurum());
 
-            if (ilanDurumDb == null || 0 == ilanDb.ilanPuani) {
+            if (ilanDurumDb == null || null == ilanDb.ilanPuani) {
                 ilanDurumDb = ilanDurumBelirle(ilanDb);
                 ilanDb.setDurum(ilanDurumDb);
 
@@ -131,15 +137,6 @@ public class ModelinIlanlari {
 
         makulIlanlar.sort(new IlanPuanComperator());
         return makulIlanlar;
-    }
-
-    private void ortalamalrihesapla() {
-        for (ArabaIlan arabaIlan : arabaIlanMap.values()) {
-            ortalamaFiyat += arabaIlan.fiyat;
-            ortalamaKm += arabaIlan.km;
-        }
-        ortalamaFiyat = ortalamaFiyat / arabaIlanMap.size();
-        ortalamaKm = ortalamaKm / arabaIlanMap.size();
     }
 
     private IlanDurum ilanDurumBelirle(ArabaIlan arabaIlan) {
@@ -160,8 +157,26 @@ public class ModelinIlanlari {
             return arabaIlan.setDurum(IlanDurum.PuanUygunDegil);
 
         }
-        HtmlParser parser = new HtmlParser();
-        return parser.aciklamaTemiz(arabaIlan);
 
+        String aciklamadaYazan = parser.aciklamayiGetir(arabaIlan);
+
+        arabaIlan.aciklama = aciklamadaYazan;
+
+        for (String kusurluAciklama : kusurluAciklamlar) {
+
+            if (aciklamadaYazan.contains(kusurluAciklama.toLowerCase(new Locale("tr")))) {
+                return arabaIlan.setDurum(IlanDurum.AciklamadaUygunsuzlukVar);
+            }
+            if (aciklamadaYazan.contains(kusurluAciklama.toUpperCase(new Locale("tr")))) {
+                return arabaIlan.setDurum(IlanDurum.AciklamadaUygunsuzlukVar);
+            }
+        }
+
+        return arabaIlan.setDurum(IlanDurum.Uygun);
+
+    }
+
+    public Object toplamArac() {
+        return arabaIlanMap.size();
     }
 }

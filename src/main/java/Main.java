@@ -26,7 +26,7 @@ public class Main {
         logger.setLevel(LogLevelContainer.LogLevel);
 
         Repo repo = new Repo();
-
+//repo.ilanlariBosalt();
         List<ArabaModel> modeller = repo.modelleriGetir();
 
         int guncellenenAracSayisi = 0;
@@ -38,7 +38,6 @@ public class Main {
 
                 for (AramaParametre aramaParametreItr : aramaParametres) {
                     guncellenenAracSayisi += dbguncelle(aramaParametreItr, repo);
-
 
                 }
             }
@@ -54,7 +53,7 @@ public class Main {
 
         int yilParam = aramaParametre.yil;
 
-        Map<Integer, ArabaIlan> arabaIlanMap = repo.modelinKayitlariniGetir(arabaModel.id, yilParam);
+        Map<Integer, ArabaIlan> arabaIlanMap = repo.modelinKayitlariniGetirMap(aramaParametre);
 
         int ekleAracSayisi = 0;
         int toplamGelenArac = 0;

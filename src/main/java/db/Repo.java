@@ -6,20 +6,15 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import config.LogLevelContainer;
 import entity.ArabaModel;
-import model.ArabaIlan;
-import model.IlanDurum;
-import model.KullanimDurumu;
+import model.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,12 +25,8 @@ import static parser.json.JsonParser.toJson;
  */
 public class Repo {
 
-    private final MongoDatabase db;
-
     private static Logger logger = Logger.getLogger(Repo.class.getName());
-
-
-
+    private final MongoDatabase db;
 
 
     public Repo() {
@@ -67,7 +58,7 @@ public class Repo {
 
     public void ilanlariBosalt() {
 
-        logger.log(Level.WARNING , " ilanlar siliniyor");
+        logger.log(Level.WARNING, " ilanlar siliniyor");
         MongoCollection<Document> ilanlar = getIlan();
         ilanlar.drop();
 
@@ -135,40 +126,55 @@ public class Repo {
         ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
     }
 
-    public Map<Integer, ArabaIlan> modelinKayitlariniGetir(ObjectId modelId, int yilParam) {
-        MongoCursor<Document> modelItr = yildakiIlanlariGetir(modelId, yilParam);
+    public Map<Integer, ArabaIlan> modelinKayitlariniGetirMap(AramaParametre aramaParametre) {
+        MongoCursor<Document> modelItr = getDocumentMongoCursor(aramaParametre);
 
         Map<Integer, ArabaIlan> integerArabaIlanMap = new HashMap<>();
 
         while (modelItr.hasNext()) {
             Document doc = modelItr.next();
 
-            ObjectId id = doc.getObjectId("_id");
-            String modelIdStr = doc.getString("modelId");
-            int km = doc.getInteger("km");
-            int fiyat = doc.getInteger("fiyat");
-            String ilanUrl = doc.getString("ilanUrl");
-            String tarihStr = doc.getString("ilanTarhi");
-            String baslik = doc.getString("baslik");
-            String paket = doc.getString("paket");
-            String vites = doc.getString("vites");
-            String yakit = doc.getString("yakit");
-            int ilanNoInt = doc.getInteger("ilanNo");
-            Integer ilandurum = doc.getInteger("ilandurum");
-            IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
-
-
-            ArabaIlan arabaIlan = new ArabaIlan(yilParam, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
-            arabaIlan.vites = vites;
-            arabaIlan.yakit = yakit;
-
-            arabaIlan.dbId = id;
-            arabaIlan.modelId = modelIdStr;
-            arabaIlan.setDurum(ilanDurum);
+            ArabaIlan arabaIlan = getArabaIlan(doc);
             integerArabaIlanMap.put(arabaIlan.ilanNo, arabaIlan);
         }
         modelItr.close();
         return integerArabaIlanMap;
+    }
+
+    private ArabaIlan getArabaIlan(Document doc) {
+        int yil = doc.getInteger("yil");
+        ObjectId id = doc.getObjectId("_id");
+        String modelIdStr = doc.getString("modelId");
+        int km = doc.getInteger("km");
+        int fiyat = doc.getInteger("fiyat");
+        String ilanUrl = doc.getString("ilanUrl");
+        String tarihStr = doc.getString("ilanTarhi");
+        String baslik = doc.getString("baslik");
+        String paket = doc.getString("paket");
+        String vites = doc.getString("vites");
+        String kimden = doc.getString("kimden");
+        String ilIlce = doc.getString("ilIlce");
+        String yakit = doc.getString("yakit");
+        String aciklama = doc.getString("aciklama");
+        int ilanNoInt = doc.getInteger("ilanNo");
+        Integer ilandurum = doc.getInteger("ilandurum");
+
+        IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
+
+        ArabaIlan arabaIlan = new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
+
+        arabaIlan.setDurum(ilanDurum);
+
+
+        arabaIlan.vites = vites;
+        arabaIlan.yakit = yakit;
+        arabaIlan.modelId = modelIdStr;
+        arabaIlan.ilIlce = ilIlce;
+        arabaIlan.kimden = kimden;
+        arabaIlan.aciklama = aciklama;
+
+        arabaIlan.dbId = id;
+        return arabaIlan;
     }
 
     private MongoCursor<Document> yildakiIlanlariGetir(ObjectId modelId, int yilParam) {
@@ -178,4 +184,55 @@ public class Repo {
 
     }
 
+    public Map<String , ModelinIlanlari> modelinKayitlariniGetir(AramaParametre aramaParametreItr) {
+
+
+        MongoCursor<Document> iterator = getDocumentMongoCursor(aramaParametreItr);
+        Map<String, ModelinIlanlari> modelinIlanlariMap = new HashMap<>();
+
+        while (iterator.hasNext()) {
+            Document document = iterator.next();
+
+            ArabaIlan arabaIlan = getArabaIlan(document);
+
+            String paket = paketGetir(arabaIlan, aramaParametreItr.arabaModel);
+            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(paket, k -> new ModelinIlanlari(aramaParametreItr, this));
+
+            modelinIlanlari.ilanEkle(arabaIlan);
+
+
+        }
+
+        return modelinIlanlariMap;
+
+
+    }
+
+    public String paketGetir(ArabaIlan arabaIlan, ArabaModel arabaModel) {
+
+        String arabaninEklenecegiPaket = "diger";
+        for (String paket : arabaModel.paketler) {
+            if (arabaIlan.paket.contains(paket)) {
+                arabaninEklenecegiPaket = paket;
+                break;
+            }
+        }
+        return arabaninEklenecegiPaket;
+    }
+
+    private MongoCursor<Document> getDocumentMongoCursor(AramaParametre aramaParametreItr) {
+        ArabaModel arabaModel = aramaParametreItr.arabaModel;
+        String modelId = arabaModel.id.toString();
+        int yil = aramaParametreItr.yil;
+        String yakit = aramaParametreItr.yakit;
+        String vites = aramaParametreItr.vites;
+
+        MongoIterable<Document> ilanDocs = getIlan()
+                .find(new Document("modelId", modelId)
+                        .append("yil", yil)
+                        .append("yakit", yakit)
+                        .append("vites", vites));
+
+        return ilanDocs.iterator();
+    }
 }
