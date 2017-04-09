@@ -1,8 +1,8 @@
 import db.Repo;
 import entity.ArabaModel;
-import model.ArabaIlan;
-import model.AramaParametre;
-import model.ModelinIlanlari;
+import model.*;
+import model.keybuilder.ArabaIlanKeyBuilder;
+import model.keybuilder.ArabaIlanPaketKeyBuilder;
 import parser.html.AramaParametreBuilder;
 
 import java.io.IOException;
@@ -24,6 +24,10 @@ public class DbPuanlaMain {
 
         Repo repo = new Repo();
 
+        arabalariPuanla(repo);
+    }
+
+    private static void arabalariPuanla(Repo repo) {
         List<ArabaModel> modeller = repo.modelleriGetir();
 
         for (ArabaModel arabaModel : modeller) {
@@ -34,17 +38,18 @@ public class DbPuanlaMain {
                 List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
                 for (AramaParametre aramaParametreItr : aramaParametres) {
 
-                    Map<String, ModelinIlanlari> modelinIlanlariList = repo.modelinKayitlariniGetir(aramaParametreItr);
+                    ArabaIlanKeyBuilder arabaIlanPaketKeyBuilder = new ArabaIlanPaketKeyBuilder(arabaModel.paketler);
+                    Map<String, ModelinIlanlari> modelinIlanlariList = repo.ilanlariGetir(aramaParametreItr, arabaIlanPaketKeyBuilder);
 
                     for (String key : modelinIlanlariList.keySet()) {
                         ModelinIlanlari modelinIlanlari = modelinIlanlariList.get(key);
                         List<ArabaIlan> makulIlanlar = modelinIlanlari.durumDegerlendir();
 
-                        if(makulIlanlar.size()>0)
-                        System.out.println("ayarlar : [" + aramaParametreItr + " ," + " toplam :" +
-                                modelinIlanlari.toplamArac() + "  ort km :" +
-                                modelinIlanlari.ortalamaKm + "  ort fiyat :" +
-                                modelinIlanlari.ortalamaFiyat  +" pakert: " +key);
+                        if (makulIlanlar.size() > 0)
+                            System.out.println("ayarlar : [" + aramaParametreItr + " ," + " toplam :" +
+                                    modelinIlanlari.toplamArac() + "  ort km :" +
+                                    modelinIlanlari.ortalamaKm + "  ort fiyat :" +
+                                    modelinIlanlari.ortalamaFiyat + " pakert: " + key);
 
                         makulIlanlar.forEach(System.out::println);
                     }

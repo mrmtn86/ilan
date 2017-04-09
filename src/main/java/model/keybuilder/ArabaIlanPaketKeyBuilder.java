@@ -1,4 +1,6 @@
-package model;
+package model.keybuilder;
+
+import model.ArabaIlan;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class ArabaIlanPaketKeyBuilder implements ArabaIlanKeyBuilder {
     }
 
     @Override
-    public Object getKey(ArabaIlan arabaIlan) {
+    public String getKey(ArabaIlan arabaIlan) {
 
         String arabaninEklenecegiPaket = "diger";
         for (String paket : paketler) {

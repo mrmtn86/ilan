@@ -2,13 +2,15 @@ package model;
 
 import db.Repo;
 import entity.ArabaModel;
-import error.IlanException;
-import org.jsoup.select.Elements;
+import io.hummer.util.math.MathUtil;
 import parser.html.HtmlParser;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+
+import static java.util.Comparator.naturalOrder;
 
 /**
  * Created by mtn on 31.03.2017.
@@ -16,6 +18,7 @@ import java.util.Locale;
 public class ModelinIlanlari {
 
     public static final int PUAN_LIMIT = 170;
+    public static final double SIGNIFICANCE_LEVEL = 0.4;
     static int MAX_ARAC_FIYATI = 38000;
     static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
@@ -61,7 +64,7 @@ public class ModelinIlanlari {
     private final String yakit;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
-    public List<ArabaIlan> arabaIlanMap;
+    public List<ArabaIlan> arabaIlanList;
     HtmlParser parser = new HtmlParser();
     private Repo repo;
 
@@ -73,7 +76,7 @@ public class ModelinIlanlari {
         this.yil = aramaParametre.yil;
         this.repo = repo;
 
-        arabaIlanMap = new ArrayList<>();
+        arabaIlanList = new ArrayList<>();
 
     }
 
@@ -83,22 +86,12 @@ public class ModelinIlanlari {
     }
 
 
-
     public void ilanEkle(ArabaIlan arabaIlan) {
 
-        if (arabaIlan.yil != yil) {
-            throw new IlanException("yil tutumuyor");
-        }
+        arabaIlanList.add(arabaIlan);
 
-        if (!arabaModel.id.toString().equals(arabaIlan.modelId)) {
-            throw new IlanException("model tutmuyor");
-        }
-
-
-        arabaIlanMap.add(arabaIlan);
-
-        ortalamaKm += (arabaIlan.km - ortalamaKm) / arabaIlanMap.size();
-        ortalamaFiyat += (arabaIlan.fiyat - ortalamaFiyat) / arabaIlanMap.size();
+        ortalamaKm += (arabaIlan.km - ortalamaKm) / arabaIlanList.size();
+        ortalamaFiyat += (arabaIlan.fiyat - ortalamaFiyat) / arabaIlanList.size();
     }
 
     public int ilanPuaniHesapla(ArabaIlan arabaIlan) {
@@ -113,12 +106,12 @@ public class ModelinIlanlari {
 
 
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
-        if (arabaIlanMap == null || arabaIlanMap.size() == 0) {
+        if (arabaIlanList == null || arabaIlanList.size() == 0) {
             return makulIlanlar;
         }
 
 
-        for (ArabaIlan ilanDb : arabaIlanMap) {
+        for (ArabaIlan ilanDb : arabaIlanList) {
 
 
             IlanDurum ilanDurumDb = IlanDurum.getEnum(ilanDb.getIlandurum());
@@ -177,6 +170,46 @@ public class ModelinIlanlari {
     }
 
     public Object toplamArac() {
-        return arabaIlanMap.size();
+        return arabaIlanList.size();
     }
+
+    public int ortalamaFiyatHespla() {
+
+        List<Integer> sayilar = new ArrayList<>();
+
+        for (ArabaIlan arabaIlan : arabaIlanList) {
+            sayilar.add(arabaIlan.fiyat);
+        }
+
+        return ortalamaHesapla(sayilar);
+    }
+
+    public int ortalamaKmHespla() {
+        List<Integer> sayilar = new ArrayList<>();
+
+        for (ArabaIlan arabaIlan : arabaIlanList) {
+            sayilar.add(arabaIlan.km);
+        }
+
+        return ortalamaHesapla(sayilar);
+    }
+
+    private int ortalamaHesapla(List<Integer> sayilar) {
+
+        MathUtil mathUtil = new MathUtil();
+
+        while (mathUtil.getOutlier(sayilar, SIGNIFICANCE_LEVEL) != null) {
+            double average = mathUtil.average(sayilar);
+            Integer outlier = mathUtil.getOutlier(sayilar, SIGNIFICANCE_LEVEL);
+            if (outlier > average) {
+                sayilar = sayilar.subList(0, sayilar.size() - 2);
+            } else {
+                sayilar = sayilar.subList(1, sayilar.size() - 1);
+            }
+        }
+
+        return (int) mathUtil.average(sayilar);
+     }
+
+
 }

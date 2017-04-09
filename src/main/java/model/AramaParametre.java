@@ -13,7 +13,7 @@ public class AramaParametre {
     private static final String gerigidilecekGun = "&date=3days";
 
     private  String kimden = "a706=";
-    public final int yil;
+    public int yil;
     public String vites;
     public String yakit;
     public ArabaModel arabaModel;
@@ -27,6 +27,10 @@ public class AramaParametre {
         this.arabaModel = arabaModel;
         kimden += satan.getValue();
         this.satan=satan;
+    }
+
+    public AramaParametre() {
+
     }
 
     public String geturlString() {

@@ -10,11 +10,15 @@ import com.mongodb.client.MongoIterable;
 import config.LogLevelContainer;
 import entity.ArabaModel;
 import model.*;
+import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -115,7 +119,7 @@ public class Repo {
 
     }
 
-    private MongoCollection<Document> getIlan() {
+    public MongoCollection<Document> getIlan() {
         return db.getCollection("ilan");
     }
 
@@ -201,7 +205,7 @@ public class Repo {
 
     }
 
-    public Map<String , ModelinIlanlari> modelinKayitlariniGetir(AramaParametre aramaParametreItr) {
+    public Map<String, ModelinIlanlari> ilanlariGetir(AramaParametre aramaParametreItr, ArabaIlanKeyBuilder keyBuilder) {
 
 
         MongoCursor<Document> iterator = getDocumentMongoCursor(aramaParametreItr);
@@ -212,8 +216,8 @@ public class Repo {
 
             ArabaIlan arabaIlan = getArabaIlan(document);
 
-            String paket = paketGetir(arabaIlan, aramaParametreItr.arabaModel);
-            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(paket, k -> new ModelinIlanlari(aramaParametreItr, this));
+            String key = keyBuilder.getKey(arabaIlan);
+            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(key, k -> new ModelinIlanlari(aramaParametreItr, this));
 
             modelinIlanlari.ilanEkle(arabaIlan);
 
@@ -237,18 +241,30 @@ public class Repo {
         return arabaninEklenecegiPaket;
     }
 
-    private MongoCursor<Document> getDocumentMongoCursor(AramaParametre aramaParametreItr) {
-        ArabaModel arabaModel = aramaParametreItr.arabaModel;
-        String modelId = arabaModel.id.toString();
-        int yil = aramaParametreItr.yil;
-        String yakit = aramaParametreItr.yakit;
-        String vites = aramaParametreItr.vites;
+    private MongoCursor<Document> getDocumentMongoCursor(AramaParametre aramaParametre) {
+
+        ArabaModel arabaModel = aramaParametre.arabaModel;
+        String modelId = arabaModel != null ? arabaModel.id.toString() : null;
+        int yil = aramaParametre.yil;
+        String yakit = aramaParametre.yakit;
+        String vites = aramaParametre.vites;
+
+        Document filter = new Document();
+        if (modelId != null) {
+            filter = filter.append("modelId", modelId);
+        }
+        if (yil != 0) {
+            filter = filter.append("yil", yil);
+        }
+        if (yakit != null) {
+            filter = filter.append("yakit", yakit);
+        }
+        if (vites != null) {
+            filter = filter.append("vites", vites);
+        }
 
         MongoIterable<Document> ilanDocs = getIlan()
-                .find(new Document("modelId", modelId)
-                        .append("yil", yil)
-                        .append("yakit", yakit)
-                        .append("vites", vites));
+                .find(filter);
 
         return ilanDocs.iterator();
     }
