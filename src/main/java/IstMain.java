@@ -70,10 +70,10 @@ public class IstMain {
             for (ArabaIlan arabaIlan : modelinIlanlari.arabaIlanList) {
 
                 int fiyatPuan = arabaIlan.fiyat * 100 / ortalamaFiyat;
-                int kmPuan = arabaIlan.km * 100 / ortalamaKm;
+                int kmPuan = (int) (100 - ((double) (ortalamaKm / 10000 - arabaIlan.km / 10000))) * arabaIlan.km * 100 / ortalamaKm;
 
                 // fiyat puani daha kiymetli
-                int puan = (fiyatPuan * 4 + kmPuan * 6) / 10;
+                int puan = (fiyatPuan * 10 + kmPuan * 0) / 10;
 
                 keyBuilder.setKeyPuan(arabaIlan, puan);
             }
