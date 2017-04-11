@@ -15,9 +15,10 @@ import static java.util.Comparator.naturalOrder;
  */
 public class ModelinIlanlari {
 
-    public static final int PUAN_LIMIT = 70;
+    public static final int PUAN_LIMIT = 90;
     public static final double SIGNIFICANCE_LEVEL = 0.9;
     public static int MAX_ARAC_FIYATI = 38000;
+
     public static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
         add(407785432);
@@ -35,6 +36,7 @@ public class ModelinIlanlari {
         add(418170659);
         add(417592735);
         add(385306471);
+        add(412279087);
         add(417448859);
         add(407977828);
         add(403794852);
@@ -51,12 +53,41 @@ public class ModelinIlanlari {
         add(407652445);
         add(397553584);
         add(417476891);
+        add(421116948);
+        add(420668022);
+        add(417333144);
+        add(409830835);
+        add(419490260);
+        add(421339993);
+        add(407345449);
+        add(419264171);
+        add(398370550);
     }};
 
     public static List<Integer> hasarli = new ArrayList<Integer>() {{
         add(413376359);
         add(335988708);
+        add(421276944);
+        add(421089910);
+        add(418971266);
+        add(415384716);
+        add(360665039);
+        add(410551484);
+        add(394145440);
+        add(420417059);
+        add(420704553);
+        add(419097269);
+        add(410494596);
+        add(421065531);
+        add(393351939);
+        add(393351939);
+        add(417045180);
         add(417235818);
+        add(421049707);
+        add(415518036);
+        add(410961597);
+        add(420357500);
+        add(408743962);
 
     }};
     public static List<Integer> yanlisbilgi = new ArrayList<Integer>() {{
@@ -70,9 +101,18 @@ public class ModelinIlanlari {
             "Ağır Hasar Kayıtlıdır",
             "AGIR HASAR KAYDI",
             "HASAR KAYDI İŞLENMİŞTİR",
+            "agir hasarli gosterilmis",
+            "Az hasarlı ",
             "agir hasar kayitlidir",
+            "komple boyalıdır",
             "pert kayıtlıdır",
+            "AGIR HASAR KAYITLIDIR",
             "ağır hasar kayıtlıdır",
+            "HASAR KAYDI MEVCUTTUR",
+            "ağır hasar kaydı bulunmakta",
+            "AĞIR HASARLI yazıyor",
+            " HASAR KAYDI BULUNDUĞUNDAN ",
+            "KOMPLE BOYATILMIŞTIR ",
             "şişirilmiş hasar kaydı var",
             "agır hasarlı olarak geçiyor",
             "pert kayıtlı  aldım"};
@@ -191,9 +231,9 @@ public class ModelinIlanlari {
         List<Integer> sayilar = new ArrayList<>();
 
         for (ArabaIlan arabaIlan : arabaIlanList) {
-            if (IlanDurum.AciklamadaUygunsuzlukVar.equals(arabaIlan.getDurum()))
-                continue;
-            sayilar.add(arabaIlan.fiyat);
+            if (arabaIlan.getDurum()!= null && arabaIlan.getDurum().ortalamadaKullan) {
+                sayilar.add(arabaIlan.fiyat);
+            }
         }
 
         int ort = ortalamaHesapla(sayilar);
@@ -205,7 +245,10 @@ public class ModelinIlanlari {
         List<Integer> sayilar = new ArrayList<>();
 
         for (ArabaIlan arabaIlan : arabaIlanList) {
-            sayilar.add(arabaIlan.km);
+            if (arabaIlan.getDurum()!= null &&  arabaIlan.getDurum().ortalamadaKullan) {
+                sayilar.add(arabaIlan.km);
+            }
+
         }
 
         int ort = ortalamaHesapla(sayilar);

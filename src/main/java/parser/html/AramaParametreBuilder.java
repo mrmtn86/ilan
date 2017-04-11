@@ -12,7 +12,7 @@ import java.util.List;
 public class AramaParametreBuilder {
 
     public static final int BITIS_YIL = 2017;
-    public static final int BASLANGIC_YIL = 2010;
+  //  public static final int BASLANGIC_YIL = 2007;
     static boolean MANUEL_BENZIN_PAS_GEC = false;
     private static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
     private static String[] vitesSecenek = {"otomatik,yari-otomatik", "manuel"};

@@ -34,6 +34,7 @@ public class ArabaIlan {
     public int yakitPuani;
     public int paketPuani;
     public int ilanPuani;
+    public boolean yayinda;
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
         this.yil = yil;

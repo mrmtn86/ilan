@@ -8,12 +8,13 @@ import parser.html.HtmlParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static parser.html.AramaParametreBuilder.BASLANGIC_YIL;
+//import static parser.html.AramaParametreBuilder.BASLANGIC_YIL;
 import static parser.html.AramaParametreBuilder.BITIS_YIL;
 
 public class Main {
@@ -30,11 +31,12 @@ public class Main {
         int guncellenenAracSayisi = 0;
         for (ArabaModel arabaModel : modeller) {
 
-            for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
+            for (int yilParam = arabaModel.baslangicYili; yilParam <= BITIS_YIL; yilParam++) {
 
                 List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
 
                 for (AramaParametre aramaParametreItr : aramaParametres) {
+                    aramaParametreItr.yayinda = true;
                     guncellenenAracSayisi += dbguncelle(aramaParametreItr, repo);
 
                 }
@@ -63,10 +65,13 @@ public class Main {
         for (ArabaIlan arabaIlan : arabaIlanList) {
 
             toplamGelenArac++;
-            ArabaIlan ilanDb = arabaIlanMap.get(arabaIlan.ilanNo);
+            int ilanNo = arabaIlan.ilanNo;
+
+            ArabaIlan ilanDb = arabaIlanMap.get(ilanNo);
 
             if (ilanDb != null) {
                 logger.log(Level.FINER, "ilan daha once dbye eklenmis : {0}" + ilanDb);
+                arabaIlanMap.remove(ilanNo);
                 continue;
             }
 
@@ -74,13 +79,28 @@ public class Main {
             arabaIlan.vites = aramaParametre.vites;
             arabaIlan.yakit = aramaParametre.yakit;
             arabaIlan.kimden = aramaParametre.satan.toString();
+            arabaIlan.yayinda = true;
 
             yeniAraclar.add(arabaIlan);
             ekleAracSayisi++;
             logger.log(Level.FINER, "yeni ilan dbeklennmek uzere kaydedildi {0}", arabaIlan);
+
         }
 
         logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} {6} ] , gelen :{5}, eklenen : {4} ", new Object[]{arabaModel.ad, aramaParametre.vites, aramaParametre.yakit, yilParam, ekleAracSayisi, toplamGelenArac, aramaParametre.satan});
+
+
+        // mapte kalan ilanlar yayindan kalkmis demektir
+        Collection<ArabaIlan> values = arabaIlanMap.values();
+        for (ArabaIlan arabaIlan : values) {
+            arabaIlan.yayinda = false;
+        }
+
+        if (values.size() > 0) {
+
+            repo.ilanlariGuncelle(values);
+        }
+
 
         if (yeniAraclar.size() > 0)
             repo.topluKaydet(yeniAraclar);
@@ -105,9 +125,7 @@ public class Main {
                 ofsetValue = "&pagingOffset=" + i;
             }
 
-
             List<ArabaIlan> arabaIlanList = parser.arabaIlanlariGetir(urlResult + ofsetValue);
-
 
             arabaIlanListSonuc.addAll(arabaIlanList);
 
@@ -117,5 +135,4 @@ public class Main {
         }
         return arabaIlanListSonuc;
     }
-
 }

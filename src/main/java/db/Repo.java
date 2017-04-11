@@ -19,10 +19,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +36,7 @@ public class Repo {
 
     public Repo() {
 
-        Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        Logger mongoLogger = Logger.getLogger("org.mongodb");
         mongoLogger.setLevel(Level.WARNING);
 
         logger.setLevel(LogLevelContainer.LogLevel);
@@ -84,10 +81,12 @@ public class Repo {
             Document doc = modelItr.next();
             String ad = doc.getString("ad");
             String url = doc.getString("url");
+            int baslangicYili = doc.getInteger("baslangicYili");
             ObjectId id = doc.getObjectId("_id");
             Object paketObj = doc.get("paketler");
 
             ArabaModel model = new ArabaModel(ad, url, id);
+            model.baslangicYili = baslangicYili;
 
             if (paketObj != null) {
                 model.paketler = (List<String>) paketObj;
@@ -141,7 +140,7 @@ public class Repo {
     }
 
 
-    public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
+    public void ilanlariGuncelle(Collection<ArabaIlan> ilanlar) {
 
         MongoCollection<Document> collection = getIlan();
 
@@ -196,6 +195,7 @@ public class Repo {
         int vitesPuani = getInteger(doc, "vitesPuani");
         int yakitPuani = getInteger(doc, "yakitPuani");
         int paketPuani = getInteger(doc, "paketPuani");
+        int kmPuani = getInteger(doc, "kmPuani");
         Integer ilandurum = getInteger(doc, "ilandurum");
 
         IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
@@ -214,6 +214,7 @@ public class Repo {
         arabaIlan.paketPuani = paketPuani;
         arabaIlan.vitesPuani = vitesPuani;
         arabaIlan.yakitPuani = yakitPuani;
+        arabaIlan.kmPuani = kmPuani;
 
         arabaIlan.dbId = id;
         return arabaIlan;
@@ -296,6 +297,12 @@ public class Repo {
         }
         if (inlanDurum != 0) {
             filter = filter.append("ilandurum", inlanDurum);
+        }
+        if (aramaParametre.satan != null) {
+            filter = filter.append("kimden", aramaParametre.satan.toString());
+        }
+        if (aramaParametre.yayinda != null) {
+            filter = filter.append("yayinda", new Document("$eq", aramaParametre.yayinda.booleanValue()));
         }
 
         MongoIterable<Document> ilanDocs = getIlan()

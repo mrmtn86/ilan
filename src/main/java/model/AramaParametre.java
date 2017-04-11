@@ -19,6 +19,7 @@ public class AramaParametre {
     public ArabaModel arabaModel;
     public KimdenEnum satan;
     public int ilanDurum =0;
+    public Boolean yayinda;
 
 
     public AramaParametre(String vites, String yakit, int yil, ArabaModel arabaModel, KimdenEnum satan) {

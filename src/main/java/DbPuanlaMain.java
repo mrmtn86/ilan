@@ -3,9 +3,11 @@ import entity.ArabaModel;
 import model.*;
 import model.ModelinIlanlari;
 import parser.html.HtmlParser;
+import util.DateUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -18,7 +20,7 @@ import static model.ModelinIlanlari.*;
 public class DbPuanlaMain {
 
     static final int BITIS_YIL = 2017;
-    private static final int BASLANGIC_YIL = 2010;
+   // private static final int BASLANGIC_YIL = 2010;
 
     private static Logger logger = Logger.getLogger(DbPuanlaMain.class.getName());
 
@@ -35,26 +37,38 @@ public class DbPuanlaMain {
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
         for (ArabaModel arabaModel : modeller) {
 
-            for (int yilParam = BASLANGIC_YIL; yilParam <= BITIS_YIL; yilParam++) {
+            for (int yilParam = arabaModel.baslangicYili; yilParam <= BITIS_YIL; yilParam++) {
 
                 AramaParametre aramaParametre = new AramaParametre();
                 aramaParametre.arabaModel = arabaModel;
                 aramaParametre.yil = yilParam;
 
                 ModelinIlanlari modelinIlanlari = repo.ilanlariGetir(aramaParametre);
+
+
                 for (ArabaIlan arabaIlan : modelinIlanlari.arabaIlanList) {
+
                     int yakitPuani = arabaIlan.yakitPuani;
                     int vitesPuani = arabaIlan.vitesPuani;
                     int paketPuani = arabaIlan.paketPuani;
+                    int kmPuani = arabaIlan.kmPuani;
+
+
 
                     // carpanlar tamamen sallamasyon
-                    arabaIlan.ilanPuani = (yakitPuani * 5 + vitesPuani * 3 + paketPuani * 2) / 10;
+                    arabaIlan.ilanPuani = (yakitPuani * 5 + vitesPuani * 3 + paketPuani * 2 ) / 10;
 
 
                     arabaIlan.setDurum(ilanDurumBelirle(arabaIlan));
 
 
-                    if (arabaIlan.getDurum().equals(IlanDurum.Uygun)) {
+
+                    if (arabaIlan.getDurum().equals(IlanDurum.Uygun) && arabaIlan.kimden.equals("Sahibinden")) {
+
+
+if(arabaIlan.ilanTarhi.equals("2017.04.11"))
+
+
                         makulIlanlar.add(arabaIlan);
                     }
                 }
