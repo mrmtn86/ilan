@@ -1,5 +1,6 @@
 package db;
 
+import com.mongodb.MongoBulkWriteException;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
@@ -12,6 +13,7 @@ import com.mongodb.client.model.UpdateOneModel;
 import config.LogLevelContainer;
 import entity.ArabaModel;
 import model.*;
+import model.istatistik.ModelIstatistik;
 import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -87,8 +89,9 @@ public class Repo {
 
             ArabaModel model = new ArabaModel(ad, url, id);
 
-            if (paketObj != null)
+            if (paketObj != null) {
                 model.paketler = (List<String>) paketObj;
+            }
 
             arabaModels.add(model);
         }
@@ -116,9 +119,12 @@ public class Repo {
             documentList.add(Document.parse(json));
         }
 
-
-        modeller.insertMany(documentList);
-
+        try {
+            modeller.insertMany(documentList);
+        } catch (MongoBulkWriteException e) {
+            logger.log(Level.WARNING, "toplu kaydetmede hata {0} hata mesaji : {1}",
+                    new Object[]{arabaIlanlar.get(0).modelId, e.getMessage()});
+        }
     }
 
     public MongoCollection<Document> getIlan() {
@@ -134,24 +140,7 @@ public class Repo {
         ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
     }
 
-    //    public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
-//
-//        MongoCollection<Document> ilanlar = getIlan();
-//
-//        List<Document> documentList = new ArrayList<>();
-//        for (ArabaIlan arabaIlan : ilanlar) {
-//            String json = toJson(arabaIlan);
-//
-//            Bson query = new Document("ilanNo", arabaIlan.ilanNo);
-//            documentList.add(query);
-//
-//            ilanlar.updateMany(query, new Document("$set", Document.parse(json)));
-//        }
-//
-//
-//        ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
-//    }
-//
+
     public void ilanlariGuncelle(List<ArabaIlan> ilanlar) {
 
         MongoCollection<Document> collection = getIlan();
@@ -236,15 +225,24 @@ public class Repo {
         return 0;
     }
 
-    private MongoCursor<Document> yildakiIlanlariGetir(ObjectId modelId, int yilParam) {
-        MongoCollection<Document> ilanlar = getIlan();
 
-        return ilanlar.find(new Document("modelId", modelId.toString()).append("yil", yilParam)).iterator();
+    public ModelinIlanlari ilanlariGetir(AramaParametre aramaParametre) {
 
+        MongoCursor<Document> iterator = getDocumentMongoCursor(aramaParametre);
+
+        ModelinIlanlari modelinIlanlari = new ModelinIlanlari(this);
+        while (iterator.hasNext()) {
+            Document document = iterator.next();
+
+            ArabaIlan arabaIlan = getArabaIlan(document);
+
+            modelinIlanlari.ilanEkle(arabaIlan);
+
+        }
+        return modelinIlanlari;
     }
 
     public Map<String, ModelinIlanlari> ilanlariGetir(AramaParametre aramaParametreItr, ArabaIlanKeyBuilder keyBuilder) {
-
 
         MongoCursor<Document> iterator = getDocumentMongoCursor(aramaParametreItr);
         Map<String, ModelinIlanlari> modelinIlanlariMap = new HashMap<>();
@@ -255,16 +253,11 @@ public class Repo {
             ArabaIlan arabaIlan = getArabaIlan(document);
 
             String key = keyBuilder.getKey(arabaIlan);
-            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(key, k -> new ModelinIlanlari(aramaParametreItr, this));
+            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(key, k -> new ModelinIlanlari(this));
 
             modelinIlanlari.ilanEkle(arabaIlan);
-
-
         }
-
         return modelinIlanlariMap;
-
-
     }
 
     public String paketGetir(ArabaIlan arabaIlan, ArabaModel arabaModel) {
@@ -309,5 +302,60 @@ public class Repo {
                 .find(filter);
 
         return ilanDocs.iterator();
+    }
+
+
+    public void istatistikKaydet(ModelIstatistik modelIstatistik) {
+
+        MongoCollection<Document> modelIsatitistik = db.getCollection("modelIsatitistik");
+
+
+        Document filter = new Document("modelId", modelIstatistik.modelId)
+                .append("yil", modelIstatistik.yil).append("key", modelIstatistik.key);
+
+        MongoIterable<Document> documents = modelIsatitistik.find(filter);
+
+        if (documents.iterator().hasNext()) {
+            modelIsatitistik.updateMany(filter, new Document("$set", new Document("aktif", false)));
+        }
+
+        String json = toJson(modelIstatistik);
+
+        modelIsatitistik.insertOne(Document.parse(json));
+    }
+
+    public Map<String, ModelIstatistik> istatistikGetir(String modelId, int yil) {
+
+        return istatistikGetir(modelId, yil, null);
+
+    }
+
+    public Map<String, ModelIstatistik> istatistikGetir(String modelId, int yil, String key) {
+
+        MongoCollection<Document> modelIsatitistik = db.getCollection("modelIsatitistik");
+        Document filter = new Document("modelId", modelId)
+                .append("yil", yil);
+
+        if (key != null) {
+            filter.append("key", key);
+        }
+
+        MongoIterable<Document> documents = modelIsatitistik.find(filter);
+
+        Map<String, ModelIstatistik> stringModelIstatistikMap = new HashMap<>();
+
+        while (documents.iterator().hasNext()) {
+            Document istDoc = documents.iterator().next();
+
+            String istTarihi = istDoc.getString("istTarihi");
+            int ortKm = istDoc.getInteger("ortKm");
+            int ortFiyat = istDoc.getInteger("ortFiyat");
+
+            ModelIstatistik modelIstatistik = new ModelIstatistik(modelId, yil, key, istTarihi, ortKm, ortFiyat);
+
+            stringModelIstatistikMap.put(key, modelIstatistik);
+        }
+
+        return stringModelIstatistikMap;
     }
 }

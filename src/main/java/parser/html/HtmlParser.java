@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import util.DateUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -64,13 +65,8 @@ public class HtmlParser {
         ilanUrl = ilanUrl.substring(1, ilanUrl.length());
 
         String tarihStr = element.select(".searchResultsDateValue").text();
-        SimpleDateFormat df = new SimpleDateFormat("dd MMMMM yyyy", new Locale("tr"));
-        try {
-            Date date = df.parse(tarihStr);
-            tarihStr = new SimpleDateFormat("yyyy.MM.dd").format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        tarihStr= DateUtil.htmlDateTodbDate(tarihStr);
         String baslik = element.select(".searchResultsTitleValue").text();
         String ilIlce = element.select(".searchResultsLocationValue").text();
 

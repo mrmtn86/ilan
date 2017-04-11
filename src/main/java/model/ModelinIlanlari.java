@@ -1,7 +1,6 @@
 package model;
 
 import db.Repo;
-import entity.ArabaModel;
 import io.hummer.util.math.MathUtil;
 import parser.html.HtmlParser;
 
@@ -16,10 +15,10 @@ import static java.util.Comparator.naturalOrder;
  */
 public class ModelinIlanlari {
 
-    public static final int PUAN_LIMIT = 170;
+    public static final int PUAN_LIMIT = 70;
     public static final double SIGNIFICANCE_LEVEL = 0.9;
-    static int MAX_ARAC_FIYATI = 38000;
-    static List<Integer> karaListe = new ArrayList<Integer>() {{
+    public static int MAX_ARAC_FIYATI = 38000;
+    public static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
         add(407785432);
         add(405735596);
@@ -29,6 +28,7 @@ public class ModelinIlanlari {
         add(405275624);
         add(409178825);
         add(411703245);
+        add(409984693);
         add(399692863);
         add(412580599);
         add(407296283);
@@ -46,21 +46,36 @@ public class ModelinIlanlari {
         add(409044941);
         add(418729819);
     }};
-    private static String[] kusurluAciklamlar = {"ağır hasar kaydı var",
+
+    public static List<Integer> istenmiyor = new ArrayList<Integer>() {{
+        add(407652445);
+        add(397553584);
+        add(417476891);
+    }};
+
+    public static List<Integer> hasarli = new ArrayList<Integer>() {{
+        add(413376359);
+        add(335988708);
+        add(417235818);
+
+    }};
+    public static List<Integer> yanlisbilgi = new ArrayList<Integer>() {{
+        add(421038157);
+
+    }};
+    public static String[] kusurluAciklamlar = {"ağır hasar kaydı var",
             "agir hasar kaydı mevcut", "" +
             "ÇEKME BELGELİ",
             "HASARLI AL",
             "Ağır Hasar Kayıtlıdır",
             "AGIR HASAR KAYDI",
-            "IR HASAR KAYDI İŞLENMİŞTİR",
+            "HASAR KAYDI İŞLENMİŞTİR",
+            "agir hasar kayitlidir",
             "pert kayıtlıdır",
             "ağır hasar kayıtlıdır",
             "şişirilmiş hasar kaydı var",
+            "agır hasarlı olarak geçiyor",
             "pert kayıtlı  aldım"};
-    private final ArabaModel arabaModel;
-    private final int yil;
-    private final String vites;
-    private final String yakit;
     public int ortalamaKm = 0;
     public int ortalamaFiyat = 0;
     public List<ArabaIlan> arabaIlanList;
@@ -68,11 +83,8 @@ public class ModelinIlanlari {
     private Repo repo;
 
 
-    public ModelinIlanlari(AramaParametre aramaParametre, Repo repo) {
-        this.vites = aramaParametre.vites;
-        this.yakit = aramaParametre.yakit;
-        this.arabaModel = aramaParametre.arabaModel;
-        this.yil = aramaParametre.yil;
+    public ModelinIlanlari(Repo repo) {
+
         this.repo = repo;
 
         arabaIlanList = new ArrayList<>();
@@ -88,9 +100,6 @@ public class ModelinIlanlari {
     public void ilanEkle(ArabaIlan arabaIlan) {
 
         arabaIlanList.add(arabaIlan);
-
-        ortalamaKm += (arabaIlan.km - ortalamaKm) / arabaIlanList.size();
-        ortalamaFiyat += (arabaIlan.fiyat - ortalamaFiyat) / arabaIlanList.size();
     }
 
     public int ilanPuaniHesapla(ArabaIlan arabaIlan) {
@@ -103,10 +112,15 @@ public class ModelinIlanlari {
 
     public List<ArabaIlan> durumDegerlendir() {
 
+        ortalamaFiyatHespla();
+        ortalamaKmHespla();
+
         List<ArabaIlan> makulIlanlar = new ArrayList<>();
         if (arabaIlanList == null || arabaIlanList.size() == 0) {
             return makulIlanlar;
         }
+
+        List<ArabaIlan> guncellenecekIlanlar = new ArrayList<>();
 
         for (ArabaIlan ilanDb : arabaIlanList) {
 
@@ -116,13 +130,17 @@ public class ModelinIlanlari {
                 ilanDurumDb = ilanDurumBelirle(ilanDb);
                 ilanDb.setDurum(ilanDurumDb);
 
-                repo.ilanGuncelle(ilanDb);
+                //repo.ilanGuncelle(ilanDb);
+
+                guncellenecekIlanlar.add(ilanDb);
             }
 
             //arabada kusur bulamadık ekleyelim
             if (ilanDb.getDurum() == IlanDurum.Uygun)
                 makulIlanlar.add(ilanDb);
         }
+
+        repo.ilanlariGuncelle(guncellenecekIlanlar);
 
         makulIlanlar.sort(new IlanPuanComperator());
         return makulIlanlar;
@@ -173,7 +191,7 @@ public class ModelinIlanlari {
         List<Integer> sayilar = new ArrayList<>();
 
         for (ArabaIlan arabaIlan : arabaIlanList) {
-            if (arabaIlan.getDurum().equals(IlanDurum.AciklamadaUygunsuzlukVar))
+            if (IlanDurum.AciklamadaUygunsuzlukVar.equals(arabaIlan.getDurum()))
                 continue;
             sayilar.add(arabaIlan.fiyat);
         }

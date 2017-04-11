@@ -73,15 +73,15 @@ public class ArabaIlan {
 
     @Override
     public String toString() {
-        return "yil.ArabaIlan{" +
-                "ilanNo=" + ilanNo +
-                "puan=" + ilanPuani +
-                "yil=" + yil +
-                ", fiyat=" + fiyat +
-                ", km=" + km +
-                ", ilanTarhi='" + ilanTarhi + '\'' +
-                ", baslik='" + baslik + '\'' +
-                ", url='https://www.sahibinden.com/" + ilanUrl + '\'' +
+        return "ArabaIlan{ " +
+                " No: " + ilanNo +
+                " puan:" + ilanPuani +
+                " yil:" + yil +
+                " fiyat:" + fiyat +
+                " km:" + km +
+                " ilanTarhi:'" + ilanTarhi + '\'' +
+                " baslik='" + baslik + '\'' +
+                " url='https://www.sahibinden.com/" + ilanUrl + '\'' +
                 '}';
     }
 

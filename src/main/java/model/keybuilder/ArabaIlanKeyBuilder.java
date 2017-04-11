@@ -9,5 +9,5 @@ public interface ArabaIlanKeyBuilder {
 
     String getKey(ArabaIlan arabaIlan);
 
-    void setPuan(ArabaIlan arabaIlan , int puan);
+    void setKeyPuan(ArabaIlan arabaIlan , int puan);
 }

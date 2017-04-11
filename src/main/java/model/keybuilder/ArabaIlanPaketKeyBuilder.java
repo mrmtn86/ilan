@@ -30,7 +30,7 @@ public class ArabaIlanPaketKeyBuilder implements ArabaIlanKeyBuilder {
     }
 
     @Override
-    public void setPuan(ArabaIlan arabaIlan, int puan) {
+    public void setKeyPuan(ArabaIlan arabaIlan, int puan) {
         arabaIlan.paketPuani = puan;
     }
 

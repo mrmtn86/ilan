@@ -12,7 +12,7 @@ public class ArabaIlanYakitKeyBuilder implements ArabaIlanKeyBuilder {
     }
 
     @Override
-    public void setPuan(ArabaIlan arabaIlan, int puan) {
+    public void setKeyPuan(ArabaIlan arabaIlan, int puan) {
         arabaIlan.yakitPuani = puan;
     }
 }
