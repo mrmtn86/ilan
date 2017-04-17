@@ -36,7 +36,7 @@ public class Main {
                 List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
 
                 for (AramaParametre aramaParametreItr : aramaParametres) {
-                    aramaParametreItr.yayinda = true;
+                  //  aramaParametreItr.yayinda = true;
                     guncellenenAracSayisi += dbguncelle(aramaParametreItr, repo);
 
                 }

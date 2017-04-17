@@ -66,7 +66,7 @@ public class DbPuanlaMain {
                     if (arabaIlan.getDurum().equals(IlanDurum.Uygun) && arabaIlan.kimden.equals("Sahibinden")) {
 
 
-if(arabaIlan.ilanTarhi.equals("2017.04.11"))
+//if(arabaIlan.ilanTarhi.equals("2017.04.11"))
 
 
                         makulIlanlar.add(arabaIlan);
