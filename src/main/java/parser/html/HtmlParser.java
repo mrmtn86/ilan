@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  */
 public class HtmlParser {
 
+    public static final String SAHBINDEN_BASE_URL = "https://www.sahibinden.com/";
     private static Logger logger = Logger.getLogger(HtmlParser.class.getName());
 
 
@@ -33,13 +34,15 @@ public class HtmlParser {
     }
 
     private static Document httpGet(String url) throws IOException {
-        String urlAll = "https://www.sahibinden.com/" + url;
+        String urlAll = SAHBINDEN_BASE_URL + url;
         logger.log(Level.CONFIG, "url get :  {0}", urlAll);
         return Jsoup.connect(urlAll).get();
 
     }
 
     private static ArabaIlan getArabaIlan(Element element) {
+        String ilanNo = null;
+        try {
 
         Elements select = element.select(".searchResultsAttributeValue");
 
@@ -47,10 +50,9 @@ public class HtmlParser {
             return null;
         }
 
-        String ilanNo = element.attributes().iterator().next().getValue();
+          ilanNo = element.attributes().iterator().next().getValue();
 
 
-        ;
         String yilElement = select.first().text();
         String kmElement = select.get(1).text().replace(".", "");
         String fiyatStr = element.select(".searchResultsPriceValue").text().replace(".", "").replace("TL", "").replace(" ", "");
@@ -77,6 +79,16 @@ public class HtmlParser {
         arabaIlan.ilIlce = ilIlce;
 
         return arabaIlan;
+        } catch (Exception ex) {
+
+            if (ilanNo!= null){
+                logger.log(Level.WARNING , "{0} nolu ilanda hata" , ilanNo);
+            }
+
+            ex.printStackTrace();
+
+        }
+        return null;
     }
 
     public static Elements csstenSec(Document doc, String cssQuery) {
@@ -92,7 +104,7 @@ public class HtmlParser {
 
 
             for (Element element : arabalar) {
-                try {
+
 
                     ArabaIlan araba = getArabaIlan(element);
                     if ((araba != null)) {
@@ -100,10 +112,6 @@ public class HtmlParser {
 
                     }
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-
-                }
             }
 
         } catch (Exception ex) {

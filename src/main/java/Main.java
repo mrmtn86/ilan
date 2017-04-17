@@ -14,8 +14,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//import static parser.html.AramaParametreBuilder.BASLANGIC_YIL;
 import static parser.html.AramaParametreBuilder.BITIS_YIL;
+
+//import static parser.html.AramaParametreBuilder.BASLANGIC_YIL;
 
 public class Main {
 
@@ -36,7 +37,7 @@ public class Main {
                 List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
 
                 for (AramaParametre aramaParametreItr : aramaParametres) {
-                  //  aramaParametreItr.yayinda = true;
+                    aramaParametreItr.yayinda = true;
                     guncellenenAracSayisi += dbguncelle(aramaParametreItr, repo);
 
                 }
@@ -75,6 +76,7 @@ public class Main {
                 continue;
             }
 
+            // dbde yok ekleyelim
             arabaIlan.modelId = arabaModel.id.toString();
             arabaIlan.vites = aramaParametre.vites;
             arabaIlan.yakit = aramaParametre.yakit;
@@ -84,10 +86,11 @@ public class Main {
             yeniAraclar.add(arabaIlan);
             ekleAracSayisi++;
             logger.log(Level.FINER, "yeni ilan dbeklennmek uzere kaydedildi {0}", arabaIlan);
-
         }
 
-        logger.log(Level.INFO, "ayarlar : [{0} {1} {2} {3} {6} ] , gelen :{5}, eklenen : {4} ", new Object[]{arabaModel.ad, aramaParametre.vites, aramaParametre.yakit, yilParam, ekleAracSayisi, toplamGelenArac, aramaParametre.satan});
+        logger.log(Level.INFO, " [{0} {1} {2} {3} {6} ] , gelen :{5}, eklenen : {4} , url : {7} ",
+                new Object[]{arabaModel.ad, aramaParametre.vites, aramaParametre.yakit, yilParam, ekleAracSayisi, toplamGelenArac,
+                        aramaParametre.satan, HtmlParser.SAHBINDEN_BASE_URL + aramaParametre.geturlString()});
 
 
         // mapte kalan ilanlar yayindan kalkmis demektir
@@ -97,7 +100,6 @@ public class Main {
         }
 
         if (values.size() > 0) {
-
             repo.ilanlariGuncelle(values);
         }
 

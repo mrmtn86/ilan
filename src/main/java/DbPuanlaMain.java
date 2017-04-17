@@ -43,6 +43,7 @@ public class DbPuanlaMain {
                 aramaParametre.arabaModel = arabaModel;
                 aramaParametre.yil = yilParam;
 
+
                 ModelinIlanlari modelinIlanlari = repo.ilanlariGetir(aramaParametre);
 
 

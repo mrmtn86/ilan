@@ -3,6 +3,8 @@ package model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 
+import java.util.Date;
+
 /**
  * Created by mac on 27/02/17.
  */
@@ -35,6 +37,7 @@ public class ArabaIlan {
     public int paketPuani;
     public int ilanPuani;
     public boolean yayinda;
+    public Date eklenmeZamani = new Date();
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
         this.yil = yil;

@@ -18,6 +18,7 @@ import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import util.DateUtil;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -176,48 +177,61 @@ public class Repo {
     }
 
     private ArabaIlan getArabaIlan(Document doc) {
-        int yil = getInteger(doc, "yil");
-        ObjectId id = doc.getObjectId("_id");
-        String modelIdStr = doc.getString("modelId");
-        int km = getInteger(doc, "km");
-        int fiyat = getInteger(doc, "fiyat");
-        String ilanUrl = doc.getString("ilanUrl");
-        String tarihStr = doc.getString("ilanTarhi");
-        String baslik = doc.getString("baslik");
-        String paket = doc.getString("paket");
-        String vites = doc.getString("vites");
-        String kimden = doc.getString("kimden");
-        String ilIlce = doc.getString("ilIlce");
-        String yakit = doc.getString("yakit");
-        String aciklama = doc.getString("aciklama");
-        int ilanNoInt = getInteger(doc, "ilanNo");
-
-        int vitesPuani = getInteger(doc, "vitesPuani");
-        int yakitPuani = getInteger(doc, "yakitPuani");
-        int paketPuani = getInteger(doc, "paketPuani");
-        int kmPuani = getInteger(doc, "kmPuani");
-        Integer ilandurum = getInteger(doc, "ilandurum");
-
-        IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
-
-        ArabaIlan arabaIlan = new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
-
-        arabaIlan.setDurum(ilanDurum);
+        int ilanNoInt = -1;
+        try {
 
 
-        arabaIlan.vites = vites;
-        arabaIlan.yakit = yakit;
-        arabaIlan.modelId = modelIdStr;
-        arabaIlan.ilIlce = ilIlce;
-        arabaIlan.kimden = kimden;
-        arabaIlan.aciklama = aciklama;
-        arabaIlan.paketPuani = paketPuani;
-        arabaIlan.vitesPuani = vitesPuani;
-        arabaIlan.yakitPuani = yakitPuani;
-        arabaIlan.kmPuani = kmPuani;
+            int yil = getInteger(doc, "yil");
+            ObjectId id = doc.getObjectId("_id");
+            String modelIdStr = doc.getString("modelId");
+            int km = getInteger(doc, "km");
+            int fiyat = getInteger(doc, "fiyat");
+            String ilanUrl = doc.getString("ilanUrl");
+            String tarihStr = doc.getString("ilanTarhi");
+            String baslik = doc.getString("baslik");
+            String paket = doc.getString("paket");
+            String vites = doc.getString("vites");
+            String kimden = doc.getString("kimden");
+            String ilIlce = doc.getString("ilIlce");
+            String yakit = doc.getString("yakit");
+            String aciklama = doc.getString("aciklama");
+            ilanNoInt = getInteger(doc, "ilanNo");
 
-        arabaIlan.dbId = id;
-        return arabaIlan;
+            int vitesPuani = getInteger(doc, "vitesPuani");
+            int yakitPuani = getInteger(doc, "yakitPuani");
+            int paketPuani = getInteger(doc, "paketPuani");
+            int kmPuani = getInteger(doc, "kmPuani");
+            Integer ilandurum = getInteger(doc, "ilandurum");
+
+            long eklenmeZamaniDb = doc.containsKey("eklenmeZamani") ?   doc.getLong("eklenmeZamani") : -1L;
+            Date eklenmeZamani = DateUtil.getDate(eklenmeZamaniDb);
+
+            IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
+
+            ArabaIlan arabaIlan = new ArabaIlan(yil, fiyat, km, tarihStr, baslik, ilanUrl, ilanNoInt, paket);
+
+            arabaIlan.setDurum(ilanDurum);
+
+            arabaIlan.eklenmeZamani = eklenmeZamani;
+            arabaIlan.vites = vites;
+            arabaIlan.yakit = yakit;
+            arabaIlan.modelId = modelIdStr;
+            arabaIlan.ilIlce = ilIlce;
+            arabaIlan.kimden = kimden;
+            arabaIlan.aciklama = aciklama;
+            arabaIlan.paketPuani = paketPuani;
+            arabaIlan.vitesPuani = vitesPuani;
+            arabaIlan.yakitPuani = yakitPuani;
+            arabaIlan.kmPuani = kmPuani;
+
+            arabaIlan.dbId = id;
+            return arabaIlan;
+        } catch (Exception e) {
+            if (ilanNoInt > -1) {
+                logger.log(Level.WARNING, "{0} nolu ilan icin hata ", String.valueOf(ilanNoInt));
+            }
+            throw e;
+        }
     }
 
     private Integer getInteger(Document doc, String key) {
@@ -364,5 +378,11 @@ public class Repo {
         }
 
         return stringModelIstatistikMap;
+    }
+
+    public void butunIlanlariyayindaYap() {
+        MongoCollection<Document> ilanlar = getIlan();
+
+        ilanlar.updateMany(new Document(), new Document("$set", new Document("yayinda", true)));
     }
 }

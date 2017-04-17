@@ -46,4 +46,8 @@ public class DateUtil {
         long fark = bugun.getTime() - date.getTime();
         return (int) TimeUnit.DAYS.convert(fark, TimeUnit.MILLISECONDS);
     }
+
+    public static Date getDate(long dateLong) {
+        return new Date(dateLong);
+    }
 }

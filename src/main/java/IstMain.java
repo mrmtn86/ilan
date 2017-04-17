@@ -66,6 +66,7 @@ public class IstMain {
         AramaParametre aramaParametre = new AramaParametre();
         aramaParametre.yil = yil;
         aramaParametre.arabaModel = arabaModel;
+        aramaParametre.yayinda = true;
         Map<String, ModelinIlanlari> ilanMap = repo.ilanlariGetir(aramaParametre, keyBuilder);
 
 
