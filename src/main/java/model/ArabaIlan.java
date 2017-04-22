@@ -3,8 +3,6 @@ package model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 
-import java.util.Date;
-
 /**
  * Created by mac on 27/02/17.
  */
@@ -30,14 +28,14 @@ public class ArabaIlan {
     public int ilandurum;
     public String kimden;
     public String aciklama;
-    @JsonIgnore
-    private IlanDurum durum;
     public int vitesPuani;
     public int yakitPuani;
     public int paketPuani;
     public int ilanPuani;
     public boolean yayinda;
     public String eklenmeTarihi;
+    @JsonIgnore
+    private IlanDurum durum;
 
     public ArabaIlan(int yil, int fiyat, int km, String ilanTarhi, String baslik, String ilanUrl, int ilanNoInt, String paket) {
         this.yil = yil;
@@ -79,13 +77,13 @@ public class ArabaIlan {
     public String toString() {
         return "ArabaIlan{ " +
                 " No: " + ilanNo +
-                " puan:" + ilanPuani +
-                " yil:" + yil +
-                " fiyat:" + fiyat +
+                " P:" + ilanPuani +
+                " Y:" + yil +
+                " F:" + fiyat +
                 " km:" + km +
-                " ilanTarhi:'" + ilanTarhi + '\'' +
-                " baslik='" + baslik + '\'' +
-                " url='https://www.sahibinden.com/" + ilanUrl + '\'' +
+                " Tar:'" + ilanTarhi + '\'' +
+                " " + baslik + '\'' +
+                " https://www.sahibinden.com/" + ilanUrl + '\'' +
                 '}';
     }
 

@@ -96,6 +96,7 @@ public class DbPuanlaMain {
 
             for (ArabaIlan arabaIlan : makulIlanlar) {
                 System.out.println(i + ". " + arabaIlan);
+                System.out.println(arabaIlan.aciklama + "\n");
                 writer.println(i++ + ". " + arabaIlan);
             }
 

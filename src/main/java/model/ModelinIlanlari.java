@@ -81,8 +81,10 @@ public class ModelinIlanlari {
         add(424851255);
         add(384601888);
         add(421840448);
+        add(422945990);
         add(420014855);
         add(415816777);
+        add(416600205);
         add(423205863);
         add(422493566);
         add(422547546);
@@ -91,6 +93,7 @@ public class ModelinIlanlari {
         add(421744617);
         add(421104088);
         add(421744617);
+        add(422502425);
         add(419514437);
         add(358238522);
         add(418269095);
