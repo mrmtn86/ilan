@@ -55,8 +55,8 @@ public class DbPuanlaMain {
             System.out.println(arabaModel.ad);
             writer.println(arabaModel.ad);
 
-            List<Integer> ortpuan=new ArrayList<>();
-            List<Integer> ortpuanHepsi= new ArrayList<>();
+            List<Integer> ortpuan = new ArrayList<>();
+            List<Integer> ortpuanHepsi = new ArrayList<>();
 
             List<ArabaIlan> makulIlanlar = new ArrayList<>();
 
@@ -83,19 +83,20 @@ public class DbPuanlaMain {
                     int gunPuan = DateUtil.kacGunGecmis(date) / 3;
 
                     // carpanlar tamamen sallamasyon
-                    int puanHepsi = ((yakitPuani * 4 + vitesPuani * 3 + paketPuani * 2 + kmPuani * 3) / 12) + gunPuan + sehirPuani;
+                    int basePuan = (yakitPuani * 4 + vitesPuani * 3 + paketPuani * 2)/9;
+                    int puanHepsi = ((basePuan * 9 + kmPuani * 3) / 12) + gunPuan + sehirPuani;
                     arabaIlan.ilanPuani = puanHepsi;
 
                     arabaIlan.setDurum(ilanDurumBelirle(arabaIlan));
 
                     if (arabaIlan.getDurum().equals(IlanDurum.Uygun) && arabaIlan.kimden.equals("Sahibinden")) {
-                        if (!benzinlManuelVites(arabaIlan.vites, arabaIlan.yakit)) {
+                       // if (!benzinlManuelVites(arabaIlan.vites, arabaIlan.yakit)) {
                             //  if(arabaIlan.ilanTarhi.equals("2017.04.21"))
                             makulIlanlar.add(arabaIlan);
-                        }
+                        //}
                     }
 
-                    ortpuan.add(arabaIlan.ilanPuani);
+                    ortpuan.add(basePuan);
                     ortpuanHepsi.add(puanHepsi);
                 }
 
@@ -105,14 +106,11 @@ public class DbPuanlaMain {
             }
 
 
-
             System.out.println("ort : " + MatUtil.ortalamaHesapla(ortpuan));
             System.out.println("ort hepsi : " + MatUtil.ortalamaHesapla(ortpuanHepsi));
 
 
             makulIlanlar.sort(new IlanPuanComperator());
-
-
 
 
             for (ArabaIlan arabaIlan : makulIlanlar) {
@@ -129,22 +127,42 @@ public class DbPuanlaMain {
 
     private static int sehirPuaniBelirle(String ilIlce) {
 
-        if (ilIlce.equals("Eskişehir")){
-            return -3;
-        } else if (ilIlce.equals("İzmir")){
-            return -2;
-        }else if (ilIlce.equals("Uşak")){
-            return -1;
-        }  else if (ilIlce.equals("İstanbul")){
-            return 1;
-        }else if (ilIlce.equals("Gaziantep ")){
-            return 5;
-        }else if (ilIlce.equals("Mardin")){
-            return 6;
+        switch (ilIlce) {
+            case "Eskişehir":
+                return -3;
+            case "İzmir":
+                return -2;
+            case "Uşak":
+                return -1;
+            case "İstanbul":
+                return 2;
+            case "Bitlis ":
+                return 5;
+            case "Elazığ":
+                return 6;
+            case "Diyarbakır":
+                return 5;
+            case "Hatay ":
+                return 6;
+            case "Gaziantep ":
+                return 5;
+            case "Kayseri ":
+                return 2;
+            case "Kahramanmaraş ":
+                return 5;
+            case "Mardin":
+                return 6;
+            case "Mersin":
+                return 6;
+            case "Nevşehir":
+                return 4;
+            case "Osmaniye":
+                return 6;
+            default:
+                return 0;
         }
 
 
-        return 0;
     }
 
     private static IlanDurum ilanDurumBelirle(ArabaIlan arabaIlan) {
@@ -156,7 +174,7 @@ public class DbPuanlaMain {
             return IlanDurum.MaxFiyatiAsiyor;
         } else if (arabaIlan.ilanPuani > PUAN_LIMIT) {
             return IlanDurum.PuanUygunDegil;
-        }else if (arabaIlan.kmPuani > KM_PUAN_LIMIT) {
+        } else if (arabaIlan.kmPuani > KM_PUAN_LIMIT) {
             return IlanDurum.KmPuanUygunDegil;
         } else {
             boolean istenmiyorMu = ModelinIlanlari.istenmiyor.contains(arabaIlan.ilanNo);

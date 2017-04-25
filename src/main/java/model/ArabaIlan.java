@@ -82,6 +82,7 @@ public class ArabaIlan {
                 " F:" + fiyat +
                 " km:" + km +
                 " Tar:'" + ilanTarhi + '\'' +
+                " il:'" + ilIlce + '\'' +
                 " " + baslik + '\'' +
                 " https://www.sahibinden.com/" + ilanUrl + '\'' +
                 '}';

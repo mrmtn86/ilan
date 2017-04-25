@@ -8,7 +8,7 @@ import parser.html.KimdenEnum;
  */
 public class AramaParametre {
     private static final String trPlaka = "&a9620=143038";
-    private static final String ilanSayisi = "&pagingSize=50";
+    private static final String ilanSayisi = "pagingSize=50";
     private static final String sort = "&sorting=date_asc";
     private static final String gerigidilecekGun = "&date=3days";
 
@@ -27,7 +27,7 @@ public class AramaParametre {
         this.yakit = yakit;
         this.yil = yil;
         this.arabaModel = arabaModel;
-        kimden += satan.getValue();
+        kimden = satan.getValue();
         this.satan=satan;
     }
 
@@ -49,8 +49,11 @@ public class AramaParametre {
 
 
 
-        String yilQuery = "&a5_min=" + yil + "&a5_max=" + yil;
-        urlresult = urlresult + "/"+kimden+ "?"  + ilanSayisi + trPlaka  + yilQuery + sort ;
+        String yilBasQuery = "&a5_min=" + yil ;
+        String yilBitQuery =  "&a5_max=" + yil;
+
+
+        urlresult = urlresult + "/"+kimden+ "?"  + ilanSayisi +    yilBasQuery + sort  +yilBitQuery + trPlaka ;
 
         //urlresult += gerigidilecekGun;
 

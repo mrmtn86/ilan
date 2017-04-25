@@ -18,7 +18,7 @@ public class ModelinIlanlari {
 
     public static final int PUAN_LIMIT = 95;
     public static int MAX_ARAC_FIYATI = 38000;
-    public static int KM_PUAN_LIMIT = 130;
+    public static int KM_PUAN_LIMIT = 135;
 
     public static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
@@ -38,26 +38,52 @@ public class ModelinIlanlari {
         add(417592735);
         add(385306471);
         add(412279087);
+        add(426009973);
+        add(418664711);
         add(417448859);
         add(407977828);
+        add(426621474);
         add(403794852);
         add(406594195);
         add(398934632);
+        add(426455582);
         add(404522766);
+        add(425054989);
         add(400769020);
         add(404840463);
         add(409044941);
+        add(425853073);
         add(418729819);
+        add(426414639);
+        add(426418816);
+        add(426407106);
+        add(426900151);
+        add(421895423);
+        add(425842004);
+        add(425633430);
+        add(425209947);
+        add(426359128);
+        add(423208497);
+        add(426892237);
+        add(416647628);
+        add(421015351);
+        add(421031242);
     }};
 
     public static List<Integer> istenmiyor = new ArrayList<Integer>() {{
         add(407652445);
         add(397553584);
+        add(424221617);
+        add(425050146);
         add(417476891);
-        add(419758481);
+        add(419787319);
+        add(426419507);
+        add(424998795);
+        add(424180979);
         add(421116948);
         add(420668022);
         add(417333144);
+        add(425630349);
         add(409830835);
         add(421953849);
         add(415574079);
@@ -69,17 +95,68 @@ public class ModelinIlanlari {
         add(421339993);
         add(415769133);
         add(407345449);
+        add(426129787);
+        add(425787983);
         add(419264171);
+        add(395324544);
+        add(423264197);
+        add(426104889);
         add(398370550);
+        add(425328704);
+        add(422249416);
+        add(420773066);
     }};
 
     public static List<Integer> hasarli = new ArrayList<Integer>() {{
         add(413376359);
         add(335988708);
+        add(426079177);
+        add(425826098);
+        add(392228888);
+        add(424958227);
+        add(426404160);
+        add(426068564);
+        add(423694506);
+        add(425703275);
+        add(425357011);
+        add(425679513);
+        add(426910270);
+        add(419867306);
+        add(425326171);
+        add(425381022);
+        add(362114586);
+        add(426858325);
+        add(422470426);
+        add(422994527);
+        add(416255010);
+        add(425007398);
+        add(418211390);
+        add(426142949);
+        add(420360930);
+        add(423667037);
+        add(384983312);
+        add(421765289);
+        add(425465927);
+        add(419002698);
+        add(410532186);
+        add(402557649);
+        add(415314011);
+        add(419171573);
+        add(421932444);
+        add(420625977);
         add(418265375);
+        add(426815910);
+        add(424453695);
+        add(425192325);
+        add(423017279);
         add(419437563);
+        add(426615911);
+        add(425629466);
+        add(426870489);
+        add(416451047);
         add(417625242);
         add(424552149);
+        add(426930507);
         add(425864087);
         add(421276944);
         add(423345726);
@@ -185,6 +262,7 @@ public class ModelinIlanlari {
             "AĞIR HASAR",
             "Komple Boyalı",
             "komple boyali",
+            "PERT KAYDI VARDIR",
             "agir hasar",
             "AGİR HASAR",
             "Ağır hasar kayıtlıdır",
@@ -342,7 +420,6 @@ public class ModelinIlanlari {
             if (arabaIlan.getDurum() == null || arabaIlan.getDurum().ortalamadaKullan) {
                 sayilar.add(arabaIlan.km);
             }
-
         }
 
         int ort = ortalamaHesapla(sayilar);
