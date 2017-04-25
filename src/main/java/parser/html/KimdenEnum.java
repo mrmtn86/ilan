@@ -4,7 +4,7 @@ package parser.html;
  * Created by mac on 08/04/17.
  */
 public enum KimdenEnum {
-    Sahibinden("32474"),Galeriden("32475");
+    Sahibinden("sahibinden"),Galeriden("galeriden");
 
     private String value;
 

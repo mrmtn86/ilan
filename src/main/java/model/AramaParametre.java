@@ -12,7 +12,7 @@ public class AramaParametre {
     private static final String sort = "&sorting=date_asc";
     private static final String gerigidilecekGun = "&date=3days";
 
-    private  String kimden = "a706=";
+    private  String kimden ;
     public int yil;
     public String vites;
     public String yakit;
@@ -40,16 +40,17 @@ public class AramaParametre {
         String urlresult = arabaModel.url;
 
 
-        if (vites != null) {
-            urlresult += "/" + vites;
-        }
         if (yakit != null) {
             urlresult += "/" + yakit;
         }
+        if (vites != null) {
+            urlresult += "/" + vites;
+        }
+
 
 
         String yilQuery = "&a5_min=" + yil + "&a5_max=" + yil;
-        urlresult = urlresult + "?" + kimden + ilanSayisi + trPlaka  + yilQuery + sort ;
+        urlresult = urlresult + "/"+kimden+ "?"  + ilanSayisi + trPlaka  + yilQuery + sort ;
 
         //urlresult += gerigidilecekGun;
 

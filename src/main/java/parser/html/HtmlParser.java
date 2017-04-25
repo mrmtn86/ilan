@@ -64,7 +64,7 @@ public class HtmlParser {
 
         fiyatStr=fiyatStr.replace("$","").replace("€","");
 
-        int fiyatTmp = Integer.parseInt(fiyatStr);
+        int fiyatTmp = Integer.parseInt(fiyatStr.split(",")[0]);
         int fiyat = fiyatTmp;
         ilanUrl = ilanUrl.substring(1, ilanUrl.length());
 

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static java.util.Comparator.naturalOrder;
+import static util.MatUtil.ortalamaHesapla;
 
 /**
  * Created by mtn on 31.03.2017.
@@ -16,8 +17,8 @@ import static java.util.Comparator.naturalOrder;
 public class ModelinIlanlari {
 
     public static final int PUAN_LIMIT = 95;
-    public static final double SIGNIFICANCE_LEVEL = 0.9;
     public static int MAX_ARAC_FIYATI = 38000;
+    public static int KM_PUAN_LIMIT = 130;
 
     public static List<Integer> karaListe = new ArrayList<Integer>() {{
         add(403080735);
@@ -76,6 +77,10 @@ public class ModelinIlanlari {
         add(413376359);
         add(335988708);
         add(418265375);
+        add(419437563);
+        add(417625242);
+        add(424552149);
+        add(425864087);
         add(421276944);
         add(423345726);
         add(424851255);
@@ -149,6 +154,7 @@ public class ModelinIlanlari {
     }};
     public static List<Integer> yanlisbilgi = new ArrayList<Integer>() {{
         add(421038157);
+        add(423511715);
 
     }};
     public static String[] kusurluAciklamlar = {"ağır hasar kaydı var",
@@ -319,7 +325,7 @@ public class ModelinIlanlari {
         List<Integer> sayilar = new ArrayList<>();
 
         for (ArabaIlan arabaIlan : arabaIlanList) {
-            if (arabaIlan.getDurum() != null && arabaIlan.getDurum().ortalamadaKullan) {
+            if (arabaIlan.getDurum() == null || arabaIlan.getDurum().ortalamadaKullan) {
                 sayilar.add(arabaIlan.fiyat);
             }
         }
@@ -333,7 +339,7 @@ public class ModelinIlanlari {
         List<Integer> sayilar = new ArrayList<>();
 
         for (ArabaIlan arabaIlan : arabaIlanList) {
-            if (arabaIlan.getDurum() != null && arabaIlan.getDurum().ortalamadaKullan) {
+            if (arabaIlan.getDurum() == null || arabaIlan.getDurum().ortalamadaKullan) {
                 sayilar.add(arabaIlan.km);
             }
 
@@ -345,27 +351,7 @@ public class ModelinIlanlari {
         return ort;
     }
 
-    private int ortalamaHesapla(List<Integer> sayilar) {
 
-        sayilar.sort(naturalOrder());
-
-        MathUtil mathUtil = new MathUtil();
-
-        while (mathUtil.getOutlier(sayilar, SIGNIFICANCE_LEVEL) != null) {
-            double average = mathUtil.average(sayilar);
-            Integer outlier = mathUtil.getOutlier(sayilar, SIGNIFICANCE_LEVEL);
-            if (outlier > average) {
-                sayilar = sayilar.subList(0, sayilar.size() - 1);
-            } else {
-                sayilar = sayilar.subList(1, sayilar.size());
-            }
-        }
-
-        int average = (int) mathUtil.average(sayilar);
-        if (average == 0)
-            average = 1;
-        return average;
-    }
 
 
 }

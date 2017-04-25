@@ -4,6 +4,7 @@ import model.*;
 import model.ModelinIlanlari;
 import parser.html.HtmlParser;
 import util.DateUtil;
+import util.MatUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -47,11 +48,19 @@ public class DbPuanlaMain {
         System.out.println(DateUtil.nowDbDateTime());
         writer.println(DateUtil.nowDbDateTime());
 
+        int i = 1;
+
         for (ArabaModel arabaModel : modeller) {
 
             System.out.println(arabaModel.ad);
             writer.println(arabaModel.ad);
+
+            List<Integer> ortpuan=new ArrayList<>();
+            List<Integer> ortpuanHepsi= new ArrayList<>();
+
             List<ArabaIlan> makulIlanlar = new ArrayList<>();
+
+
             for (int yilParam = arabaModel.baslangicYili; yilParam <= BITIS_YIL; yilParam++) {
 
                 AramaParametre aramaParametre = new AramaParametre();
@@ -68,12 +77,14 @@ public class DbPuanlaMain {
                     int vitesPuani = arabaIlan.vitesPuani;
                     int paketPuani = arabaIlan.paketPuani;
                     int kmPuani = arabaIlan.kmPuani;
+                    int sehirPuani = sehirPuaniBelirle(arabaIlan.ilIlce);
 
                     Date date = DateUtil.dbDateToDate(arabaIlan.ilanTarhi);
-                    int gunPuan = DateUtil.kacGunGecmis(date) / 5;
+                    int gunPuan = DateUtil.kacGunGecmis(date) / 3;
 
                     // carpanlar tamamen sallamasyon
-                    arabaIlan.ilanPuani = ((yakitPuani * 4 + vitesPuani * 3 + paketPuani * 2 + kmPuani * 3) / 12) + gunPuan;
+                    int puanHepsi = ((yakitPuani * 4 + vitesPuani * 3 + paketPuani * 2 + kmPuani * 3) / 12) + gunPuan + sehirPuani;
+                    arabaIlan.ilanPuani = puanHepsi;
 
                     arabaIlan.setDurum(ilanDurumBelirle(arabaIlan));
 
@@ -83,15 +94,25 @@ public class DbPuanlaMain {
                             makulIlanlar.add(arabaIlan);
                         }
                     }
+
+                    ortpuan.add(arabaIlan.ilanPuani);
+                    ortpuanHepsi.add(puanHepsi);
                 }
+
 
                 repo.ilanlariGuncelle(modelinIlanlari.arabaIlanList);
 
             }
 
+
+
+            System.out.println("ort : " + MatUtil.ortalamaHesapla(ortpuan));
+            System.out.println("ort hepsi : " + MatUtil.ortalamaHesapla(ortpuanHepsi));
+
+
             makulIlanlar.sort(new IlanPuanComperator());
 
-            int i = 1;
+
 
 
             for (ArabaIlan arabaIlan : makulIlanlar) {
@@ -106,6 +127,26 @@ public class DbPuanlaMain {
         writer.close();
     }
 
+    private static int sehirPuaniBelirle(String ilIlce) {
+
+        if (ilIlce.equals("Eskişehir")){
+            return -3;
+        } else if (ilIlce.equals("İzmir")){
+            return -2;
+        }else if (ilIlce.equals("Uşak")){
+            return -1;
+        }  else if (ilIlce.equals("İstanbul")){
+            return 1;
+        }else if (ilIlce.equals("Gaziantep ")){
+            return 5;
+        }else if (ilIlce.equals("Mardin")){
+            return 6;
+        }
+
+
+        return 0;
+    }
+
     private static IlanDurum ilanDurumBelirle(ArabaIlan arabaIlan) {
         boolean karaListede = ModelinIlanlari.karaListe.contains(arabaIlan.ilanNo);
 
@@ -115,6 +156,8 @@ public class DbPuanlaMain {
             return IlanDurum.MaxFiyatiAsiyor;
         } else if (arabaIlan.ilanPuani > PUAN_LIMIT) {
             return IlanDurum.PuanUygunDegil;
+        }else if (arabaIlan.kmPuani > KM_PUAN_LIMIT) {
+            return IlanDurum.KmPuanUygunDegil;
         } else {
             boolean istenmiyorMu = ModelinIlanlari.istenmiyor.contains(arabaIlan.ilanNo);
             if (istenmiyorMu) {

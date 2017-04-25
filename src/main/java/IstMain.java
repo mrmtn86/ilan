@@ -93,19 +93,19 @@ public class IstMain {
                 int ilandurum = arabaIlan.ilandurum;
                 IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
 
-                // uygunsuz ilanlari ortalamaya almayalim
-                if (ilanDurum.equals(IlanDurum.AciklamadaUygunsuzlukVar) || ilanDurum.equals(IlanDurum.YanlisBilgi) || ilanDurum.equals(IlanDurum.Hasarli) || ilanDurum.equals(IlanDurum.KaraLisetede)) {
-                    continue;
+                if (ilanDurum != null)
+                    // uygunsuz ilanlari ortalamaya almayalim
+                {
+                    if (ilanDurum.equals(IlanDurum.AciklamadaUygunsuzlukVar) || ilanDurum.equals(IlanDurum.YanlisBilgi) || ilanDurum.equals(IlanDurum.Hasarli) || ilanDurum.equals(IlanDurum.KaraLisetede)) {
+                        continue;
+                    }
                 }
 
                 ortalamayaKatilanAracSayisi++;
                 int kmPuan = kmPuanla(ortalamaKm, arabaIlan.km);
 
-                int fiyatPuan = arabaIlan.fiyat * 100 / ortalamaFiyat;
 
-
-                // fiyat puani daha kiymetli
-                int puan = (fiyatPuan);
+                int puan = (arabaIlan.fiyat * 100 / ortalamaFiyat);
 
                 arabaIlan.kmPuani = kmPuan;
                 keyBuilder.setKeyPuan(arabaIlan, puan);
@@ -128,19 +128,19 @@ public class IstMain {
         int kmDilim = 1000;
 
         if (ortalamaKm >= 200000) {
-            kmDilim = 50000;
+            kmDilim = 35000;
         } else if (160000 <= ortalamaKm && ortalamaKm < 200000) {
-            kmDilim = 40000;
-        } else if (100000 <= ortalamaKm && ortalamaKm < 160000) {
-            kmDilim = 30000;
-        } else if (60000 <= ortalamaKm && ortalamaKm < 100000) {
             kmDilim = 20000;
-        } else if (30000 <= ortalamaKm && ortalamaKm < 60000) {
-            kmDilim = 10000;
-        } else if (10000 <= ortalamaKm && ortalamaKm < 30000) {
+        } else if (80000 <= ortalamaKm && ortalamaKm < 160000) {
+            kmDilim = 12000;
+        } else if (40000 <= ortalamaKm && ortalamaKm < 800000) {
+            kmDilim = 8000;
+        } else if (20000 <= ortalamaKm && ortalamaKm < 40000) {
             kmDilim = 5000;
+        } else if (10000 <= ortalamaKm && ortalamaKm < 20000) {
+            kmDilim = 3000;
         } else if (5000 <= ortalamaKm && ortalamaKm < 10000) {
-            kmDilim = 2500;
+            kmDilim = 2000;
         }
 
         int fark = ortalamaKm - km;
