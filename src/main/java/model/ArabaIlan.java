@@ -18,7 +18,6 @@ public class ArabaIlan {
     public String ilanUrl;
     public int ilanNo;
     public String paket;
-    //todo bunlari silelim daha sonra
     public int kmPuani;
     public int fiyatPuani;
 

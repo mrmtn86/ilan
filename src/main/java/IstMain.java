@@ -94,7 +94,7 @@ public class IstMain {
                 IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
 
                 if (ilanDurum != null)
-                    // uygunsuz ilanlari ortalamaya almayalim
+                // uygunsuz ilanlari ortalamaya almayalim
                 {
                     if (ilanDurum.equals(IlanDurum.AciklamadaUygunsuzlukVar) || ilanDurum.equals(IlanDurum.YanlisBilgi) || ilanDurum.equals(IlanDurum.Hasarli) || ilanDurum.equals(IlanDurum.KaraLisetede)) {
                         continue;
@@ -102,14 +102,10 @@ public class IstMain {
                 }
 
                 ortalamayaKatilanAracSayisi++;
-                int kmPuan = kmPuanla(ortalamaKm, arabaIlan.km);
-
 
                 int puan = (arabaIlan.fiyat * 100 / ortalamaFiyat);
 
-                arabaIlan.kmPuani = kmPuan;
                 keyBuilder.setKeyPuan(arabaIlan, puan);
-                //arabaIlan.yayinda = true;
             }
 
             String toplamArac = String.valueOf(modelinIlanlari.arabaIlanList.size());
@@ -122,37 +118,6 @@ public class IstMain {
             repo.ilanlariGuncelle(modelinIlanlari.arabaIlanList);
 
         }
-    }
-
-    private static int kmPuanla(int ortalamaKm, int km) {
-        int kmDilim = 1000;
-
-        if (ortalamaKm >= 200000) {
-            kmDilim = 35000;
-        } else if (160000 <= ortalamaKm && ortalamaKm < 200000) {
-            kmDilim = 20000;
-        } else if (80000 <= ortalamaKm && ortalamaKm < 160000) {
-            kmDilim = 12000;
-        } else if (40000 <= ortalamaKm && ortalamaKm < 800000) {
-            kmDilim = 8000;
-        } else if (20000 <= ortalamaKm && ortalamaKm < 40000) {
-            kmDilim = 5000;
-        } else if (10000 <= ortalamaKm && ortalamaKm < 20000) {
-            kmDilim = 3000;
-        } else if (5000 <= ortalamaKm && ortalamaKm < 10000) {
-            kmDilim = 2000;
-        }
-
-        int fark = ortalamaKm - km;
-
-        double carpan = 5.0;
-
-        // eger ortalamanin uzaerinde surdu ise carpani artiriyoruz
-        // boylece sacma kmsi cok ilanlarin iyi puan alma sansi azalcak
-        if (fark < 0) {
-            carpan = 10;
-        }
-        return 100 - (int) (((fark * carpan) / (kmDilim)));
     }
 
     private static void satirYaz(String key, String ortalamaFiyat, String ortalamaKm, String toplamArac, PrintWriter writer) {

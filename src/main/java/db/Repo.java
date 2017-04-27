@@ -250,7 +250,7 @@ public class Repo {
 
         MongoCursor<Document> iterator = getDocumentMongoCursor(aramaParametre);
 
-        ModelinIlanlari modelinIlanlari = new ModelinIlanlari(this);
+        ModelinIlanlari modelinIlanlari = new ModelinIlanlari();
         while (iterator.hasNext()) {
             Document document = iterator.next();
 
@@ -275,7 +275,7 @@ public class Repo {
         for (ArabaIlan arabaIlan : modelinIlanlari1.arabaIlanList) {
 
             String key = keyBuilder.getKey(arabaIlan);
-            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(key, k -> new ModelinIlanlari(this));
+            ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(key, k -> new ModelinIlanlari());
 
             modelinIlanlari.ilanEkle(arabaIlan);
         }
@@ -360,26 +360,30 @@ public class Repo {
 
         MongoCollection<Document> modelIsatitistik = db.getCollection("modelIsatitistik");
         Document filter = new Document("modelId", modelId)
-                .append("yil", yil);
+                .append("yil", yil).append("aktif" , true);
+
 
         if (key != null) {
             filter.append("key", key);
         }
 
+
         MongoIterable<Document> documents = modelIsatitistik.find(filter);
 
         Map<String, ModelIstatistik> stringModelIstatistikMap = new HashMap<>();
 
-        while (documents.iterator().hasNext()) {
-            Document istDoc = documents.iterator().next();
+        MongoCursor<Document> iterator = documents.iterator();
+        while (iterator.hasNext()) {
+            Document istDoc = iterator.next();
 
             String istTarihi = istDoc.getString("istTarihi");
             int ortKm = istDoc.getInteger("ortKm");
             int ortFiyat = istDoc.getInteger("ortFiyat");
+            String keyIst = istDoc.getString("key");
 
-            ModelIstatistik modelIstatistik = new ModelIstatistik(modelId, yil, key, istTarihi, ortKm, ortFiyat);
+            ModelIstatistik modelIstatistik = new ModelIstatistik(modelId, yil, keyIst, istTarihi, ortKm, ortFiyat);
 
-            stringModelIstatistikMap.put(key, modelIstatistik);
+            stringModelIstatistikMap.put(keyIst, modelIstatistik);
         }
 
         return stringModelIstatistikMap;
@@ -390,4 +394,6 @@ public class Repo {
 
         ilanlar.updateMany(new Document(), new Document("$set", new Document("yayinda", true)));
     }
+
+
 }
