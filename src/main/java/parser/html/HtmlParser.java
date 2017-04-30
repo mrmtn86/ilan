@@ -62,6 +62,8 @@ public class HtmlParser {
         int yil = Integer.parseInt(yilElement);
         int km = Integer.parseInt(kmElement);
 
+        fiyatStr=fiyatStr.replace("$","").replace("€","");
+
         int fiyatTmp = Integer.parseInt(fiyatStr);
         int fiyat = fiyatTmp;
         ilanUrl = ilanUrl.substring(1, ilanUrl.length());
@@ -70,6 +72,7 @@ public class HtmlParser {
 
         tarihStr= DateUtil.htmlDateTodbDate(tarihStr);
         String baslik = element.select(".searchResultsTitleValue").text();
+        baslik = baslik.replace("Favorilerime Ekle Favorilerimde Karşılaştır " , "");
         String ilIlce = element.select(".searchResultsLocationValue").text();
 
         int ilanNoInt = Integer.parseInt(ilanNo);

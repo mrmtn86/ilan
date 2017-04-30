@@ -12,8 +12,7 @@ import java.util.List;
 public class AramaParametreBuilder {
 
     public static final int BITIS_YIL = 2017;
-  //  public static final int BASLANGIC_YIL = 2007;
-    static boolean MANUEL_BENZIN_PAS_GEC = false;
+    private static boolean MANUEL_BENZIN_PAS_GEC = false;
     private static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
     private static String[] vitesSecenek = {"otomatik,yari-otomatik", "manuel"};
 
@@ -26,7 +25,7 @@ public class AramaParametreBuilder {
 
                 for (KimdenEnum satan : KimdenEnum.values()) {
                     //benzinli manuel olanlarla ilgilenme
-                    if (MANUEL_BENZIN_PAS_GEC && vites.equals(vitesSecenek[1]) && yakit.equals(yakitSecenek[1])) {
+                    if (MANUEL_BENZIN_PAS_GEC && benzinlManuelVites(vites, yakit)) {
                         continue;
                     }
 
@@ -37,6 +36,10 @@ public class AramaParametreBuilder {
             }
         }
         return aramaPAramtreler;
+    }
+
+    public static boolean benzinlManuelVites(String vites, String yakit) {
+        return vites.equals(vitesSecenek[1]) && yakit.equals(yakitSecenek[1]);
     }
 
 

@@ -2,6 +2,7 @@ import db.Repo;
 import entity.ArabaModel;
 import model.ArabaIlan;
 import model.AramaParametre;
+import model.IlanDurum;
 import model.ModelinIlanlari;
 import model.istatistik.ModelIstatistik;
 import model.keybuilder.ArabaIlanKeyBuilder;
@@ -27,7 +28,7 @@ public class IstMain {
         Repo repo = new Repo();
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter("the-file-name.txt", "UTF-8");
+            writer = new PrintWriter("ist.txt", "UTF-8");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
@@ -44,7 +45,7 @@ public class IstMain {
 
                 System.out.println("");
                 System.out.println(arabaModel.ad + " - " + yil);
-                writer.println("\n"+arabaModel.ad + " - " + yil);
+                writer.println("\n" + arabaModel.ad + " - " + yil);
 
                 ArabaIlanKeyBuilder paketKeyBuilder = new ArabaIlanPaketKeyBuilder(arabaModel.paketler);
                 istatistikYaz(repo, arabaModel, yil, paketKeyBuilder, writer);
@@ -89,6 +90,14 @@ public class IstMain {
                     continue;
                 }
 
+                int ilandurum = arabaIlan.ilandurum;
+                IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
+
+                // uygunsuz ilanlari ortalamaya almayalim
+                if (ilanDurum.equals(IlanDurum.AciklamadaUygunsuzlukVar) || ilanDurum.equals(IlanDurum.YanlisBilgi) || ilanDurum.equals(IlanDurum.Hasarli) || ilanDurum.equals(IlanDurum.KaraLisetede)) {
+                    continue;
+                }
+
                 ortalamayaKatilanAracSayisi++;
                 int kmPuan = kmPuanla(ortalamaKm, arabaIlan.km);
 
@@ -96,7 +105,7 @@ public class IstMain {
 
 
                 // fiyat puani daha kiymetli
-                int puan = (fiyatPuan * 7 + kmPuan*3) / 10;
+                int puan = (fiyatPuan);
 
                 arabaIlan.kmPuani = kmPuan;
                 keyBuilder.setKeyPuan(arabaIlan, puan);
@@ -105,7 +114,7 @@ public class IstMain {
 
             String toplamArac = String.valueOf(modelinIlanlari.arabaIlanList.size());
             toplamArac = ortalamayaKatilanAracSayisi + "/" + toplamArac;
-            satirYaz(key, String.valueOf(ortalamaFiyat), String.valueOf(ortalamaKm), toplamArac, writer );
+            satirYaz(key, String.valueOf(ortalamaFiyat), String.valueOf(ortalamaKm), toplamArac, writer);
 
             ModelIstatistik modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), yil, key, DateUtil.nowDbDateTime(), ortalamaKm, ortalamaFiyat);
             repo.istatistikKaydet(modelIstatistik);
@@ -136,7 +145,14 @@ public class IstMain {
 
         int fark = ortalamaKm - km;
 
-        return 100 - (int) (((fark * 5.0) / (kmDilim)));
+        double carpan = 5.0;
+
+        // eger ortalamanin uzaerinde surdu ise carpani artiriyoruz
+        // boylece sacma kmsi cok ilanlarin iyi puan alma sansi azalcak
+        if (fark < 0) {
+            carpan = 10;
+        }
+        return 100 - (int) (((fark * carpan) / (kmDilim)));
     }
 
     private static void satirYaz(String key, String ortalamaFiyat, String ortalamaKm, String toplamArac, PrintWriter writer) {

@@ -1,0 +1,281 @@
+KEY                              ORT FİYAT  ORt KM      TOP ILAN   
+
+fiesta - 2010
+My Fiesta                       35150       125606      10/10      
+Trend                           33693       141512      118/130    
+Titanium                        38328       112859      167/175    
+diger                           35333       100866      6/6        
+dizel                           35755       140808      208/219    
+benzin-lpg,benzin               37805       89230       93/102     
+otomatik,yari-otomatik          41469       98115       13/15      
+manuel                          36159       126028      288/306    
+
+fiesta - 2011
+My Fiesta                       37085       97810       59/62      
+Trend                           34907       139465      185/204    
+Titanium                        39621       105038      311/325    
+diger                           33500       94000       1/1        
+dizel                           37268       128393      394/418    
+benzin-lpg,benzin               38927       84899       162/174    
+otomatik,yari-otomatik          42735       71089       47/49      
+manuel                          37292       119964      509/543    
+
+fiesta - 2012
+My Fiesta                       38728       70877       31/34      
+Trend                           37189       117875      287/305    
+Titanium                        42261       85580       260/270    
+dizel                           39167       111597      438/459    
+benzin-lpg,benzin               40660       64157       140/150    
+otomatik,yari-otomatik          44768       58338       49/51      
+manuel                          39083       104180      529/558    
+
+fiesta - 2013
+My Fiesta                       38725       78839       10/10      
+Trend                           41388       90895       415/433    
+Titanium                        47038       66921       196/202    
+dizel                           43174       95170       436/447    
+benzin-lpg,benzin               42953       53341       185/198    
+otomatik,yari-otomatik          48066       50752       59/60      
+manuel                          42587       86871       562/585    
+
+fiesta - 2014
+Titanium                        51006       39594       77/77      
+Trend                           44192       65072       202/205    
+dizel                           45928       72924       165/167    
+benzin-lpg,benzin               46167       37527       114/115    
+otomatik,yari-otomatik          51966       32060       48/48      
+manuel                          44780       64595       231/234    
+
+fiesta - 2015
+Trend                           47889       40859       155/157    
+Titanium                        54638       30854       81/82      
+diger                           54650       17459       5/5        
+dizel                           51089       49034       124/124    
+benzin-lpg,benzin               49458       22921       117/120    
+otomatik,yari-otomatik          53138       23948       55/56      
+manuel                          49458       40944       186/188    
+
+fiesta - 2016
+Trend                           51357       15701       56/56      
+Titanium                        61642       7855        56/56      
+dizel                           62996       16623       44/44      
+benzin-lpg,benzin               52785       9925        68/68      
+otomatik,yari-otomatik          59459       7367        28/28      
+manuel                          55652       13683       84/84      
+
+fiesta - 2017
+Trend                           51500       2550        3/3        
+benzin-lpg,benzin               51500       2550        3/3        
+manuel                          51500       2550        3/3        
+
+polo - 2009
+Trendline                       35162       123153      101/105    
+diger                           34261       75455       10/10      
+Comfortline                     32200       112260      5/6        
+dizel                           32845       172236      41/41      
+benzin-lpg,benzin               36136       89421       75/80      
+otomatik,yari-otomatik          38897       80369       20/20      
+manuel                          34278       126492      96/101     
+
+polo - 2010
+Trendline                       32643       175534      12/12      
+diger                           42500       107000      1/2        
+Comfortline                     40950       116826      172/175    
+benzin-lpg,benzin               41319       91612       98/102     
+dizel                           39603       153213      87/87      
+otomatik,yari-otomatik          44392       100008      49/51      
+manuel                          39031       127993      136/138    
+
+polo - 2011
+BlueMotion                      41300       124461      13/14      
+Trendline                       38119       105252      62/69      
+diger                           55679       81517       33/33      
+Comfortline                     43281       108131      292/307    
+benzin-lpg,benzin               44122       80216       185/203    
+dizel                           42796       127667      215/220    
+otomatik,yari-otomatik          49854       88462       102/103    
+manuel                          41166       111105      298/320    
+
+polo - 2012
+BlueMotion                      44131       98401       41/44      
+Pulse                           44137       52425       4/5        
+Trendline                       38673       118727      233/241    
+diger                           58267       84185       14/14      
+Chrome Edition                  46900       28092       1/1        
+Comfortline                     46192       88459       243/250    
+benzin-lpg,benzin               44843       70299       142/150    
+dizel                           42358       112551      394/405    
+otomatik,yari-otomatik          50868       81369       100/102    
+manuel                          41190       106214      436/453    
+
+polo - 2013
+BlueMotion                      46951       74047       20/20      
+Trendline                       40720       100265      259/269    
+diger                           65906       56766       16/16      
+Chrome Edition                  49674       46950       61/62      
+Comfortline                     50353       74190       265/269    
+benzin-lpg,benzin               47406       52026       212/221    
+dizel                           45937       97591       409/415    
+otomatik,yari-otomatik          54714       66612       156/156    
+manuel                          43780       87252       465/480    
+
+polo - 2014
+BlueMotion                      49206       64120       8/9        
+Trendline                       44075       76596       200/204    
+diger                           56930       52064       20/20      
+Chrome Edition                  51725       37805       16/16      
+Comfortline                     54810       50533       234/234    
+benzin-lpg,benzin               49563       40979       148/150    
+dizel                           50500       71733       330/333    
+otomatik,yari-otomatik          57667       53853       147/147    
+manuel                          46898       66508       331/336    
+
+polo - 2015
+Trendline                       49808       40927       99/99      
+Lounge                          59810       18608       38/38      
+diger                           62450       31937       16/16      
+Comfortline                     59011       35202       211/211    
+benzin-lpg,benzin               53625       26273       166/166    
+dizel                           59260       42699       198/198    
+otomatik,yari-otomatik          62997       35263       145/145    
+manuel                          52405       34679       219/219    
+
+polo - 2016
+Trendline                       52954       19232       78/78      
+Lounge                          65121       9389        34/34      
+Allstar                         64651       6950        30/30      
+diger                           71916       13066       6/6        
+Comfortline                     66581       12412       295/295    
+benzin-lpg,benzin               60033       9390        183/183    
+dizel                           66752       15417       260/260    
+otomatik,yari-otomatik          68376       12227       272/272    
+manuel                          57082       14375       171/171    
+
+polo - 2017
+Lounge                          68500       32000       1/1        
+Allstar                         72500       3329        7/7        
+Comfortline                     71258       59          12/12      
+benzin-lpg,benzin               69843       2           16/16      
+dizel                           77500       1           4/4        
+otomatik,yari-otomatik          72026       1           19/19      
+manuel                          59000       14000       1/1        
+
+corolla - 2007
+Elegant                         41877       158250      54/56      
+Comfort                         39025       169864      117/120    
+Class                           36166       198865      23/23      
+diger                           38271       158839      72/77      
+Terra                           35500       177079      134/145    
+benzin-lpg,benzin               40360       137576      147/155    
+dizel                           36574       189533      253/266    
+otomatik,yari-otomatik          38216       179950      123/126    
+manuel                          37854       167521      277/295    
+
+corolla - 2008
+Active                          31000       126000      1/1        
+Elegant                         42501       164977      188/190    
+Comfort                         41201       160521      191/200    
+Class                           38286       179690      52/54      
+benzin-lpg,benzin               43288       136461      157/163    
+dizel                           40310       180203      275/282    
+otomatik,yari-otomatik          41413       169697      186/194    
+manuel                          41376       160811      246/251    
+
+corolla - 2009
+Elegant                         45030       147757      145/153    
+Comfort                         43139       147598      144/157    
+Class                           39025       191108      56/58      
+Terra                           18375       126500      2/2        
+benzin-lpg,benzin               45865       117810      81/85      
+dizel                           42452       165067      266/285    
+otomatik,yari-otomatik          43634       157624      103/112    
+manuel                          43075       154659      244/258    
+
+corolla - 2010
+Elegant                         49848       123806      129/131    
+Comfort                         46123       131916      200/205    
+Premium                         49750       170000      1/1        
+Class                           40457       180035      14/14      
+diger                           40000       190000      1/1        
+benzin-lpg,benzin               48101       103434      134/138    
+dizel                           46756       148813      211/214    
+otomatik,yari-otomatik          47672       141118      135/137    
+manuel                          47026       124688      210/215    
+
+corolla - 2011
+Elegant                         53255       116568      234/235    
+Comfort                         49186       114262      488/492    
+benzin-lpg,benzin               49431       89770       237/239    
+dizel                           51033       126484      485/488    
+otomatik,yari-otomatik          51608       125836      222/224    
+manuel                          50016       110178      500/503    
+
+corolla - 2012
+Elegant                         56995       101453      144/144    
+Comfort                         52714       96201       234/235    
+diger                           51500       142000      1/1        
+benzin-lpg,benzin               52174       72484       106/107    
+dizel                           55177       108373      273/273    
+otomatik,yari-otomatik          55252       105036      157/157    
+manuel                          53690       93582       222/223    
+
+corolla - 2013
+Active                          62839       88455       54/54      
+Advance                         64427       74119       133/133    
+Elegant                         63352       63643       27/27      
+Comfort                         54216       72586       59/59      
+Life                            52083       68870       59/60      
+Premium                         69128       66814       62/62      
+Touch                           63026       89637       55/55      
+diger                           77500       33000       1/1        
+benzin-lpg,benzin               57114       58208       150/151    
+dizel                           63764       83567       300/300    
+otomatik,yari-otomatik          64154       83994       225/225    
+manuel                          58902       66193       225/226    
+
+corolla - 2014
+Active                          66049       64491       63/63      
+Advance                         68344       50598       207/207    
+Elegant                         74750       59061       2/2        
+Comfort                         56600       47680       5/5        
+Life                            52266       38195       96/96      
+Premium                         71363       53554       47/47      
+Touch                           66037       65262       122/122    
+diger                           77500       45000       1/1        
+benzin-lpg,benzin               60091       38724       218/218    
+dizel                           68106       64752       325/325    
+otomatik,yari-otomatik          67531       61313       316/316    
+manuel                          61051       45548       227/227    
+
+corolla - 2015
+Active                          69654       45884       23/23      
+Advance                         73518       29816       262/262    
+Comfort                         55500       15500       2/2        
+Life                            55259       26595       211/212    
+Premium                         80211       24983       45/45      
+Touch                           70627       35610       170/170    
+benzin-lpg,benzin               63051       24935       410/411    
+dizel                           73532       39524       303/303    
+otomatik,yari-otomatik          73017       35057       342/342    
+manuel                          62524       26694       371/372    
+
+corolla - 2016
+Active                          47575       102500      2/2        
+Advance                         81168       11383       189/189    
+Life                            59676       9225        184/184    
+Premium                         90786       9742        29/29      
+Touch                           76553       15592       77/77      
+benzin-lpg,benzin               67549       9419        314/314    
+dizel                           82772       14715       167/167    
+otomatik,yari-otomatik          81849       14024       209/209    
+manuel                          65527       9240        272/272    
+
+corolla - 2017
+Advance                         76859       1510        5/5        
+Life                            65187       150         5/5        
+Premium                         73000       14000       1/1        
+Touch                           63999       1           4/4        
+benzin-lpg,benzin               66845       495         12/12      
+dizel                           71632       1           3/3        
+otomatik,yari-otomatik          91500       3750        1/1        
+manuel                          66110       57          14/14      

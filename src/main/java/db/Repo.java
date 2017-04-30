@@ -18,7 +18,6 @@ import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import util.DateUtil;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -149,6 +148,10 @@ public class Repo {
 
 
         for (ArabaIlan arabaIlan : ilanlar) {
+
+            arabaIlan.baslik = arabaIlan.baslik.replace("Favorilerime Ekle Favorilerimde Karşılaştır ", "");
+            arabaIlan.ilIlce = arabaIlan.ilIlce.split(" ")[0];
+
             Bson query = new Document("ilanNo", arabaIlan.ilanNo);
             String json = toJson(arabaIlan);
 
@@ -201,10 +204,11 @@ public class Repo {
             int yakitPuani = getInteger(doc, "yakitPuani");
             int paketPuani = getInteger(doc, "paketPuani");
             int kmPuani = getInteger(doc, "kmPuani");
+            boolean yayinda = doc.getBoolean("yayinda");
             Integer ilandurum = getInteger(doc, "ilandurum");
 
-            long eklenmeZamaniDb = doc.containsKey("eklenmeZamani") ?   doc.getLong("eklenmeZamani") : -1L;
-            Date eklenmeZamani = DateUtil.getDate(eklenmeZamaniDb);
+            String eklenmeTarihi = doc.containsKey("eklenmeTarihi") ? doc.getString("eklenmeTarihi") : tarihStr;
+
 
             IlanDurum ilanDurum = IlanDurum.getEnum(ilandurum);
 
@@ -212,7 +216,7 @@ public class Repo {
 
             arabaIlan.setDurum(ilanDurum);
 
-            arabaIlan.eklenmeZamani = eklenmeZamani;
+            arabaIlan.eklenmeTarihi = eklenmeTarihi;
             arabaIlan.vites = vites;
             arabaIlan.yakit = yakit;
             arabaIlan.modelId = modelIdStr;
@@ -223,6 +227,7 @@ public class Repo {
             arabaIlan.vitesPuani = vitesPuani;
             arabaIlan.yakitPuani = yakitPuani;
             arabaIlan.kmPuani = kmPuani;
+            arabaIlan.yayinda = yayinda;
 
             arabaIlan.dbId = id;
             return arabaIlan;
@@ -251,6 +256,11 @@ public class Repo {
 
             ArabaIlan arabaIlan = getArabaIlan(document);
 
+            if (aramaParametre.yayinda != null && arabaIlan.yayinda != aramaParametre.yayinda) {
+                continue;
+
+            }
+
             modelinIlanlari.ilanEkle(arabaIlan);
 
         }
@@ -259,13 +269,10 @@ public class Repo {
 
     public Map<String, ModelinIlanlari> ilanlariGetir(AramaParametre aramaParametreItr, ArabaIlanKeyBuilder keyBuilder) {
 
-        MongoCursor<Document> iterator = getDocumentMongoCursor(aramaParametreItr);
+        ModelinIlanlari modelinIlanlari1 = ilanlariGetir(aramaParametreItr);
         Map<String, ModelinIlanlari> modelinIlanlariMap = new HashMap<>();
 
-        while (iterator.hasNext()) {
-            Document document = iterator.next();
-
-            ArabaIlan arabaIlan = getArabaIlan(document);
+        for (ArabaIlan arabaIlan : modelinIlanlari1.arabaIlanList) {
 
             String key = keyBuilder.getKey(arabaIlan);
             ModelinIlanlari modelinIlanlari = modelinIlanlariMap.computeIfAbsent(key, k -> new ModelinIlanlari(this));
@@ -315,9 +322,7 @@ public class Repo {
         if (aramaParametre.satan != null) {
             filter = filter.append("kimden", aramaParametre.satan.toString());
         }
-        if (aramaParametre.yayinda != null) {
-            filter = filter.append("yayinda", new Document("$eq", aramaParametre.yayinda.booleanValue()));
-        }
+
 
         MongoIterable<Document> ilanDocs = getIlan()
                 .find(filter);

@@ -5,6 +5,7 @@ import model.ArabaIlan;
 import model.AramaParametre;
 import parser.html.AramaParametreBuilder;
 import parser.html.HtmlParser;
+import util.DateUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ public class Main {
                 List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
 
                 for (AramaParametre aramaParametreItr : aramaParametres) {
-                    aramaParametreItr.yayinda = true;
                     guncellenenAracSayisi += dbguncelle(aramaParametreItr, repo);
 
                 }
@@ -82,6 +82,7 @@ public class Main {
             arabaIlan.yakit = aramaParametre.yakit;
             arabaIlan.kimden = aramaParametre.satan.toString();
             arabaIlan.yayinda = true;
+            arabaIlan.eklenmeTarihi = DateUtil.nowDbDateTime();
 
             yeniAraclar.add(arabaIlan);
             ekleAracSayisi++;
