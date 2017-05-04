@@ -15,9 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static parser.html.AramaParametreBuilder.BITIS_YIL;
 
-//import static parser.html.AramaParametreBuilder.BASLANGIC_YIL;
 
 public class Main {
 
@@ -33,7 +31,7 @@ public class Main {
         int guncellenenAracSayisi = 0;
         for (ArabaModel arabaModel : modeller) {
 
-            for (int yilParam = arabaModel.baslangicYili; yilParam <= BITIS_YIL; yilParam++) {
+            for (int yilParam = arabaModel.baslangicYili; yilParam <= arabaModel.bitisYili; yilParam++) {
 
                 List<AramaParametre> aramaParametres = AramaParametreBuilder.parametreleriGetir(arabaModel, yilParam);
 

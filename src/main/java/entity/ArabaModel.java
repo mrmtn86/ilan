@@ -13,6 +13,7 @@ public class ArabaModel {
     public String url;
     public List<String> paketler;
     public int baslangicYili;
+    public int bitisYili;
 
 
     public ArabaModel(String ad, String url, ObjectId id) {
