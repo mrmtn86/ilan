@@ -10,6 +10,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.UpdateOneModel;
+import com.mongodb.client.result.DeleteResult;
 import config.LogLevelContainer;
 import entity.ArabaModel;
 import model.*;
@@ -20,6 +21,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import parser.html.HtmlParser;
 import util.DateUtil;
+import parser.html.AramaParametreBuilder;
 
 import java.util.*;
 import java.util.logging.Level;

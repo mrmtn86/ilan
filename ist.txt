@@ -1,0 +1,142 @@
+KEY                              ORT FİYAT  ORt KM      TOP ILAN   
+
+civic - 2007
+Dream                           42514       148244      91/93      
+Sport                           41181       160987      35/36      
+Executive                       46562       173632      5/5        
+Type-S                          40000       138000      3/3        
+Premium                         44139       144275      74/76      
+Type-R                          69000       132000      1/1        
+Elegance                        46203       164778      168/169    
+ES                              39500       192000      2/2        
+benzin-lpg,benzin               44352       156716      379/385    
+otomatik,yari-otomatik          44716       161976      233/235    
+manuel                          43765       147188      146/150    
+
+civic - 2008
+Dream                           43619       147261      74/78      
+Sport                           42567       154561      45/48      
+Executive                       45633       143100      3/3        
+Type-S                          43635       159566      6/6        
+Premium                         45847       137495      101/102    
+Type-R                          72604       101700      11/11      
+Elegance                        48103       149477      156/156    
+diger                           45750       66350       1/1        
+ES                              49500       124000      1/1        
+benzin-lpg,benzin               45998       145072      398/406    
+otomatik,yari-otomatik          46555       147796      224/230    
+manuel                          45234       141568      174/176    
+
+civic - 2009
+Dream                           45886       117071      64/64      
+Sport                           44531       134959      16/17      
+Executive                       44250       163500      2/2        
+Type-S                          46916       99422       3/3        
+Premium                         49047       122589      74/76      
+Type-R                          79333       89500       3/3        
+Elegance                        50177       140364      103/103    
+diger                           45000       136727      1/1        
+benzin-lpg,benzin               48499       129350      266/269    
+otomatik,yari-otomatik          48594       138189      138/141    
+manuel                          48127       118708      128/128    
+
+civic - 2010
+Dream                           48889       116325      50/50      
+Sport                           47472       91530       11/11      
+Comfort                         50750       152800      1/1        
+Premium                         51787       104059      91/91      
+Type-R                          75500       81333       3/3        
+Elegance                        55452       110376      140/140    
+diger                           46500       102500      1/1        
+ES                              52000       101000      1/1        
+benzin-lpg,benzin               52957       108797      298/298    
+otomatik,yari-otomatik          53320       112115      161/161    
+manuel                          52385       104899      137/137    
+
+civic - 2011
+Dream                           50185       93096       14/14      
+Sport                           49083       82906       16/16      
+Comfort                         48758       75916       6/6        
+Premium                         53578       94997       110/110    
+Elegance                        56905       99059       199/199    
+ES                              47000       185000      1/1        
+benzin-lpg,benzin               55079       96642       346/346    
+otomatik,yari-otomatik          55424       96161       209/209    
+manuel                          54548       97368       137/137    
+
+civic - 2012
+Dream                           58005       59701       28/28      
+Sport                           53156       63000       8/8        
+Comfort                         50150       66666       3/3        
+Premium                         58533       79749       84/84      
+Elegance                        63138       79416       329/329    
+diger                           56200       90000       1/1        
+ES                              62975       101750      4/4        
+benzin-lpg,benzin               61662       78110       457/457    
+otomatik,yari-otomatik          62799       80463       276/276    
+manuel                          60040       74517       181/181    
+
+civic - 2013
+Dream                           60505       83670       10/10      
+Sport                           60047       62652       24/24      
+Comfort                         61525       81248       9/9        
+Premium                         63602       62361       35/35      
+Elegance                        67415       63095       146/146    
+dizel                           61882       73015       26/26      
+benzin-lpg,benzin               65977       63481       198/198    
+otomatik,yari-otomatik          66735       65822       163/163    
+manuel                          62218       63007       61/61      
+
+civic - 2014
+Dream                           64581       45757       8/8        
+Sport                           69812       56750       4/4        
+Executive                       76000       51195       14/14      
+Comfort                         74812       46500       4/4        
+Premium                         67036       44768       45/45      
+Elegance                        70856       47132       187/187    
+dizel                           74550       51700       5/5        
+benzin-lpg,benzin               70169       46955       257/257    
+otomatik,yari-otomatik          71199       47192       199/199    
+manuel                          67195       45398       63/63      
+
+civic - 2015
+Dream                           64773       21447       17/17      
+Sport                           73124       45035       4/4        
+Executive                       79221       25681       17/17      
+Black Edition                   77181       18674       19/19      
+Comfort                         64000       6500        1/1        
+Premium                         70741       28519       29/29      
+Type-R                          196796      9743        14/14      
+Elegance                        75065       29826       158/158    
+dizel                           78490       39100       5/5        
+benzin-lpg,benzin               74083       27014       254/254    
+otomatik,yari-otomatik          75489       29281       190/190    
+manuel                          95427       20165       69/69      
+
+civic - 2016
+Dream                           67503       12910       24/24      
+Executive                       94786       7826        25/25      
+Black Edition                   81999       15187       4/4        
+Premium                         88750       600         1/1        
+Type-R                          192450      8100        2/2        
+Elegance                        82814       12997       99/99      
+benzin-lpg,benzin               82266       12057       155/155    
+otomatik,yari-otomatik          84036       11284       135/135    
+manuel                          68996       14487       20/20      
+
+civic - 2017
+RS                              111090      1345        5/5        
+Sport                           103216      1687        6/6        
+Executive                       99833       4316        6/6        
+Elegance                        90454       5987        22/22      
+benzin-lpg,benzin               96667       4473        39/39      
+otomatik,yari-otomatik          96803       4491        38/38      
+manuel                          91500       3783        1/1        
+
+fiesta - 2010
+My Fiesta                       37550       120112      6/6        
+Trend                           34427       134096      101/111    
+Titanium                        39441       109432      150/164    
+diger                           39750       124000      2/2        
+dizel                           36948       134072      179/194    
+benzin-lpg,benzin               39570       81998       80/89     
