@@ -41,7 +41,7 @@ public class IstMain {
 
         for (ArabaModel arabaModel : arabaModels) {
 
-            for (int yil = arabaModel.baslangicYili; yil <= AramaParametreBuilder.BITIS_YIL; ++yil) {
+            for (int yil = arabaModel.baslangicYili; yil <= arabaModel.bitisYili; ++yil) {
 
                 System.out.println("");
                 System.out.println(arabaModel.ad + " - " + yil);

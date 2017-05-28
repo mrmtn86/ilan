@@ -84,11 +84,13 @@ public class Repo {
             String ad = doc.getString("ad");
             String url = doc.getString("url");
             int baslangicYili = doc.getInteger("baslangicYili");
+            int bitisYili = doc.containsKey("bitisYili")? doc.getInteger("bitisYili") : AramaParametreBuilder.BITIS_YIL;
             ObjectId id = doc.getObjectId("_id");
             Object paketObj = doc.get("paketler");
 
             ArabaModel model = new ArabaModel(ad, url, id);
             model.baslangicYili = baslangicYili;
+            model.bitisYili = bitisYili;
 
             if (paketObj != null) {
                 model.paketler = (List<String>) paketObj;
@@ -123,8 +125,29 @@ public class Repo {
         try {
             modeller.insertMany(documentList);
         } catch (MongoBulkWriteException e) {
-            logger.log(Level.WARNING, "toplu kaydetmede hata {0} hata mesaji : {1}",
-                    new Object[]{arabaIlanlar.get(0).modelId, e.getMessage()});
+
+            boolean silmebasarili = hatalıKaydiSil(e);
+
+            if (silmebasarili) {
+                topluKaydet(arabaIlanlar);
+            } else
+                logger.log(Level.WARNING, "toplu kaydetmede hata {0} hata mesaji : {1}",
+                        new Object[]{arabaIlanlar.get(0).modelId, e.getMessage()});
+
+        }
+    }
+
+    private boolean hatalıKaydiSil(MongoBulkWriteException e) {
+
+        try {
+
+            String hataliKayitIlanNo = e.getWriteErrors().get(0).getMessage().split(":")[4].split(" ")[1];
+
+            return ilanSil(Long.parseLong(hataliKayitIlanNo));
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 
@@ -139,6 +162,16 @@ public class Repo {
         String json = toJson(arabaIlan);
 
         ilanlar.updateOne(query, new Document("$set", Document.parse(json)));
+    }
+
+    public boolean ilanSil(long ilanNo) {
+        MongoCollection<Document> ilanlar = getIlan();
+
+        Bson query = new Document("ilanNo", ilanNo);
+
+
+        DeleteResult deleteResult = ilanlar.deleteOne(query);
+        return  deleteResult.getDeletedCount() == 1;
     }
 
 
@@ -422,7 +455,7 @@ public class Repo {
 
         MongoCollection<Document> modelIsatitistik = db.getCollection("modelIsatitistik");
         Document filter = new Document("modelId", modelId)
-                .append("yil", yil).append("aktif" , true);
+                .append("yil", yil).append("aktif", true);
 
 
         if (key != null) {

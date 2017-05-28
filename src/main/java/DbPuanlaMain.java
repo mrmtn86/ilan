@@ -43,8 +43,10 @@ public class DbPuanlaMain {
         List<ArabaModel> modeller = repo.modelleriGetir();
 
         PrintWriter writer = null;
+        PrintWriter writerLog = null;
         try {
             writer = new PrintWriter("makulIlanlar.txt", "UTF-8");
+            writerLog = new PrintWriter("log.txt", "UTF-8");
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -97,7 +99,11 @@ public class DbPuanlaMain {
 
                     ortpuan.add(basePuan);
                     ortpuanHepsi.add(puanHepsi);
+
                     writer.println(ilanPuanlayici.paunlariGetir());
+
+                    writerLog.println(ilanPuanlayici.paunlariGetir());
+
 //                    logger.log(Level.INFO, "{0} puanHepsi:{1} basePuan:{2} yakitPuani:{3} vitesPuani:{4} " +
 //                                    "paketPuani:{5} kmPuani:{6} gunPuan:{7} sehirPuani:{8} arabaBosPaun:{9}",
 //                            new Object[]{arabaIlan, puanHepsi, basePuan, yakitPuani, vitesPuani,
