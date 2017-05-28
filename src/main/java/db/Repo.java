@@ -18,6 +18,8 @@ import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import parser.html.HtmlParser;
+import util.DateUtil;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -162,6 +164,66 @@ public class Repo {
         BulkWriteResult bulkWriteResult = collection.bulkWrite(writes);
         int guncelenenToplam = bulkWriteResult.getModifiedCount();
         logger.log(Level.FINE, "{0}/{1} guncelenen/toplam", new Object[]{guncelenenToplam, ilanlar.size()});
+    }
+
+    public int dbguncelle(AramaParametre aramaParametre,List<ArabaIlan> arabaIlanList) {
+
+        ArabaModel arabaModel = aramaParametre.arabaModel;
+
+        int yilParam = aramaParametre.yil;
+
+        Map<Integer, ArabaIlan> arabaIlanMap = modelinKayitlariniGetirMap(aramaParametre);
+
+        int ekleAracSayisi = 0;
+        int toplamGelenArac = 0;
+
+        List<ArabaIlan> yeniAraclar = new ArrayList<>();
+
+        for (ArabaIlan arabaIlan : arabaIlanList) {
+
+            toplamGelenArac++;
+            int ilanNo = arabaIlan.ilanNo;
+
+            ArabaIlan ilanDb = arabaIlanMap.get(ilanNo);
+
+            if (ilanDb != null) {
+                logger.log(Level.FINER, "ilan daha once dbye eklenmis : {0}" + ilanDb);
+                arabaIlanMap.remove(ilanNo);
+                continue;
+            }
+
+            // dbde yok ekleyelim
+            arabaIlan.modelId = arabaModel.id.toString();
+            arabaIlan.vites = aramaParametre.vites;
+            arabaIlan.yakit = aramaParametre.yakit;
+            arabaIlan.kimden = aramaParametre.satan.toString();
+            arabaIlan.yayinda = true;
+            arabaIlan.eklenmeTarihi = DateUtil.nowDbDateTime();
+
+            yeniAraclar.add(arabaIlan);
+            ekleAracSayisi++;
+            logger.log(Level.FINER, "yeni ilan dbeklennmek uzere kaydedildi {0}", arabaIlan);
+        }
+
+        logger.log(Level.INFO, " [{0} {1} {2} {3} {6} ] , gelen :{5}, eklenen : {4} , url : {7} ",
+                new Object[]{arabaModel.ad, aramaParametre.vites, aramaParametre.yakit, yilParam, ekleAracSayisi, toplamGelenArac,
+                        aramaParametre.satan, HtmlParser.SAHBINDEN_BASE_URL + aramaParametre.geturlString()});
+
+
+        // mapte kalan ilanlar yayindan kalkmis demektir
+        Collection<ArabaIlan> values = arabaIlanMap.values();
+        for (ArabaIlan arabaIlan : values) {
+            arabaIlan.yayinda = false;
+        }
+
+        if (values.size() > 0) {
+            ilanlariGuncelle(values);
+        }
+
+
+        if (yeniAraclar.size() > 0)
+            topluKaydet(yeniAraclar);
+        return ekleAracSayisi;
     }
 
     public Map<Integer, ArabaIlan> modelinKayitlariniGetirMap(AramaParametre aramaParametre) {

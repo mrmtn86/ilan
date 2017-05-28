@@ -63,6 +63,7 @@ public class ModelinIlanlari {
             " hasar  kayıtlıdır ",
             " hariç komple boyalı  ",
             "KOMPLE BOYATILMIŞTIR ",
+            "Boya takıntısı ",
             "şişirilmiş hasar kaydı var",
             "agır hasarlı olarak geçiyor",
             "pert kayıtlı  aldım"};

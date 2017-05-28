@@ -86,7 +86,7 @@ public class IstMain {
                 Date date = DateUtil.dbDateToDate(ilanTarhi);
                 int gecenGun = DateUtil.kacGunGecmis(date);
 
-                if (gecenGun > 60 && !arabaIlan.yayinda) { // cok eski ilanlari hesaplamaya katmayalim
+                if (!arabaIlan.yayinda) { // cok eski ilanlari hesaplamaya katmayalim
                     continue;
                 }
 

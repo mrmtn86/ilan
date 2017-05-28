@@ -25,7 +25,7 @@ public class AramaParametreBuilder {
 
                 for (KimdenEnum satan : KimdenEnum.values()) {
                     //benzinli manuel olanlarla ilgilenme
-                    if (MANUEL_BENZIN_PAS_GEC && benzinlManuelVites(vites, yakit)) {
+                    if (MANUEL_BENZIN_PAS_GEC && benzinliManuelVites(vites, yakit)) {
                         continue;
                     }
 
@@ -38,8 +38,11 @@ public class AramaParametreBuilder {
         return aramaPAramtreler;
     }
 
-    public static boolean benzinlManuelVites(String vites, String yakit) {
+    public static boolean benzinliManuelVites(String vites, String yakit) {
         return vites.equals(vitesSecenek[1]) && yakit.equals(yakitSecenek[1]);
+    }
+    public static boolean dizelOtomatikVites(String vites, String yakit) {
+        return vites.equals(vitesSecenek[0]) && yakit.equals(yakitSecenek[0]);
     }
 
 

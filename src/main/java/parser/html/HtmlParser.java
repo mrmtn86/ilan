@@ -2,6 +2,7 @@ package parser.html;
 
 import config.LogLevelContainer;
 import model.ArabaIlan;
+import model.AramaParametre;
 import model.IlanDurum;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -96,6 +97,35 @@ public class HtmlParser {
 
     public static Elements csstenSec(Document doc, String cssQuery) {
         return doc.select("." + cssQuery);
+    }
+
+    public List<ArabaIlan> sayfadanGetir(AramaParametre aramaParametre) {
+
+
+
+        String urlResult = aramaParametre.geturlString();
+
+        List<ArabaIlan> arabaIlanListSonuc = new ArrayList<>();
+
+        for (int i = 0; i <= 1000; i = i + 50) {
+
+            if (i >= 1000)
+                logger.warning(aramaParametre + " icin 1000 ilan gecildi deger  " + i);
+
+            String ofsetValue = "";
+            if (i > 0) {
+                ofsetValue = "&pagingOffset=" + i;
+            }
+
+            List<ArabaIlan> arabaIlanList = arabaIlanlariGetir(urlResult + ofsetValue);
+
+            arabaIlanListSonuc.addAll(arabaIlanList);
+
+            if (arabaIlanList.size() == 0 || arabaIlanList.size() < 50) {
+                break;
+            }
+        }
+        return arabaIlanListSonuc;
     }
 
     public List<ArabaIlan> arabaIlanlariGetir(String url) {
