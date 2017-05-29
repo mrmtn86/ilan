@@ -23,11 +23,12 @@ public class IlanPuanlayici {
     private int yakitPuani;
     private int vitesPuani;
     private int paketPuani;
-    private int kmPuani;
+
     private int sehirPuani;
     private int gunPuan;
     private boolean arabaBos;
     private int arabaBosPaun;
+    private int arabaDoluPaun;
     private int basePuan;
     private int puanHepsi;
 
@@ -197,13 +198,10 @@ public class IlanPuanlayici {
 
         int fark = ortalamaKm - arabaIlan.km;
 
-        double carpan = 5.0;
-
         // eger ortalamanin uzaerinde surdu ise carpani artiriyoruz
         // boylece sacma kmsi cok ilanlarin iyi puan alma sansi azalcak
-        if (fark < 0) {
-            carpan = 10;
-        }
+        double carpan = fark < 0 ? 10 : 5;
+
         return 100 - (int) (((fark * carpan) / (kmDilim)));
     }
 
@@ -219,9 +217,6 @@ public class IlanPuanlayici {
         return paketPuani;
     }
 
-    public int getKmPuani() {
-        return kmPuani;
-    }
 
     public int getSehirPuani() {
         return sehirPuani;
@@ -233,6 +228,10 @@ public class IlanPuanlayici {
 
     public boolean isArabaBos() {
         return arabaBos;
+    }
+
+    public int getArabaDoluPaun() {
+        return arabaDoluPaun;
     }
 
     public int getArabaBosPaun() {
@@ -251,7 +250,7 @@ public class IlanPuanlayici {
         yakitPuani = arabaIlan.yakitPuani;
         vitesPuani = arabaIlan.vitesPuani;
         paketPuani = arabaIlan.paketPuani;
-        kmPuani = arabaIlan.kmPuani;
+
         sehirPuani = sehirPuaniBelirle(arabaIlan.ilIlce);
 
         Date date = DateUtil.dbDateToDate(arabaIlan.ilanTarhi);
@@ -262,19 +261,19 @@ public class IlanPuanlayici {
         arabaBosPaun = arabaBos ? 5 : 0;
 
         boolean arabaOtomatikDizelFull = isarabaOtomatikDizelFull(arabaModel, stringModelIstatistikMap, arabaIlan);
-        int arabaDoluPaun = arabaOtomatikDizelFull ? -3 : 0;
+        arabaDoluPaun = arabaOtomatikDizelFull ? -3 : 0;
 
         arabaIlan.kmPuani = kmPuanla(stringModelIstatistikMap, arabaIlan);
 
 
         // carpanlar  sallamasyon
         basePuan = (yakitPuani * 4 + vitesPuani * 3 + paketPuani * 2) / 9;
-        puanHepsi = ((basePuan * 9 + kmPuani * 3) / 12) + gunPuan + sehirPuani + arabaBosPaun + arabaDoluPaun;
+        puanHepsi = ((basePuan * 9 + arabaIlan.kmPuani * 3) / 12) + gunPuan + sehirPuani + arabaBosPaun + arabaDoluPaun;
         return this;
     }
 
     public String paunlariGetir() {
         return arabaIlan + " puanHepsi:" + puanHepsi + " basePuan:" + basePuan + " yakitPuani:" + yakitPuani + " vitesPuani:" + vitesPuani + " " +
-                "paketPuani:" + paketPuani + " kmPuani:" + kmPuani + " gunPuan:" + gunPuan + " sehirPuani:" + sehirPuani + " arabaBosPaun:" + arabaBosPaun;
+                "paketPuani:" + paketPuani + " kmPuani:" + arabaIlan.kmPuani + " gunPuan:" + gunPuan + " sehirPuani:" + sehirPuani + " arabaBosPaun:" + arabaBosPaun;
     }
 }

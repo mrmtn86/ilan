@@ -25,7 +25,11 @@ public class DateUtil {
     }
 
     public static String nowDbDateTime() {
-        return new SimpleDateFormat(DB_DATE + " - hh:mm:ss").format(new Date());
+        return dateToDbDateTime(new Date());
+    }
+
+    public static String dateToDbDateTime(Date date) {
+        return new SimpleDateFormat(DB_DATE + " - hh:mm:ss").format(date);
     }
 
     public static Date dbDateToDate(String ilanTarhi) {

@@ -18,7 +18,7 @@ public class AramaParametreBuilder {
 
     public static List<AramaParametre> parametreleriGetir(ArabaModel arabaModel, int yil) {
 
-         List<AramaParametre> aramaPAramtreler = new ArrayList<>();
+        List<AramaParametre> aramaPAramtreler = new ArrayList<>();
         for (String vites : vitesSecenek) {
 
             for (String yakit : yakitSecenek) {
@@ -29,7 +29,7 @@ public class AramaParametreBuilder {
                         continue;
                     }
 
-                    AramaParametre aramaParametre = new AramaParametre(vites, yakit, yil, arabaModel , satan);
+                    AramaParametre aramaParametre = new AramaParametre(vites, yakit, yil, arabaModel, satan);
 
                     aramaPAramtreler.add(aramaParametre);
                 }
@@ -42,6 +42,10 @@ public class AramaParametreBuilder {
         return vites.equals(duzVites()) && benzinLpg().contains(yakit);
     }
 
+    public static String otomatikVites() {
+        return vitesSecenek[0];
+    }
+
     public static String duzVites() {
         return vitesSecenek[1];
     }
@@ -50,8 +54,12 @@ public class AramaParametreBuilder {
         return yakitSecenek[1];
     }
 
+    public static String dizel() {
+        return yakitSecenek[0];
+    }
+
     public static boolean dizelOtomatikVites(String vites, String yakit) {
-        return vites.equals(vitesSecenek[0]) && yakit.equals(yakitSecenek[0]);
+        return otomatikVites().contains(vites) && yakit.equals(dizel());
     }
 
 
