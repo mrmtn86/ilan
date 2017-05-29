@@ -24,7 +24,6 @@ import static model.ModelinIlanlari.kusurluAciklamlar;
 public class DbPuanlaMain {
 
     public static final Locale TR_LOCALE = new Locale("tr");
-    static final int BITIS_YIL = 2017;
     public static List<Integer> istenmiyorList;
     public static List<Integer> hasarliList;
     public static final int PUAN_LIMIT = 93;
@@ -66,14 +65,14 @@ public class DbPuanlaMain {
             List<ArabaIlan> makulIlanlar = new ArrayList<>();
 
 
-            for (int yilParam = arabaModel.baslangicYili; yilParam <= BITIS_YIL; yilParam++) {
+            for (int yilParam = arabaModel.baslangicYili; yilParam <= arabaModel.bitisYili; yilParam++) {
 
                 AramaParametre aramaParametre = new AramaParametre();
                 aramaParametre.arabaModel = arabaModel;
                 aramaParametre.yil = yilParam;
                 aramaParametre.yayinda = true;
 
-                Map<String, ModelIstatistik> stringModelIstatistikMap = repo.istatistikGetir(aramaParametre.arabaModel.id.toString(), yilParam);
+                Map<String, ModelIstatistik> modelIstatistikMap = repo.istatistikGetir(aramaParametre.arabaModel.id.toString(), yilParam);
 
 
                 ModelinIlanlari modelinIlanlari = repo.ilanlariGetir(aramaParametre);
@@ -81,7 +80,7 @@ public class DbPuanlaMain {
 
                 for (ArabaIlan arabaIlan : modelinIlanlari.arabaIlanList) {
 
-                    IlanPuanlayici ilanPuanlayici = new IlanPuanlayici(arabaModel, stringModelIstatistikMap, arabaIlan).invoke();
+                    IlanPuanlayici ilanPuanlayici = new IlanPuanlayici(arabaModel, modelIstatistikMap, arabaIlan).invoke();
                     int puanHepsi = ilanPuanlayici.getPuanHepsi();
                     boolean arabaBos = ilanPuanlayici.isArabaBos();
 

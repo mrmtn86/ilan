@@ -13,8 +13,8 @@ public class AramaParametreBuilder {
 
     public static final int BITIS_YIL = 2017;
     private static boolean MANUEL_BENZIN_PAS_GEC = false;
-    private static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
-    private static String[] vitesSecenek = {"otomatik,yari-otomatik", "manuel"};
+    public static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
+    public static String[] vitesSecenek = {"otomatik,yari-otomatik", "manuel"};
 
     public static List<AramaParametre> parametreleriGetir(ArabaModel arabaModel, int yil) {
 
@@ -39,8 +39,17 @@ public class AramaParametreBuilder {
     }
 
     public static boolean benzinliManuelVites(String vites, String yakit) {
-        return vites.equals(vitesSecenek[1]) && yakit.equals(yakitSecenek[1]);
+        return vites.equals(duzVites()) && yakit.equals(benzinLpg());
     }
+
+    public static String duzVites() {
+        return vitesSecenek[1];
+    }
+
+    public static String benzinLpg() {
+        return yakitSecenek[1];
+    }
+
     public static boolean dizelOtomatikVites(String vites, String yakit) {
         return vites.equals(vitesSecenek[0]) && yakit.equals(yakitSecenek[0]);
     }

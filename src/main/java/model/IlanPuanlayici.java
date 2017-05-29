@@ -48,9 +48,9 @@ public class IlanPuanlayici {
                 return -1;
             case "İstanbul":
                 return 3;
-            case "Adana ":
+            case "Adana":
                 return 6;
-            case "Adıyaman ":
+            case "Adıyaman":
                 return 6;
             case "Batman ":
                 return 7;
@@ -62,15 +62,15 @@ public class IlanPuanlayici {
                 return 6;
             case "Diyarbakır":
                 return 5;
-            case "Hatay ":
+            case "Hatay":
                 return 6;
-            case "Gaziantep ":
+            case "Gaziantep":
                 return 5;
-            case "Kars ":
+            case "Kars":
                 return 4;
-            case "Kayseri ":
+            case "Kayseri":
                 return 2;
-            case "Kahramanmaraş ":
+            case "Kahramanmaraş":
                 return 5;
             case "Mardin":
                 return 6;
@@ -91,8 +91,6 @@ public class IlanPuanlayici {
             default:
                 return 0;
         }
-
-
     }
 
     private static int gunPuanHesapla(Date date) {
@@ -101,7 +99,6 @@ public class IlanPuanlayici {
         if (kacGunGecmis > 60) {
             kacGunGecmis = 60;
         }
-
         return kacGunGecmis / 3;
     }
 
@@ -262,10 +259,10 @@ public class IlanPuanlayici {
 
         // benzinli manuel dusuk paket ise istemiyoruz
         arabaBos = isArabaBos(arabaModel, stringModelIstatistikMap, arabaIlan);
-        arabaBosPaun = arabaBos ? -5 : 0;
+        arabaBosPaun = arabaBos ? 5 : 0;
 
         boolean arabaOtomatikDizelFull = isarabaOtomatikDizelFull(arabaModel, stringModelIstatistikMap, arabaIlan);
-        int arabaDoluPaun = arabaOtomatikDizelFull ? 3 : 0;
+        int arabaDoluPaun = arabaOtomatikDizelFull ? -3 : 0;
 
         arabaIlan.kmPuani = kmPuanla(stringModelIstatistikMap, arabaIlan);
 
