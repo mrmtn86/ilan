@@ -24,10 +24,10 @@ import static model.ModelinIlanlari.kusurluAciklamlar;
 public class DbPuanlaMain {
 
     public static final Locale TR_LOCALE = new Locale("tr");
-    public static final int PUAN_LIMIT = 93;
     static final int BITIS_YIL = 2017;
     public static List<Integer> istenmiyorList;
     public static List<Integer> hasarliList;
+    public static final int PUAN_LIMIT = 93;
     public static int MAX_ARAC_FIYATI = 38000;
     public static int KM_PUAN_LIMIT = 135;
     private static Logger logger = Logger.getLogger(DbPuanlaMain.class.getName());

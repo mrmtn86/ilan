@@ -19,6 +19,7 @@ import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import parser.html.AramaParametreBuilder;
 import parser.html.HtmlParser;
 import util.DateUtil;
 import parser.html.AramaParametreBuilder;
