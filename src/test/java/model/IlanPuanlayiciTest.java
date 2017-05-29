@@ -2,6 +2,7 @@ package model;
 
 import entity.ArabaModel;
 import model.istatistik.ModelIstatistik;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import util.DateUtil;
 
@@ -43,13 +44,20 @@ public class IlanPuanlayiciTest {
         arabaIlan.vitesPuani = 100;
         arabaIlan.kmPuani = 100;
 
-        Map<String, ModelIstatistik> modelIstatistikMap = new HashMap<>();
-
-
-        ArabaModel arabaModel = new ArabaModel("model ad", "model url", null);
+        ArabaModel arabaModel = new ArabaModel("model ad", "model url", new ObjectId());
         ArrayList<String> paketler = new ArrayList<>();
         paketler.add(DOLU_PAKET);
         paketler.add(BOS_PAKET);
+
+        Map<String, ModelIstatistik> modelIstatistikMap = new HashMap<>();
+
+        ModelIstatistik modelIstatistik = new ModelIstatistik(arabaModel.id.toString(),arabaIlan.yil,arabaIlan.vites,DateUtil.nowDbDateTime(),120000,45000);
+        modelIstatistikMap.put(arabaIlan.vites , modelIstatistik);
+
+          modelIstatistik = new ModelIstatistik(arabaModel.id.toString(),arabaIlan.yil,arabaIlan. yakit,DateUtil.nowDbDateTime(),120000,45000);
+        modelIstatistikMap.put(arabaIlan.vites , modelIstatistik);
+
+
 
 
 

@@ -39,7 +39,7 @@ public class AramaParametreBuilder {
     }
 
     public static boolean benzinliManuelVites(String vites, String yakit) {
-        return vites.equals(duzVites()) && yakit.equals(benzinLpg());
+        return vites.equals(duzVites()) && benzinLpg().contains(yakit);
     }
 
     public static String duzVites() {
