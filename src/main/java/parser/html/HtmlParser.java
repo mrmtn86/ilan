@@ -109,8 +109,17 @@ public class HtmlParser {
                 ofsetValue = "&pagingOffset=" + i;
             }
 
-            List<ArabaIlan> arabaIlanList = arabaIlanlariGetir(urlResult + ofsetValue);
+            Document doc = null;
+            try {
+                doc = httpGet(urlResult + ofsetValue);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            if (doc == null) {
+                continue;
+            }
+            List<ArabaIlan> arabaIlanList = arabaIlanlariGetir(doc);
             arabaIlanListSonuc.addAll(arabaIlanList);
 
             if (arabaIlanList.size() == 0 || arabaIlanList.size() < 50) {
@@ -120,28 +129,22 @@ public class HtmlParser {
         return arabaIlanListSonuc;
     }
 
-    public List<ArabaIlan> arabaIlanlariGetir(String url) {
+    public List<ArabaIlan> arabaIlanlariGetir(Document doc) {
         List<ArabaIlan> ilanlar = new ArrayList<>();
         try {
 
-            Document doc = httpGet(url);
             Elements arabalar = csstenSec(doc, "searchResultsItem");
 
-
             for (Element element : arabalar) {
-
 
                 ArabaIlan araba = getArabaIlan(element);
                 if ((araba != null)) {
                     ilanlar.add(araba);
 
                 }
-
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
 
         return ilanlar;

@@ -16,7 +16,7 @@ public class AramaParametreBuilder {
 
     public static List<AramaParametre> parametreleriGetir(ArabaModel arabaModel, int yil) {
 
-        List<AramaParametre> aramaPAramtreler = new ArrayList<>();
+        List<AramaParametre> aramaParamtreler = new ArrayList<>();
         for (VitesEnum vites : VitesEnum.values()) {
 
             for (String yakit : yakitSecenek) {
@@ -29,11 +29,11 @@ public class AramaParametreBuilder {
 
                     AramaParametre aramaParametre = new AramaParametre(vites, yakit, yil, arabaModel, satan);
 
-                    aramaPAramtreler.add(aramaParametre);
+                    aramaParamtreler.add(aramaParametre);
                 }
             }
         }
-        return aramaPAramtreler;
+        return aramaParamtreler;
     }
 
     public static boolean benzinliManuelVites(VitesEnum vites, String yakit) {
