@@ -1,376 +1,377 @@
 KEY                              ORT FİYAT  ORt KM      TOP ILAN   
 
 civic - 2007
-Dream                           42357       148940      94/95      
-Sport                           40940       162179      32/33      
-Executive                       46541       166527      6/6        
+Dream                           42262       149979      108/109    
+Sport                           41059       155298      35/35      
+Executive                       46535       169880      7/7        
 Type-S                          42625       183000      4/4        
-Premium                         44187       146129      72/74      
+Premium                         44090       147231      71/73      
 Type-R                          69000       132000      1/1        
-Elegance                        46320       163861      171/172    
+Elegance                        46513       163932      168/169    
 ES                              39500       192000      2/2        
-benzin-lpg,benzin               44379       157018      382/387    
-otomatik,yari-otomatik          44805       162110      227/229    
-manuel                          43750       148509      155/158    
+benzin-lpg,benzin               44322       157094      396/400    
+otomatik,yari-otomatik          44807       160899      231/232    
+manuel                          43637       150806      165/168    
 
 civic - 2008
-Dream                           43505       148739      76/78      
-Sport                           42356       157895      47/50      
-Executive                       45633       143100      3/3        
+Dream                           43308       152830      74/76      
+Sport                           42115       162597      44/46      
+Executive                       46730       143260      5/5        
 Type-S                          43635       159566      6/6        
-Premium                         45824       140270      98/99      
+Premium                         45497       142213      103/104    
 Type-R                          72604       101700      11/11      
-Elegance                        48376       147227      159/159    
+Elegance                        48193       147692      158/158    
 ES                              49500       124000      1/1        
-benzin-lpg,benzin               46014       145864      401/407    
-otomatik,yari-otomatik          46638       148560      226/231    
-manuel                          45155       142385      175/176    
+benzin-lpg,benzin               45846       147670      402/407    
+otomatik,yari-otomatik          46526       150581      229/232    
+manuel                          44891       143834      173/175    
 
 civic - 2009
-Dream                           45903       116369      60/60      
-Sport                           43562       141209      16/17      
+Dream                           45804       120962      62/62      
+Sport                           42700       143241      18/19      
 Executive                       44250       163500      2/2        
 Type-S                          46916       99422       3/3        
 Hybrid                          47000       59000       1/1        
-Premium                         49003       121111      78/80      
+Premium                         49163       121778      76/78      
 Type-R                          79333       89500       3/3        
-Elegance                        50369       140118      103/103    
+Elegance                        50383       139773      105/105    
 diger                           45000       136727      1/1        
-benzin-lpg,benzin               48492       128863      267/270    
-otomatik,yari-otomatik          48605       137050      138/141    
-manuel                          48103       118998      129/129    
+benzin-lpg,benzin               48462       129628      271/274    
+otomatik,yari-otomatik          48306       139614      136/139    
+manuel                          48242       118445      135/135    
 
 civic - 2010
-Dream                           48989       116182      51/51      
-Sport                           46244       89162       9/9        
+Dream                           49074       115697      52/52      
+Sport                           46020       89662       10/10      
 Comfort                         50750       152800      1/1        
-Premium                         51763       104150      89/89      
+Premium                         51677       104126      88/88      
 Type-R                          75500       81333       3/3        
-Elegance                        55622       109715      145/145    
+Elegance                        55319       110196      143/143    
 ES                              52000       101000      1/1        
-benzin-lpg,benzin               53107       108636      299/299    
-otomatik,yari-otomatik          53548       111693      166/166    
-manuel                          52407       104821      133/133    
+benzin-lpg,benzin               52894       109178      298/298    
+otomatik,yari-otomatik          53343       111884      166/166    
+manuel                          52175       105776      132/132    
 
 fiesta - 2010
-My Fiesta                       36140       128090      6/6        
-Trend                           34511       136241      107/117    
-Titanium                        39376       109936      168/182    
-diger                           39750       124000      2/2        
-dizel                           36861       137435      189/204    
-benzin-lpg,benzin               39402       84169       94/103     
-otomatik,yari-otomatik          41725       81006       26/29      
-manuel                          37325       123275      257/278    
+My Fiesta                       36200       137408      6/6        
+Trend                           33890       151129      112/114    
+Titanium                        39242       114055      178/182    
+diger                           41500       124000      3/3        
+dizel                           36293       146502      198/202    
+benzin-lpg,benzin               39069       91163       101/103    
+otomatik,yari-otomatik          41475       88228       27/27      
+manuel                          36811       132322      272/278    
 
 fiesta - 2011
-My Fiesta                       39472       96001       51/54      
-Trend                           35530       128668      186/197    
-Titanium                        40750       95670       315/337    
-dizel                           38124       123121      359/388    
-benzin-lpg,benzin               40568       74038       193/200    
-otomatik,yari-otomatik          44209       67744       74/76      
-manuel                          38128       112036      478/512    
+My Fiesta                       40182       87658       37/39      
+Trend                           34836       137815      145/146    
+Titanium                        40142       98025       265/269    
+dizel                           37073       132415      250/254    
+benzin-lpg,benzin               40151       79843       197/200    
+otomatik,yari-otomatik          44010       69880       75/75      
+manuel                          37305       117755      372/379    
 
 fiesta - 2012
-My Fiesta                       37677       72822       32/32      
-Titanium                        42869       86468       256/268    
-Trend                           37560       102310      274/290    
-dizel                           40068       104765      401/420    
-benzin-lpg,benzin               40515       65629       161/170    
-otomatik,yari-otomatik          44526       61979       41/42      
-manuel                          39832       95561       521/548    
+My Fiesta                       37462       81719       35/35      
+Titanium                        42464       85413       193/197    
+Trend                           37053       110252      210/215    
+dizel                           39234       113813      274/279    
+benzin-lpg,benzin               40026       69025       164/168    
+otomatik,yari-otomatik          44148       61817       41/41      
+manuel                          39053       100316      397/406    
 
 fiesta - 2013
-My Fiesta                       38843       65937       8/8        
-Trend                           42363       91108       391/399    
-Titanium                        48111       62929       185/186    
-benzin-lpg,benzin               44739       50539       186/191    
-dizel                           43774       95853       398/402    
-otomatik,yari-otomatik          49408       45315       78/78      
-manuel                          43240       87744       506/515    
+My Fiesta                       39035       65357       7/7        
+Trend                           42148       92359       400/405    
+Titanium                        47921       63427       186/187    
+benzin-lpg,benzin               44337       51427       190/193    
+dizel                           43584       97388       403/406    
+otomatik,yari-otomatik          49397       46180       77/77      
+manuel                          42994       88959       516/522    
 
 fiesta - 2014
-Titanium                        51188       40298       73/73      
-Trend                           45755       67240       247/250    
-dizel                           46938       75366       188/189    
-benzin-lpg,benzin               46997       39608       132/134    
-otomatik,yari-otomatik          52193       42380       49/49      
-manuel                          45991       64411       271/274    
+Titanium                        51073       41315       70/70      
+Trend                           45515       68262       247/248    
+dizel                           46686       76762       187/187    
+benzin-lpg,benzin               46445       40870       130/131    
+otomatik,yari-otomatik          52297       43017       47/47      
+manuel                          45653       66106       270/271    
 
 fiesta - 2015
-Trend                           48628       38307       162/163    
-Titanium                        56808       28182       84/84      
+Trend                           48693       38907       163/164    
+Titanium                        56880       28120       83/83      
 diger                           56375       21382       6/6        
-dizel                           52698       46664       125/125    
-benzin-lpg,benzin               50348       24742       127/128    
-otomatik,yari-otomatik          55214       26626       60/60      
-manuel                          50383       38435       192/193    
+dizel                           52709       46349       128/128    
+benzin-lpg,benzin               50346       24941       124/125    
+otomatik,yari-otomatik          55381       26409       58/58      
+manuel                          50426       38908       194/195    
 
 polo - 2009
-Trendline                       35424       120835      74/81      
-diger                           39310       112400      5/6        
-Comfortline                     38750       100000      1/1        
-dizel                           33691       161108      30/34      
-benzin-lpg,benzin               36996       99786       50/54      
-otomatik,yari-otomatik          40738       89315       13/14      
-manuel                          34612       126918      67/74      
+Trendline                       34661       136144      82/83      
+diger                           38633       117333      6/6        
+Comfortline                     38750       101000      2/2        
+dizel                           33130       170556      37/38      
+benzin-lpg,benzin               36129       105428      53/53      
+otomatik,yari-otomatik          40276       87258       13/13      
+manuel                          34129       141035      77/78      
 
 polo - 2010
-Trendline                       33837       148750      6/6        
-diger                           35500       110000      2/2        
-Comfortline                     41331       110027      171/178    
-benzin-lpg,benzin               41342       87759       105/110    
-dizel                           40788       147548      74/76      
-otomatik,yari-otomatik          45725       92939       37/37      
-manuel                          39828       115990      142/149    
+Trendline                       33835       174000      7/7        
+diger                           36416       144166      3/3        
+Comfortline                     41058       116699      168/174    
+benzin-lpg,benzin               41111       92905       104/108    
+dizel                           40112       158818      74/76      
+otomatik,yari-otomatik          45576       93125       34/34      
+manuel                          39544       125623      144/150    
 
 polo - 2011
-BlueMotion                      42690       127050      5/5        
-Trendline                       38528       102026      57/57      
-diger                           56398       80283       32/32      
-Comfortline                     44567       104681      240/251    
-benzin-lpg,benzin               45326       79520       173/179    
-dizel                           44107       125992      161/166    
-otomatik,yari-otomatik          50556       93316       105/105    
-manuel                          41905       106474      229/240    
+BlueMotion                      44690       128850      5/5        
+Trendline                       38716       104589      58/59      
+diger                           56360       79615       34/34      
+Comfortline                     44095       107791      244/254    
+benzin-lpg,benzin               45224       81131       179/186    
+dizel                           43543       129402      162/166    
+otomatik,yari-otomatik          50540       88812       109/109    
+manuel                          41544       110529      232/243    
 
 polo - 2012
-BlueMotion                      44584       92068       34/34      
-Pulse                           44535       63807       8/9        
-Trendline                       39542       103476      198/201    
-diger                           59179       67932       24/24      
-Comfortline                     47089       75966       270/276    
-benzin-lpg,benzin               45677       64766       238/245    
-dizel                           43838       103904      296/299    
-otomatik,yari-otomatik          53387       67920       102/102    
-manuel                          42671       90537       432/442    
+BlueMotion                      44989       97220       44/44      
+Pulse                           44468       68850       10/10      
+Trendline                       39532       109154      237/240    
+diger                           59391       68815       25/25      
+Comfortline                     46958       77291       286/292    
+benzin-lpg,benzin               45571       65347       243/250    
+dizel                           43230       108102      359/361    
+otomatik,yari-otomatik          53411       69114       105/105    
+manuel                          42337       95634       497/506    
 
 polo - 2013
-BlueMotion                      46158       85437       25/25      
-Trendline                       42073       96730       279/288    
-diger                           66704       58147       12/12      
-Chrome Edition                  50923       48903       48/48      
-Comfortline                     50709       78867       280/282    
-benzin-lpg,benzin               48073       51984       210/213    
-dizel                           46747       99747       434/442    
-otomatik,yari-otomatik          54778       76941       154/154    
-manuel                          44727       86855       490/501    
+BlueMotion                      46176       85543       23/23      
+Trendline                       41785       100530      278/286    
+diger                           65245       59428       13/13      
+Chrome Edition                  51230       48935       47/47      
+Comfortline                     50920       79659       278/282    
+benzin-lpg,benzin               48146       53395       204/207    
+dizel                           46565       101664      435/444    
+otomatik,yari-otomatik          54873       76402       160/160    
+manuel                          44473       89745       479/491    
 
 polo - 2014
-BlueMotion                      51156       58800       8/8        
-Trendline                       44365       81071       231/233    
-diger                           56307       50274       20/20      
+BlueMotion                      51250       59628       7/7        
+Trendline                       44329       81873       231/232    
+diger                           56554       38908       21/21      
 Chrome Edition                  53968       35890       11/11      
-Comfortline                     55787       55880       258/258    
-benzin-lpg,benzin               50664       40242       159/159    
-dizel                           50717       77256       369/371    
-otomatik,yari-otomatik          58871       57068       154/154    
-manuel                          47337       70140       374/376    
+Comfortline                     55702       54531       259/259    
+benzin-lpg,benzin               50741       40112       162/162    
+dizel                           50645       77372       367/368    
+otomatik,yari-otomatik          58894       55819       152/152    
+manuel                          47360       70095       377/378    
 
 corolla - 2007
-Elegant                         42310       164602      53/56      
-Comfort                         41156       159035      110/114    
-Class                           37120       189577      18/18      
-diger                           38394       139604      62/67      
-Terra                           35374       167921      92/95      
-benzin-lpg,benzin               40730       137698      173/183    
-dizel                           37491       182882      162/167    
-otomatik,yari-otomatik          39762       170190      127/134    
-manuel                          38653       154415      208/216    
+Elegant                         41214       166187      45/45      
+Comfort                         39723       176913      103/105    
+Class                           36800       189425      16/16      
+diger                           37312       145192      54/54      
+Terra                           34877       181809      79/80      
+benzin-lpg,benzin               39595       143870      132/133    
+dizel                           37031       193021      165/167    
+otomatik,yari-otomatik          39128       176379      126/128    
+manuel                          37265       169225      171/172    
 
 corolla - 2008
-Elegant                         43025       166080      145/151    
-Comfort                         40973       158233      190/195    
-Class                           38925       176814      46/48      
+Elegant                         42451       170373      146/148    
+Comfort                         40646       164815      186/189    
+Class                           38183       187863      49/51      
 diger                           41500       80000       1/1        
 Terra                           23500       6000        1/1        
-benzin-lpg,benzin               43400       133182      128/131    
-dizel                           40633       178737      255/265    
-otomatik,yari-otomatik          41811       166435      164/170    
-manuel                          41370       159833      219/226    
+benzin-lpg,benzin               42916       138596      123/125    
+dizel                           40135       184530      260/265    
+otomatik,yari-otomatik          41449       171605      160/163    
+manuel                          40710       168396      223/227    
 
 corolla - 2009
-Elegant                         45188       147497      143/145    
-Comfort                         43407       149866      154/161    
-Class                           39912       172598      41/41      
+Elegant                         45059       148908      143/143    
+Comfort                         43096       151719      163/167    
+Class                           39281       186589      40/40      
 diger                           41000       170000      1/1        
-benzin-lpg,benzin               46108       116057      89/91      
-dizel                           42936       163699      250/257    
-otomatik,yari-otomatik          44559       152342      131/131    
-manuel                          43297       150763      208/217    
+benzin-lpg,benzin               46058       114958      90/92      
+dizel                           42549       167904      257/259    
+otomatik,yari-otomatik          44263       156403      133/133    
+manuel                          42960       152662      214/218    
 
 corolla - 2010
-Elegant                         49516       134646      107/108    
-Comfort                         46422       140172      177/178    
-Class                           43155       180030      12/12      
+Elegant                         49367       135559      109/110    
+Comfort                         46325       143105      175/177    
+Class                           41320       191608      12/12      
 Terra                           52000       96000       1/1        
-benzin-lpg,benzin               48572       115148      104/105    
-dizel                           46655       153260      193/194    
-otomatik,yari-otomatik          47771       144459      137/139    
-manuel                          46886       134943      160/160    
+benzin-lpg,benzin               48622       115504      105/106    
+dizel                           46385       156997      192/194    
+otomatik,yari-otomatik          47677       146503      135/137    
+manuel                          46659       138505      162/163    
 
 corolla - 2011
-Elegant                         54480       113348      224/224    
-Comfort                         50158       117365      471/472    
-benzin-lpg,benzin               50614       92776       214/215    
-dizel                           52016       125991      481/481    
-otomatik,yari-otomatik          52356       124506      231/231    
-manuel                          51157       112183      464/465    
+Elegant                         54411       113563      230/230    
+Comfort                         50072       117315      459/460    
+benzin-lpg,benzin               50456       93298       212/213    
+dizel                           52036       125776      477/477    
+otomatik,yari-otomatik          52297       124896      227/227    
+manuel                          51139       112440      462/463    
 
 corolla - 2012
-Elegant                         58066       98679       118/118    
-Comfort                         53311       100521      203/204    
+Elegant                         57791       99216       121/121    
+Comfort                         53413       101829      202/204    
 Premium                         59900       135588      1/1        
-benzin-lpg,benzin               53613       74790       97/98      
-dizel                           55704       110229      225/225    
-otomatik,yari-otomatik          56047       104455      124/124    
-manuel                          54571       97137       198/199    
+benzin-lpg,benzin               53602       75446       95/97      
+dizel                           55676       110979      229/229    
+otomatik,yari-otomatik          55982       105659      121/122    
+manuel                          54524       98155       203/204    
 
 astra - 2009
-Essentia                        37585       152654      27/27      
-Sport                           47000       115500      2/2        
-Enjoy                           41316       128905      187/195    
+Essentia                        37146       161228      28/28      
+Sport                           50000       116000      1/1        
+Enjoy                           41062       130155      194/199    
 Club                            32275       113125      4/5        
 Elegance                        41000       147000      1/1        
-Cosmo                           42968       144568      10/11      
-diger                           36175       96925       23/23      
-benzin-lpg,benzin               40088       100526      107/113    
-dizel                           40851       150071      147/151    
-otomatik,yari-otomatik          41968       136899      60/62      
-manuel                          40118       126180      194/202    
+Cosmo                           40333       155212      12/12      
+diger                           35738       107340      23/23      
+benzin-lpg,benzin               39515       103593      110/113    
+dizel                           40550       153021      153/156    
+otomatik,yari-otomatik          41513       135633      65/66      
+manuel                          39662       131410      198/203    
 
 astra - 2010
-Essentia                        42604       110827      66/71      
-Sport                           48633       109820      39/39      
+Essentia                        41850       113734      69/72      
+Sport                           48735       107397      39/39      
 ecoFLEX Sport                   47950       98833       3/3        
-Enjoy                           44098       120465      266/266    
+Enjoy                           43635       124503      265/266    
 Comfort                         44250       120000      1/1        
+Elegance                        46500       133194      1/1        
 diger                           43125       99350       4/4        
-Cosmo                           51183       107655      28/28      
+Cosmo                           51298       107559      29/29      
 Edition                         47133       112333      3/3        
-benzin-lpg,benzin               45905       99612       218/221    
-dizel                           43721       134421      192/194    
-otomatik,yari-otomatik          46309       109730      152/153    
-manuel                          43849       120601      258/262    
+benzin-lpg,benzin               45500       101856      217/220    
+dizel                           43224       137397      197/198    
+otomatik,yari-otomatik          46070       111832      149/150    
+manuel                          43305       123696      265/268    
 
 astra - 2011
-Essentia                        45674       99685       247/249    
-Sport                           51546       96357       95/95      
-ecoFLEX Sport                   52414       122524      77/77      
-Enjoy                           45883       108894      437/442    
+Essentia                        45536       99382       244/247    
+Sport                           51608       95832       95/95      
+ecoFLEX Sport                   52451       122762      74/74      
+Enjoy                           45687       108783      431/436    
 diger                           41750       100145      6/6        
-Cosmo                           53166       102125      95/95      
+Cosmo                           53347       99973       98/98      
 Edition                         44680       96500       5/6        
-benzin-lpg,benzin               48289       86074       396/398    
-dizel                           47149       118539      566/572    
-otomatik,yari-otomatik          49027       101612      274/275    
-manuel                          47046       107532      688/695    
+benzin-lpg,benzin               48131       86234       406/408    
+dizel                           47087       118404      547/554    
+otomatik,yari-otomatik          49003       100492      268/269    
+manuel                          46954       107309      685/693    
 
 astra - 2012
-Essentia                        46297       75305       238/242    
-Sport                           56883       82888       227/227    
-ecoFLEX Sport                   55120       101683      20/20      
-Enjoy                           49512       86042       323/323    
+Essentia                        46134       73755       208/212    
+Sport                           56843       81246       158/158    
+ecoFLEX Sport                   54408       109275      12/12      
+Enjoy                           49271       85499       248/248    
 Comfort                         45750       81500       2/2        
-diger                           45381       74237       20/20      
-Cosmo                           57269       90274       129/129    
-Edition                         49845       79448       146/146    
-benzin-lpg,benzin               50034       68688       584/588    
-dizel                           52748       98210       521/521    
-otomatik,yari-otomatik          52701       71924       234/235    
-manuel                          50940       85740       871/874    
+diger                           45381       73617       19/19      
+Cosmo                           57105       89440       107/107    
+Edition                         49400       77387       125/125    
+benzin-lpg,benzin               50050       69348       575/579    
+dizel                           52235       103825      304/304    
+otomatik,yari-otomatik          52667       70838       229/230    
+manuel                          50179       84874       650/653    
 
 astra - 2013
-Essentia                        47112       48134       166/166    
+Essentia                        47122       49292       156/157    
 Active                          61250       72250       2/2        
-Sport                           60149       67717       192/192    
-ecoFLEX Sport                   59771       74464       7/7        
-Enjoy                           52538       68193       75/76      
+Sport                           60122       67821       181/181    
+ecoFLEX Sport                   59768       77281       8/8        
+Enjoy                           52066       71884       70/73      
 Comfort                         47500       40000       1/2        
 diger                           46714       76714       7/7        
-Cosmo                           61191       65887       65/65      
-Edition                         53010       72836       181/181    
-Business                        54828       89141       54/54      
-dizel                           58202       88632       284/284    
-benzin-lpg,benzin               51684       52777       466/468    
-otomatik,yari-otomatik          55382       55901       123/123    
-manuel                          53914       68216       627/629    
+Cosmo                           61116       65966       64/64      
+Edition                         53050       73244       171/171    
+Business                        54723       91567       54/54      
+dizel                           58048       89665       280/280    
+benzin-lpg,benzin               51722       53121       434/439    
+otomatik,yari-otomatik          55214       54484       120/120    
+manuel                          53999       69557       594/599    
 
 auris - 2007
-Elegant                         41315       148200      13/13      
-Comfort                         38818       134904      28/28      
-Class                           38166       137666      4/4        
-benzin-lpg,benzin               41058       119998      18/18      
-dizel                           37777       153447      27/27      
-otomatik,yari-otomatik          39463       141927      21/21      
-manuel                          38988       136243      24/24      
+Elegant                         39450       171687      12/12      
+Comfort                         38391       143700      28/28      
+Class                           36083       178000      3/3        
+benzin-lpg,benzin               40531       128686      16/16      
+dizel                           37337       168847      27/27      
+otomatik,yari-otomatik          38655       159237      20/20      
+manuel                          38413       149266      23/23      
 
 auris - 2008
-Blue                            38610       136138      12/14      
-Elegant                         41807       133513      54/55      
-Comfort                         39928       137802      70/71      
+Blue                            38096       142722      14/14      
+Elegant                         41824       131565      57/58      
+Comfort                         39175       148228      71/71      
 Class                           34375       93250       2/2        
-benzin-lpg,benzin               40796       109826      72/73      
-dizel                           40206       159666      66/69      
-otomatik,yari-otomatik          41393       132984      71/72      
-manuel                          39187       137555      67/70      
+benzin-lpg,benzin               40866       114203      75/75      
+dizel                           39165       168902      69/70      
+otomatik,yari-otomatik          40889       135400      77/77      
+manuel                          38712       145893      67/68      
 
 auris - 2009
-Blue                            41150       154000      6/7        
-Elegant                         42338       149685      22/23      
-Comfort                         41908       123448      52/52      
+Blue                            40775       146575      8/8        
+Elegant                         42040       153495      21/22      
+Comfort                         41658       126102      52/52      
 diger                           39500       112750      3/3        
-benzin-lpg,benzin               42050       105417      41/43      
-dizel                           41563       161216      42/42      
-otomatik,yari-otomatik          43042       134447      34/35      
-manuel                          40918       131905      49/50      
+benzin-lpg,benzin               41795       107307      41/42      
+dizel                           41277       161889      43/43      
+otomatik,yari-otomatik          42901       132852      36/37      
+manuel                          40502       137044      48/48      
 
 auris - 2010
-Elegant                         46858       103439      25/25      
-Comfort                         44893       113493      62/63      
-benzin-lpg,benzin               45894       93063       46/46      
-dizel                           44995       130194      41/42      
-otomatik,yari-otomatik          47506       106452      43/43      
-manuel                          43386       114717      44/45      
+Elegant                         46643       105960      24/24      
+Comfort                         44445       116480      60/61      
+benzin-lpg,benzin               45541       93600       45/45      
+dizel                           44533       136405      39/40      
+otomatik,yari-otomatik          47241       110859      39/39      
+manuel                          43194       110845      45/46      
 
 auris - 2011
-Elegant                         52155       73911       18/18      
-Comfort                         47065       98512       229/231    
+Elegant                         52420       72678       15/15      
+Comfort                         46897       99634       228/229    
 diger                           44375       89750       2/2        
-benzin-lpg,benzin               46399       80059       131/132    
-dizel                           48536       114650      118/119    
-otomatik,yari-otomatik          51112       96578       85/85      
-manuel                          45464       97251       164/166    
+benzin-lpg,benzin               46229       80162       126/126    
+dizel                           48257       115257      119/120    
+otomatik,yari-otomatik          51124       96569       82/82      
+manuel                          45248       99153       163/164    
 
 Corsa - 2012
-Essentia                        38224       82643       285/291    
-Active                          48500       28000       1/1        
+Essentia                        37824       93644       297/298    
+Active                          48000       39000       2/2        
 OPC                             57000       58500       2/2        
-Enjoy                           42660       70338       196/201    
+Enjoy                           42392       71642       201/203    
 Edition                         43350       82676       11/12      
-dizel                           39854       99488       242/247    
-benzin-lpg,benzin               40507       58568       253/260    
-otomatik,yari-otomatik          43264       56648       122/125    
-manuel                          39130       84033       373/382    
+dizel                           39092       108713      250/251    
+benzin-lpg,benzin               40409       59280       263/266    
+otomatik,yari-otomatik          43215       57707       128/128    
+manuel                          38643       93185       385/389    
 
 Corsa - 2013
-Essentia                        39844       90447       443/451    
+Essentia                        39678       92824       447/450    
 Sport                           39500       37400       1/1        
-Active                          44752       61595       51/51      
+Active                          44728       62159       48/48      
 OPC                             68350       39950       2/2        
-Enjoy                           44183       57304       88/89      
-Edition                         50000       62000       2/2        
-dizel                           40085       99906       403/408    
-benzin-lpg,benzin               42591       45451       184/188    
-otomatik,yari-otomatik          45158       45436       98/98      
-manuel                          40025       90979       489/498    
+Enjoy                           44442       59602       85/88      
+Edition                         45166       88000       3/3        
+dizel                           39855       102871      404/407    
+benzin-lpg,benzin               42626       47204       182/185    
+otomatik,yari-otomatik          45071       47239       99/100     
+manuel                          39818       93838       487/492    
 
 Corsa - 2014
-Essentia                        42112       58854       231/233    
-Active                          44832       31082       78/78      
-Enjoy                           47120       34038       41/41      
+Essentia                        42086       59084       230/232    
+Active                          44559       33801       81/81      
+Enjoy                           46967       34527       40/40      
 Comfort                         39999       3000        1/1        
-dizel                           43858       72548       145/146    
-benzin-lpg,benzin               42855       33393       206/207    
-otomatik,yari-otomatik          47065       36572       51/51      
-manuel                          42707       52395       300/302    
+dizel                           43795       72714       148/149    
+benzin-lpg,benzin               42705       34328       204/205    
+otomatik,yari-otomatik          46747       37732       47/47      
+manuel                          42671       53029       305/307    

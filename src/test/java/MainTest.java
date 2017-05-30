@@ -1,5 +1,6 @@
-import com.github.fakemongo.Fongo;
 import com.mongodb.client.*;
+import db.TestDbContainer;
+import db.Repo;
 import entity.ArabaModel;
 import model.ArabaIlan;
 import org.bson.Document;
@@ -15,12 +16,11 @@ public class MainTest {
     public void main() throws Exception {
 
 
-        Fongo fongo = new Fongo("mongo server 1");
-        MongoDatabase db = fongo.getDatabase("mydb");
+        MongoDatabase db = TestDbContainer.getMemoryDb();
 
-        MongoCollection<Document> modelCollection = db.getCollection("modelCollection");
-        MongoCollection<Document> ilanCollection = db.getCollection("ilanCollection");
 
+        MongoCollection<Document> modelCollection = db.getCollection(Repo.MODEL_COLLECTION_NAME);
+        MongoCollection<Document> ilanCollection = db.getCollection(Repo.ILAN_COLLECTION_NAME);
 
         ArabaModel arabaModel = new ArabaModel("arabamodel", "ururll1", new ObjectId());
 
@@ -37,7 +37,7 @@ public class MainTest {
 
         arabaIlan.modelId = modelId.toString();
 
-        Document asd =  Document.parse(JsonParser.toJson(arabaIlan));
+        Document asd = Document.parse(JsonParser.toJson(arabaIlan));
         ilanCollection.insertOne(asd);
 
         FindIterable<Document> dbObjects = ilanCollection.find();
@@ -47,21 +47,19 @@ public class MainTest {
 
         ObjectId ilanId = (ObjectId) dbObjectilan.get("_id");
         for (String key : dbObjectilan.keySet()) {
-            System.out.println(key + ":" +dbObjectilan.get(key));
+            System.out.println(key + ":" + dbObjectilan.get(key));
         }
 
 
         Document queryModel = new Document("modelId", modelId.toString());
         MongoIterable<Document> dbcursor = ilanCollection.find(queryModel);
 
-       ObjectId ilanIdResult = (ObjectId) dbcursor.first().get("_id");
+        ObjectId ilanIdResult = (ObjectId) dbcursor.first().get("_id");
 
 
         Assert.assertTrue(ilanIdResult.equals(ilanId));
 
     }
-
-
 
 
 }

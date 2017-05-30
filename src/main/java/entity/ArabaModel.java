@@ -14,6 +14,7 @@ public class ArabaModel {
     public List<String> paketler;
     public int baslangicYili;
     public int bitisYili;
+    public int kullanimDurumu;
 
 
     public ArabaModel(String ad, String url, ObjectId id) {

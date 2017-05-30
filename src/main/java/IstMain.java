@@ -1,3 +1,4 @@
+import db.DbContainer;
 import db.Repo;
 import entity.ArabaModel;
 import model.ArabaIlan;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class IstMain {
     public static void main(String[] args) {
 
-        Repo repo = new Repo();
+        Repo repo = new Repo(DbContainer.getCloudDb());
         PrintWriter writer = null;
         try {
             writer = new PrintWriter("ist.txt", "UTF-8");

@@ -11,15 +11,13 @@ import java.util.List;
  */
 public class AramaParametreBuilder {
 
-    public static final int BITIS_YIL = 2017;
-    private static boolean MANUEL_BENZIN_PAS_GEC = false;
     public static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
-    public static String[] vitesSecenek = {"otomatik,yari-otomatik", "manuel"};
+    private static boolean MANUEL_BENZIN_PAS_GEC = false;
 
     public static List<AramaParametre> parametreleriGetir(ArabaModel arabaModel, int yil) {
 
         List<AramaParametre> aramaPAramtreler = new ArrayList<>();
-        for (String vites : vitesSecenek) {
+        for (VitesEnum vites : VitesEnum.values()) {
 
             for (String yakit : yakitSecenek) {
 
@@ -38,17 +36,10 @@ public class AramaParametreBuilder {
         return aramaPAramtreler;
     }
 
-    public static boolean benzinliManuelVites(String vites, String yakit) {
-        return vites.equals(duzVites()) && benzinLpg().contains(yakit);
+    public static boolean benzinliManuelVites(VitesEnum vites, String yakit) {
+        return vites.equals(VitesEnum.Manuel) && benzinLpg().contains(yakit);
     }
 
-    public static String otomatikVites() {
-        return vitesSecenek[0];
-    }
-
-    public static String duzVites() {
-        return vitesSecenek[1];
-    }
 
     public static String benzinLpg() {
         return yakitSecenek[1];
@@ -59,7 +50,7 @@ public class AramaParametreBuilder {
     }
 
     public static boolean dizelOtomatikVites(String vites, String yakit) {
-        return otomatikVites().contains(vites) && yakit.equals(dizel());
+        return VitesEnum.Otomatik.getValue().contains(vites) && yakit.equals(dizel());
     }
 
 

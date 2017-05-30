@@ -5,21 +5,22 @@ import model.istatistik.ModelIstatistik;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
+import parser.html.VitesEnum;
 import util.DateUtil;
 
-import java.nio.file.Files;
 import java.util.*;
 
-import static parser.html.AramaParametreBuilder.*;
+import static parser.html.AramaParametreBuilder.benzinLpg;
+import static parser.html.AramaParametreBuilder.dizel;
 
 /**
  * Created by mac on 29/05/17.
  */
 public class IlanPuanlayiciTest {
 
+    public static final String OTOMATIK = "otomatik";
     static final String DOLU_PAKET = "dolu paket";
     static final String BOS_PAKET = "bos paket";
-    public static final String OTOMATIK = "otomatik";
     ArabaIlan duzvitesDoluPaket100Ilan;
     ArabaModel arabaModel;
     Map<String, ModelIstatistik> modelIstatistikMap;
@@ -38,7 +39,7 @@ public class IlanPuanlayiciTest {
 
         duzvitesDoluPaket100Ilan = new ArabaIlan(2005, 37000, 45000, DateUtil.nowDbDateTime(), "ilan başlık", "url", 33, DOLU_PAKET);
         duzvitesDoluPaket100Ilan.ilIlce = "Tokat";
-        duzvitesDoluPaket100Ilan.vites = duzVites();
+        duzvitesDoluPaket100Ilan.vites = VitesEnum.Manuel.getValue();
         duzvitesDoluPaket100Ilan.yakit = benzinLpg();
         duzvitesDoluPaket100Ilan.yakitPuani = 100;
         duzvitesDoluPaket100Ilan.vitesPuani = 100;

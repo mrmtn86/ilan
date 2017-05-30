@@ -1,9 +1,6 @@
 package db;
 
 import com.mongodb.MongoBulkWriteException;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientURI;
 import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -19,10 +16,9 @@ import model.keybuilder.ArabaIlanKeyBuilder;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import parser.html.AramaParametreBuilder;
 import parser.html.HtmlParser;
+import parser.html.VitesEnum;
 import util.DateUtil;
-import parser.html.AramaParametreBuilder;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -35,11 +31,13 @@ import static parser.json.JsonParser.toJson;
  */
 public class Repo {
 
+    public static final String MODEL_COLLECTION_NAME = "model";
+    public static final String ILAN_COLLECTION_NAME = "ilan";
     private static Logger logger = Logger.getLogger(Repo.class.getName());
     private final MongoDatabase db;
 
 
-    public Repo() {
+    public Repo(MongoDatabase db) {
 
         Logger mongoLogger = Logger.getLogger("org.mongodb");
         mongoLogger.setLevel(Level.WARNING);
@@ -47,22 +45,7 @@ public class Repo {
         logger.setLevel(LogLevelContainer.LogLevel);
 
 
-        MongoClientOptions.Builder builder = MongoClientOptions.builder();
-        builder = builder
-                .connectTimeout(60000)
-                .maxConnectionIdleTime(60000)
-                .socketKeepAlive(true);
-
-        MongoClientURI uri = new MongoClientURI(
-                "mongodb://rwuser:rwuser@" +
-                        "cluster0-shard-00-00-gzsts.mongodb.net:27017," +
-                        "cluster0-shard-00-01-gzsts.mongodb.net:27017," +
-                        "cluster0-shard-00-02-gzsts.mongodb.net:27017" +
-                        "/ilanDB?ssl=true&authSource=admin", builder);
-
-        MongoClient client = new MongoClient(uri);
-
-        db = client.getDatabase(uri.getDatabase());
+        this.db = db;
 
     }
 
@@ -75,7 +58,7 @@ public class Repo {
     }
 
     public List<ArabaModel> modelleriGetir() {
-        MongoCollection<Document> modeller = db.getCollection("model");
+        MongoCollection<Document> modeller = db.getCollection(MODEL_COLLECTION_NAME);
 
         Bson query = new Document("kullanimDurumu", KullanimDurumu.Aktif.getIndex());
         MongoCursor<Document> modelItr = modeller.find(query).iterator();
@@ -87,7 +70,7 @@ public class Repo {
             String ad = doc.getString("ad");
             String url = doc.getString("url");
             int baslangicYili = doc.getInteger("baslangicYili");
-            int bitisYili = doc.containsKey("bitisYili")? doc.getInteger("bitisYili") : AramaParametreBuilder.BITIS_YIL;
+            int bitisYili = doc.containsKey("bitisYili") ? doc.getInteger("bitisYili") : 2017;
             ObjectId id = doc.getObjectId("_id");
             Object paketObj = doc.get("paketler");
 
@@ -155,7 +138,7 @@ public class Repo {
     }
 
     public MongoCollection<Document> getIlan() {
-        return db.getCollection("ilan");
+        return db.getCollection(ILAN_COLLECTION_NAME);
     }
 
     public void ilanGuncelle(ArabaIlan arabaIlan) {
@@ -174,7 +157,7 @@ public class Repo {
 
 
         DeleteResult deleteResult = ilanlar.deleteOne(query);
-        return  deleteResult.getDeletedCount() == 1;
+        return deleteResult.getDeletedCount() == 1;
     }
 
 
@@ -202,7 +185,7 @@ public class Repo {
         logger.log(Level.FINE, "{0}/{1} guncelenen/toplam", new Object[]{guncelenenToplam, ilanlar.size()});
     }
 
-    public int dbguncelle(AramaParametre aramaParametre,List<ArabaIlan> arabaIlanList) {
+    public int dbguncelle(AramaParametre aramaParametre, List<ArabaIlan> arabaIlanList) {
 
         ArabaModel arabaModel = aramaParametre.arabaModel;
 
@@ -230,7 +213,7 @@ public class Repo {
 
             // dbde yok ekleyelim
             arabaIlan.modelId = arabaModel.id.toString();
-            arabaIlan.vites = aramaParametre.vites;
+            arabaIlan.vites = ilanDb.vites;
             arabaIlan.yakit = aramaParametre.yakit;
             arabaIlan.kimden = aramaParametre.satan.toString();
             arabaIlan.yayinda = true;
@@ -398,7 +381,8 @@ public class Repo {
         String modelId = arabaModel != null ? arabaModel.id.toString() : null;
         int yil = aramaParametre.yil;
         String yakit = aramaParametre.yakit;
-        String vites = aramaParametre.vites;
+        VitesEnum vitesEnum = aramaParametre.vites;
+        String vites = vitesEnum == null ? null : vitesEnum.getValue();
         int inlanDurum = aramaParametre.ilanDurum;
 
         Document filter = new Document();

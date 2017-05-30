@@ -2,6 +2,7 @@ package model;
 
 import entity.ArabaModel;
 import model.istatistik.ModelIstatistik;
+import parser.html.VitesEnum;
 import util.DateUtil;
 import util.MatUtil;
 
@@ -105,7 +106,8 @@ public class IlanPuanlayici {
 
     private static boolean isArabaBos(ArabaModel arabaModel, Map<String, ModelIstatistik> stringModelIstatistikMap, ArabaIlan arabaIlan) {
 
-        if (!benzinliManuelVites(arabaIlan.vites, arabaIlan.yakit)) {
+        VitesEnum vitesEnum = VitesEnum.getEnum(arabaIlan.vites);
+        if (!benzinliManuelVites(vitesEnum, arabaIlan.yakit)) {
             return false;
         }
 

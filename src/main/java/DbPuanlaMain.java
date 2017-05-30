@@ -1,3 +1,4 @@
+import db.DbContainer;
 import db.Repo;
 import entity.ArabaModel;
 import file.DosyaIslemsici;
@@ -37,7 +38,7 @@ public class DbPuanlaMain {
         hasarliList = DosyaIslemsici.uygunsuzListeGetir("hasarli");
 
         logger.setLevel(Level.WARNING);
-        Repo repo = new Repo();
+        Repo repo = new Repo(DbContainer.getCloudDb());
 
         List<ArabaModel> modeller = repo.modelleriGetir();
 

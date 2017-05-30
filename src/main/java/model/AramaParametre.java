@@ -2,6 +2,7 @@ package model;
 
 import entity.ArabaModel;
 import parser.html.KimdenEnum;
+import parser.html.VitesEnum;
 
 /**
  * Created by mtn on 31.03.2017.
@@ -14,7 +15,7 @@ public class AramaParametre {
 
     private  String kimden ;
     public int yil;
-    public String vites;
+    public VitesEnum vites;
     public String yakit;
     public ArabaModel arabaModel;
     public KimdenEnum satan;
@@ -22,7 +23,7 @@ public class AramaParametre {
     public Boolean yayinda;
 
 
-    public AramaParametre(String vites, String yakit, int yil, ArabaModel arabaModel, KimdenEnum satan) {
+    public AramaParametre(VitesEnum vites, String yakit, int yil, ArabaModel arabaModel, KimdenEnum satan) {
         this.vites = vites;
         this.yakit = yakit;
         this.yil = yil;
