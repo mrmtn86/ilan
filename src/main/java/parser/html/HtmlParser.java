@@ -32,7 +32,6 @@ public class HtmlParser {
         String urlAll = SAHBINDEN_BASE_URL + url;
         logger.log(Level.CONFIG, "url get :  {0}", urlAll);
         return Jsoup.connect(urlAll).get();
-
     }
 
     private static ArabaIlan getArabaIlan(Element element) {

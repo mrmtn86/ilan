@@ -213,7 +213,7 @@ public class Repo {
 
             // dbde yok ekleyelim
             arabaIlan.modelId = arabaModel.id.toString();
-            arabaIlan.vites = ilanDb.vites;
+            arabaIlan.vites = aramaParametre.vites.getValue();
             arabaIlan.yakit = aramaParametre.yakit;
             arabaIlan.kimden = aramaParametre.satan.toString();
             arabaIlan.yayinda = true;
