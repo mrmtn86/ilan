@@ -1,5 +1,6 @@
 package model;
 
+import config.AbstructtestDbOperation;
 import entity.ArabaModel;
 import model.istatistik.ModelIstatistik;
 import org.bson.types.ObjectId;
@@ -16,61 +17,10 @@ import static parser.html.AramaParametreBuilder.dizel;
 /**
  * Created by mac on 29/05/17.
  */
-public class IlanPuanlayiciTest {
-
-    public static final String OTOMATIK = "otomatik";
-    static final String DOLU_PAKET = "dolu paket";
-    static final String BOS_PAKET = "bos paket";
-    ArabaIlan duzvitesDoluPaket100Ilan;
-    ArabaModel arabaModel;
-    Map<String, ModelIstatistik> modelIstatistikMap;
-
-    @org.junit.Before
-    public void setUp() throws Exception {
+public class IlanPuanlayiciTest extends AbstructtestDbOperation {
 
 
-        arabaModel = new ArabaModel("model ad", "model url", new ObjectId());
-        ArrayList<String> paketler = new ArrayList<>();
-        paketler.add(DOLU_PAKET);
-        paketler.add(BOS_PAKET);
 
-        arabaModel.paketler = paketler;
-
-
-        duzvitesDoluPaket100Ilan = new ArabaIlan(2005, 37000, 45000, DateUtil.nowDbDateTime(), "ilan başlık", "url", 33, DOLU_PAKET);
-        duzvitesDoluPaket100Ilan.ilIlce = "Tokat";
-        duzvitesDoluPaket100Ilan.vites = VitesEnum.Manuel.getValue();
-        duzvitesDoluPaket100Ilan.yakit = benzinLpg();
-        duzvitesDoluPaket100Ilan.yakitPuani = 100;
-        duzvitesDoluPaket100Ilan.vitesPuani = 100;
-        duzvitesDoluPaket100Ilan.kmPuani = 100;
-        duzvitesDoluPaket100Ilan.paketPuani = 100;
-
-
-        modelIstatistikMap = new HashMap<>();
-
-        ModelIstatistik modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, duzvitesDoluPaket100Ilan.vites, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat);
-        modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
-        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, duzvitesDoluPaket100Ilan.yakit, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat);
-        modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
-
-        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, DOLU_PAKET, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat);
-        modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
-
-        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, BOS_PAKET, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km + 9000, duzvitesDoluPaket100Ilan.fiyat - 5000);
-        modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
-        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, OTOMATIK, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat);
-        modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
-        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, dizel(), DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat);
-        modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
-
-    }
 
 
     @Test

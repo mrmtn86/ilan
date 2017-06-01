@@ -28,13 +28,13 @@ public class HtmlParser {
         logger.setLevel(LogLevelContainer.LogLevel);
     }
 
-    private static Document httpGet(String url) throws IOException {
+    public  Document httpGet(String url) throws IOException {
         String urlAll = SAHBINDEN_BASE_URL + url;
         logger.log(Level.CONFIG, "url get :  {0}", urlAll);
         return Jsoup.connect(urlAll).get();
     }
 
-    private static ArabaIlan getArabaIlan(Element element) {
+    public   ArabaIlan getArabaIlan(Element element) {
         String ilanNo = null;
         try {
 
@@ -116,7 +116,9 @@ public class HtmlParser {
             }
 
             if (doc == null) {
-                continue;
+
+                logger.warning(aramaParametre + " doc null geldi retun ediliyor" );
+                return arabaIlanListSonuc;
             }
             List<ArabaIlan> arabaIlanList = arabaIlanlariGetir(doc);
             arabaIlanListSonuc.addAll(arabaIlanList);

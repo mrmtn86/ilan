@@ -26,11 +26,11 @@ public class MainService {
         this.repo = new Repo(db);
     }
 
-    public void ilanlariSayfadanGuncelle() {
+    public int ilanlariSayfadanGuncelle( HtmlParser htmlParser) {
 
         logger.setLevel(LogLevelContainer.LogLevel);
 
-        HtmlParser htmlParser = new HtmlParser();
+
         List<ArabaModel> modeller = repo.modelleriGetir();
 
         int guncellenenAracSayisi = 0;
@@ -47,5 +47,7 @@ public class MainService {
             }
         }
         logger.log(Level.INFO, " toplam : {0}", new Object[]{guncellenenAracSayisi});
+
+        return guncellenenAracSayisi;
     }
 }

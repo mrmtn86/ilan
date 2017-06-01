@@ -2,6 +2,7 @@ package db;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import config.AbstructtestDbOperation;
 import entity.ArabaModel;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -15,29 +16,11 @@ import java.util.List;
 /**
  * Created by mac on 30/05/17.
  */
-public class RepoTest {
+public class RepoTest extends AbstructtestDbOperation {
 
     @Test
     public void modelleriGetir() throws Exception {
-        MongoDatabase db = TestDbContainer.getMemoryDb();
 
-
-        MongoCollection<Document> modelCollection = db.getCollection(Repo.MODEL_COLLECTION_NAME);
-
-        ArabaModel arabaModel = new ArabaModel("arabamodel", "ururll1", new ObjectId());
-        arabaModel.kullanimDurumu = 1;
-
-        arabaModel.baslangicYili = 2005;
-        arabaModel.bitisYili = 2009;
-
-        List<String> paketler = new ArrayList<>();
-        paketler.add("paket1");
-        paketler.add("paket2");
-        paketler.add("paket3");
-        arabaModel.paketler = paketler;
-
-
-        modelCollection.insertOne(Document.parse(JsonParser.toJson(arabaModel)));
 
         Repo repo = new Repo(db);
 

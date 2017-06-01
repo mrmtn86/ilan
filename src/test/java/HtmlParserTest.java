@@ -22,7 +22,7 @@ public class HtmlParserTest {
         HtmlParser htmlParser = new HtmlParser();
 
         AramaParametre aramaParametre = new AramaParametre();
-        htmlParser.sayfadanGetir(aramaParametre);
+       // htmlParser.sayfadanGetir(aramaParametre);
     }
 
     @org.junit.Test
@@ -37,6 +37,16 @@ public class HtmlParserTest {
 
         Assert.assertEquals(50, arabaIlans.size());
     }
+    @org.junit.Test
+    public void ilanlariGetirmeTestiCssParsser() throws Exception {
+/*
+        File input = new File("src/test/data/html/civic2007Result.html");
+        Document doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
 
+        HtmlParser parser = new HtmlParser();
 
+        List<ArabaIlan> arabaIlans = parser.arabaIlanlariGetir(doc);
+
+        Assert.assertEquals(50, arabaIlans.size());*/
+    }
 }

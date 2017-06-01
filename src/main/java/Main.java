@@ -1,5 +1,6 @@
 import com.mongodb.client.MongoDatabase;
 import db.DbContainer;
+import parser.html.HtmlParser;
 import service.MainService;
 
 import java.io.IOException;
@@ -15,6 +16,8 @@ public class Main {
         MongoDatabase db = DbContainer.getCloudDb();
 
         MainService mainService = new MainService(db);
-        mainService.ilanlariSayfadanGuncelle();
+
+        HtmlParser htmlParser = new HtmlParser();
+        mainService.ilanlariSayfadanGuncelle(htmlParser);
     }
 }
