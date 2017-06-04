@@ -1,16 +1,23 @@
 package service;
 
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import config.AbstructtestDbOperation;
+import db.Repo;
 import db.TestDbContainer;
+import entity.ArabaModel;
+import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import parser.html.HtmlParser;
+import parser.json.JsonParser;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,7 +26,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by mtn on 1.06.2017.
  */
-public class MainServiceTest extends AbstructtestDbOperation{
+public class MainServiceTest extends AbstructtestDbOperation {
     @Test
     public void ilanlariSayfadanGuncelle() throws Exception {
 
@@ -40,7 +47,30 @@ public class MainServiceTest extends AbstructtestDbOperation{
 
         int toplamSonuc = mainService.ilanlariSayfadanGuncelle(htmlParser);
 
-        Assert.assertEquals(50,toplamSonuc);
+        Assert.assertEquals(50, toplamSonuc);
     }
+
+    @Test
+    public void baslangicYiliBitisYiliHepsineBak() throws Exception {
+        ArabaModel arabaModel = new ArabaModel("Auris", "auris-url", new ObjectId());
+
+        arabaModel.kullanimDurumu = 1;
+
+        arabaModel.baslangicYili = 2007;
+        arabaModel.bitisYili = 2010;
+
+        List<String> paketler = new ArrayList<>();
+        paketler.add(BOS_PAKET);
+        paketler.add(DOLU_PAKET);
+        arabaModel.paketler = paketler;
+
+        MongoCollection<org.bson.Document> modelCollection = db.getCollection(Repo.MODEL_COLLECTION_NAME);
+        modelCollection.insertOne(org.bson.Document.parse(JsonParser.toJson(arabaModel)));
+
+
+
+
+    }
+
 
 }

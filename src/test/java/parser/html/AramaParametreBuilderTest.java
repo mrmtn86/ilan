@@ -25,4 +25,20 @@ public class AramaParametreBuilderTest {
 
     }
 
+    @Test
+    public void butunParamaeetreleOlusturuldu() throws Exception {
+
+        ArabaModel arabaModel = new ArabaModel("modelAd", "modelurl", null);
+
+        List<AramaParametre> aramaParametreList = AramaParametreBuilder.parametreleriGetir(arabaModel, 2015);
+
+
+
+        AramaParametre aramaParametre = new AramaParametre(VitesEnum.Manuel, YakitEnum.Dizel.getValue(), 2010, arabaModel, KimdenEnum.Galeriden);
+
+        String geturlString = aramaParametre.geturlString();
+
+        Assert.assertEquals("modelurl/dizel/Manuel/galeriden?pagingSize=50&a5_min=2010&sorting=date_asc&a5_max=2010&a9620=143038" ,geturlString);
+    }
+
 }

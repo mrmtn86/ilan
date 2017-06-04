@@ -28,6 +28,7 @@ public class AbstructtestDbOperation {
 
 
     protected static final String OTOMATIK = "otomatik";
+    protected static final String ORTA_PAKET = "orta paket";
     protected static final String DOLU_PAKET = "dolu paket";
     protected static final String BOS_PAKET = "bos paket";
     protected ArabaIlan duzvitesDoluPaket100Ilan;
@@ -41,7 +42,7 @@ public class AbstructtestDbOperation {
 
         MongoCollection<Document> modelCollection = db.getCollection(Repo.MODEL_COLLECTION_NAME);
 
-          arabaModel = new ArabaModel("arabamodel", "ururll1", new ObjectId());
+        arabaModel = new ArabaModel("arabamodel", "ururll1", new ObjectId());
         arabaModel.kullanimDurumu = 1;
 
         arabaModel.baslangicYili = 2005;
@@ -74,7 +75,7 @@ public class AbstructtestDbOperation {
         modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
 
 
-        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, DOLU_PAKET, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat+3000);
+        modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, DOLU_PAKET, DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat + 3000);
         modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
 
 
@@ -86,7 +87,6 @@ public class AbstructtestDbOperation {
 
         modelIstatistik = new ModelIstatistik(arabaModel.id.toString(), duzvitesDoluPaket100Ilan.yil, dizel(), DateUtil.nowDbDateTime(), duzvitesDoluPaket100Ilan.km, duzvitesDoluPaket100Ilan.fiyat);
         modelIstatistikMap.put(modelIstatistik.key, modelIstatistik);
-
 
 
     }

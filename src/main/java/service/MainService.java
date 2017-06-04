@@ -26,7 +26,7 @@ public class MainService {
         this.repo = new Repo(db);
     }
 
-    public int ilanlariSayfadanGuncelle( HtmlParser htmlParser) {
+    public int ilanlariSayfadanGuncelle(HtmlParser htmlParser) {
 
         logger.setLevel(LogLevelContainer.LogLevel);
 

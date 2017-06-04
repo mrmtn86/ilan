@@ -11,23 +11,15 @@ import java.util.List;
  */
 public class AramaParametreBuilder {
 
-    public static String[] yakitSecenek = {"dizel", "benzin-lpg,benzin"};
-    private static boolean MANUEL_BENZIN_PAS_GEC = false;
-
     public static List<AramaParametre> parametreleriGetir(ArabaModel arabaModel, int yil) {
 
         List<AramaParametre> aramaParamtreler = new ArrayList<>();
         for (VitesEnum vites : VitesEnum.values()) {
 
-            for (String yakit : yakitSecenek) {
+            for (YakitEnum yakit : YakitEnum.values()) {
 
                 for (KimdenEnum satan : KimdenEnum.values()) {
-                    //benzinli manuel olanlarla ilgilenme
-                    if (MANUEL_BENZIN_PAS_GEC && benzinliManuelVites(vites, yakit)) {
-                        continue;
-                    }
-
-                    AramaParametre aramaParametre = new AramaParametre(vites, yakit, yil, arabaModel, satan);
+                    AramaParametre aramaParametre = new AramaParametre(vites, yakit.getValue(), yil, arabaModel, satan);
 
                     aramaParamtreler.add(aramaParametre);
                 }
@@ -40,13 +32,12 @@ public class AramaParametreBuilder {
         return vites.equals(VitesEnum.Manuel) && benzinLpg().contains(yakit);
     }
 
-
     public static String benzinLpg() {
-        return yakitSecenek[1];
+        return YakitEnum.Benzin.getValue();
     }
 
     public static String dizel() {
-        return yakitSecenek[0];
+        return YakitEnum.Dizel.getValue();
     }
 
     public static boolean dizelOtomatikVites(String vites, String yakit) {
