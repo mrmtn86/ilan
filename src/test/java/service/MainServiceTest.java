@@ -47,6 +47,8 @@ public class MainServiceTest extends AbstructtestDbOperation {
 
         int toplamSonuc = mainService.ilanlariSayfadanGuncelle(htmlParser);
 
+
+        //sayfada 50 ilan var bunlarin hepsini dbye eklemesini bekliyoruz
         Assert.assertEquals(50, toplamSonuc);
     }
 
@@ -68,7 +70,18 @@ public class MainServiceTest extends AbstructtestDbOperation {
         modelCollection.insertOne(org.bson.Document.parse(JsonParser.toJson(arabaModel)));
 
 
+        HtmlParser htmlParser = Mockito.mock(HtmlParser.class);
+        File input = new File("src/test/data/html/2007-2010-ilanlar.htm");
+        Document ilanlar = Jsoup.parse(input, "UTF-8", "http://example.com/");
+        when(htmlParser.httpGet(any())).thenReturn(ilanlar);
 
+        when(htmlParser.sayfadanGetir(any())).thenCallRealMethod();
+        when(htmlParser.arabaIlanlariGetir(any())).thenCallRealMethod();
+        when(htmlParser.getArabaIlan(any())).thenCallRealMethod();
+
+        MainService mainService = new MainService(db);
+
+        int toplamSonuc = mainService.ilanlariSayfadanGuncelle(htmlParser);
 
     }
 
